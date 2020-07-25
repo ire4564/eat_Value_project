@@ -1,8 +1,10 @@
 /************************************************
- * Class : 메뉴 버튼
+ * Class : 아이콘 버튼 컴포넌트
  * 
  * notice :
- *  - 각 아이콘들은 expo/vector-icons에서 임의로 가져옴
+ *  - 각 아이콘들은 expo/vector-icons에서 임의로 가져옴.
+ *    iconTag는 받고자하는 아이콘을 가져오는데, 새로운 아이콘으로 변경하고자하면
+ *    코드 수정 필요함.
  * 
  * const :
  *  - NORMAL_BUTTON_COLOR: 선택되지 않은 버튼 색상
@@ -18,9 +20,11 @@
  *  - icon: expo/vector-icons의 컴포넌트 타입
  *  - icon_name: icon 이름
  *  - icon_text: icon 밑 표시될 글자
+ *  - modeChange: 상위 컴포넌트가 수행할 메소드
  * 
  * function :
  *  - colorChoose: 현재 mode에 따라 해당 아이콘이 띌 색상을 반환
+ *  - iconClick: 각 아이콘 클릭 시의 이벤트 처리(모드 변경)
  *  - iconTag: 선택한 아이콘에 따른 컴포넌트 반환
  *  
  ************************************************/
@@ -31,7 +35,7 @@ import { MaterialCommunityIcons, Ionicons, FontAwesome, Fontisto } from '@expo/v
 
 const NORMAL_BUTTON_COLOR = '#fff';
 const SELETED_BUTTON_COLOR = '#000';
-const ICON_SIZE = '120%';
+const ICON_SIZE = 30;
 
 class IconButton extends Component {
     constructor(props){
@@ -53,10 +57,10 @@ class IconButton extends Component {
         }
         return this.current_color;
     }
-    iconClick(e){
-        if(e.currentTarget.dataset.id!==this.props.seleted_mode){
-            this.props.modeChange(e.currentTarget.dataset.id);
-            alert("now seleted mode is "+e.currentTarget.dataset.id);   //변화 체크를 위한 임시 alert
+    iconClick(){
+        if(this.props.mode!==this.props.seleted_mode){
+            this.props.modeChange(this.props.mode);
+            alert("now seleted mode is "+this.props.mode);   //변화 체크를 위한 임시 alert
         }
         this.colorChoose;
     }
@@ -117,7 +121,7 @@ const styles = StyleSheet.create({
     },
     icon_text: {
         marginTop: 3,
-        fontSize: 8,
+        fontSize: 12,
     }
 });
 

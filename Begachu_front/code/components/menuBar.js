@@ -1,5 +1,5 @@
 /************************************************
- * Class : 하단 메뉴 버튼 컴포넌트
+ * Class : 하단 메뉴 버튼 구역 컴포넌트
  * 
  * notice :
  *  - 각 아이콘들은 expo/vector-icons에서 임의로 가져옴
@@ -10,7 +10,7 @@
  * 
  * props :
  *  - mode: 현재 모드
- *  - modeChange: modeChange에 대하여 모드 변화시 상위 컴포넌트가 수행할 이벤트
+ *  - modeChange: modeChange에 대하여 모드 변화를 상위 컴포넌트에게 알림
  * 
  * function :
  *  - modeChange: 각 아이콘 클릭에 대한 이벤트
