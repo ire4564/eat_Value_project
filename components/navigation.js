@@ -10,13 +10,14 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 class Navigation extends Component {
     render(){
         return(
             <TouchableOpacity>
-                <Text>Navigation</Text>
+               <FontAwesome name="navicon" size={24} color="#222" />
             </TouchableOpacity>
         );
     }
