@@ -41,9 +41,17 @@ class Home extends Component {
                     <Text style={styles.adress_text}>{this.state.adress}</Text>
                 </TouchableOpacity>
                 
-                <Text>지금 HOT한 주문</Text>
+                <Text style={styles.headline}>
+                    <Text>지금</Text>
+                    <Text style={{fontWeight: "bold"}}> HOT한 </Text>
+                    <Text>주문</Text>
+                </Text>
 
-                <Text>곧 FINISH 주문</Text>
+                <Text style={styles.headline}>
+                    <Text>곧</Text>
+                    <Text style={{fontWeight: "bold"}}> FINISH </Text>
+                    <Text>주문</Text>
+                </Text>
             </View>
         );
     }
@@ -74,6 +82,11 @@ const styles = StyleSheet.create({
     //주소창 아이콘 style
     adress_icon: {
         marginLeft: 10,
+    },
+
+    //headline style
+    headline: {
+        fontSize: 25,
     },
   });
 

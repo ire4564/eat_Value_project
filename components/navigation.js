@@ -51,7 +51,9 @@ const styles = StyleSheet.create({
 
     //헤더 컨테이너 style
     container: {
-        flex: 1.6,
+        width: '100%',
+        height: '7%',
+        marginBottom: '10%',
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
@@ -59,13 +61,13 @@ const styles = StyleSheet.create({
     //상단 모드 text style
     text: {
         fontSize: 20,
-        marginTop: 25,
+        marginTop: 30,
     },
 
     //네비게이션 버튼 style
     header_button: {
         position: 'absolute',
-        top: 25,
+        top: 30,
         left: 20,
     },
   });
