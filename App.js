@@ -10,7 +10,7 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import MenuBar from './components/menuBar';
 import Page from './components/page';
 
@@ -21,11 +21,28 @@ class App extends Component {
     this.state = {
         seleted_mode: 'home',
     }
+    
 }
-
+  headerText(){
+    if(this.state.seleted_mode==='home'){
+        return "가치 value 먹자";
+      }else if(this.state.seleted_mode==='order-list'){
+        return "My Orders";
+      }else if(this.state.seleted_mode==='now-order'){
+        return "Now Order";
+      }else if(this.state.seleted_mode==='talk'){
+        return "Talk";
+      }else if(this.state.seleted_mode==='user'){
+        return "My Page";
+      }
+    }
   render(){
     return(
       <View style={styles.container}>
+        <Text
+        children={this.headerText()}
+        style={styles.header}
+        ></Text>
         <Page style={styles.page_component}></Page>
         <MenuBar
         style={styles.menu_component}
@@ -54,10 +71,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  //상단 헤더부분 style
+  header: {
+    width: '100%',
+    flex: 1,
+    backgroundColor: '#40E0D0',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   //사용자 선택 화면 style
   page_component: {
     width: '100%',
-    flex: 11,
+    flex: 12,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
@@ -68,7 +94,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     flex: 1,
-    backgroundColor: '#1AD',
+    backgroundColor: '#40E0D0',
     alignItems: 'center',
     justifyContent: 'flex-end',
   },

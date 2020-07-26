@@ -33,9 +33,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity} from 'react-native';
 import { MaterialCommunityIcons, Ionicons, FontAwesome, Fontisto } from '@expo/vector-icons';
 
-const NORMAL_BUTTON_COLOR = '#000';
+const NORMAL_BUTTON_COLOR = '#222';
 const SELETED_BUTTON_COLOR = '#fff';
-const ICON_SIZE = 30;
+const ICON_SIZE = 20;
 
 class IconButton extends Component {
     constructor(props){
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     },
     icon_text: {
         marginTop: 3,
-        fontSize: 12,
+        fontSize: 10,
     }
 });
 
