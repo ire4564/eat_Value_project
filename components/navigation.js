@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     //헤더 컨테이너 style
     container: {
         width: '100%',
-        height: '7%',
+        height: 50,
         marginBottom: '10%',
         alignItems: 'center',
         justifyContent: 'flex-start',
