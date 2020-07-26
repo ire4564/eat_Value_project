@@ -25,8 +25,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import TouchableText from '../components/TouchableText';
-import TouchableOrder from '../components/TouchableOrder';
+import TouchableText from '../components/touchableText';
+import TouchableOrder from '../components/touchableOrder';
 
 const ICON_COLOR = '#40E0D0';
 const COLOR_SET = ['#00CED1','#008080', '#40e0d0'];
