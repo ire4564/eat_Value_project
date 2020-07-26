@@ -23,7 +23,7 @@
  *  - modeChange: 상위 컴포넌트가 수행할 메소드
  * 
  * function :
- *  - colorChoose: 현재 mode에 따라 해당 아이콘이 띌 색상을 반환
+ *  - (static) getDerivedStateFromProps: 로드될때마다 현재 mode에 색상 변환
  *  - iconClick: 각 아이콘 클릭 시의 이벤트 처리(모드 변경)
  *  - iconTag: 선택한 아이콘에 따른 컴포넌트 반환
  *  
@@ -33,8 +33,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity} from 'react-native';
 import { MaterialCommunityIcons, Ionicons, FontAwesome, Fontisto } from '@expo/vector-icons';
 
-const NORMAL_BUTTON_COLOR = '#fff';
-const SELETED_BUTTON_COLOR = '#000';
+const NORMAL_BUTTON_COLOR = '#000';
+const SELETED_BUTTON_COLOR = '#fff';
 const ICON_SIZE = 30;
 
 class IconButton extends Component {
@@ -44,25 +44,17 @@ class IconButton extends Component {
             current_color: NORMAL_BUTTON_COLOR
         }
     }
-    colorChoose(){
-        alert("test");
-        if(this.props.seleted_mode!==this.props.mode){
-            this.setState({
-                current_color: NORMAL_BUTTON_COLOR
-            });
-        }else{
-            this.setState({
-                current_color: SELETED_BUTTON_COLOR
-            });
+    static getDerivedStateFromProps(nextProps, nextState){
+        if(nextProps.seleted_mode !== nextProps.mode){
+            return { current_color: NORMAL_BUTTON_COLOR }
         }
-        return this.current_color;
+        return { current_color: SELETED_BUTTON_COLOR }
     }
     iconClick(){
         if(this.props.mode!==this.props.seleted_mode){
             this.props.modeChange(this.props.mode);
             alert("now seleted mode is "+this.props.mode);   //변화 체크를 위한 임시 alert
         }
-        this.colorChoose;
     }
     iconTag(){
         var component;
@@ -98,15 +90,17 @@ class IconButton extends Component {
         return(
             <TouchableOpacity
             style={styles.icon_component}
-            onPress={this.iconClick.bind(this)}
+            onPress={function(){
+                this.iconClick();
+            }.bind(this)}
             data-id={this.props.mode}>
-                    {this.iconTag()}
-                    <Text
-                    style={[styles.icon_text,
-                    {color: this.state.current_color}]}
-                    
-                    >{this.props.icon_text}</Text>
-                </TouchableOpacity>
+                {this.iconTag()}
+                <Text
+                style={[styles.icon_text,
+                {color: this.state.current_color}]}
+                
+                >{this.props.icon_text}</Text>
+            </TouchableOpacity>
         );
     }
 }
