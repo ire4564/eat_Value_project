@@ -17,7 +17,7 @@ import NowOrder from './views/now_order';
 import OrderList from './views/order_list';
 import Talk from './views/talk';
 import User from './views/user';
-import IconButton from './components/iconButton';
+import Navigation from './components/navigation';
 
 class App extends Component {
 
@@ -57,6 +57,7 @@ class App extends Component {
   render(){
     return(
       <View style={styles.container}>
+        <Navigation style={styles.header_button}></Navigation>
         <Text
         children={this.headerText()}
         style={styles.header}
@@ -96,6 +97,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: 20,
+  },
+
+  //상단 헤더 메뉴 버튼
+  header_button: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
 
   //사용자 선택 화면 style
