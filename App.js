@@ -12,12 +12,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import MenuBar from './components/menuBar';
-import Page from './components/page';
 import Home from './views/home';
 import NowOrder from './views/now_order';
 import OrderList from './views/order_list';
 import Talk from './views/talk';
 import User from './views/user';
+import IconButton from './components/iconButton';
 
 class App extends Component {
 
@@ -84,18 +84,18 @@ const styles = StyleSheet.create({
   //전체 화면 style
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#40E0D0',
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   //상단 헤더부분 style
   header: {
-    width: '100%',
     flex: 1,
-    backgroundColor: '#40E0D0',
+    marginTop: 25,
     alignItems: 'center',
     justifyContent: 'center',
+    fontSize: 20,
   },
 
   //사용자 선택 화면 style
