@@ -19,7 +19,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-        seleted_mode: 'none',
+        seleted_mode: 'home',
     }
 }
 
