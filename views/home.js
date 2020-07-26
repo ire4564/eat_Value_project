@@ -4,6 +4,11 @@
  * props :
  *  - user: 사용자의 id
  * 
+ * const :
+ *  - ICON_COLOR : 위치설정 칸 내 아이콘 색상
+ *  - COLOR_SET : HOT 주문 색상 설정용.
+ *                저장된 색상들이 순서대로 반복적으로 적용됨.
+ *                (hotOrderList 참고)
  * state :
  *  - user: 사용자 id
  *  - adress: 주문하고자 하는 위치
@@ -18,12 +23,13 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import TouchableText from '../components/TouchableText';
 import TouchableOrder from '../components/TouchableOrder';
 
 const ICON_COLOR = '#40E0D0';
+const COLOR_SET = ['#00CED1','#008080', '#40e0d0'];
 
 class Home extends Component {
     constructor(props){
@@ -52,14 +58,13 @@ class Home extends Component {
         return list;
     }
     hotOrderList(){
-        var colorList = ['#00CED1','#008080', '#40e0d0'];
         var list = [];
         var i = 0;
         while(i<this.state.hot_menu.length){
             list.push(<TouchableOrder
                 list={this.state.hot_order[i]}
                 key={i+"_hot_order"}
-                color={colorList[i%colorList.length]}
+                color={COLOR_SET[i%COLOR_SET.length]}
                 />);
             i = i + 1;
         }
@@ -102,6 +107,11 @@ class Home extends Component {
                         <MaterialCommunityIcons name="silverware-fork-knife" size={18} color="#fff" />
                         <Text style={{color:'#fff'}}>방 만들기</Text>
                     </TouchableOpacity>
+
+                    <TextInput
+                    style={styles.search}
+                    placeholder="원하시는 음식을 검색해보세요"/>
+
                 </ScrollView>
 
 
@@ -186,7 +196,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: 120,
-    }
+    },
+
+    //검색창 style
+    search: {
+        width: '90%',
+        height: 40,
+        alignSelf: 'center',
+        marginTop: 10,
+        borderRadius: 10,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        paddingHorizontal: 10,
+    },
   });
 
 export default Home;
