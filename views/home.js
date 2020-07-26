@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     //headline style
     headline: {
         width: '90%',
-        fontSize: 25,
+        fontSize: 20,
         marginTop: 20,
         marginBottom: 10,
     },
