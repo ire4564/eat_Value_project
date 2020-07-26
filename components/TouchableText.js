@@ -64,9 +64,9 @@ const styles = StyleSheet.create({
     },
     text: {
         width: 90,
-        height: 20,
+        height: 25,
         color: '#fff',
-        fontSize: 12,
+        fontSize: 15,
         textAlign: 'center',
         textAlignVertical: 'center',
     }
