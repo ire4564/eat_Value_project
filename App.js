@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 12,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    //alignItems: 'center',
+    //justifyContent: 'center',
   },
   
   //하단 메뉴 컴포넌트 style
