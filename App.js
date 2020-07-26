@@ -3,6 +3,7 @@
  * 
  * state :
  *  - seleted_mode: 현재 선택된 모드
+ *  - user: 현재 유저의 id
  * 
  * function :
  *  - changePage: 모드에 따른 화면 전환 메소드
@@ -25,6 +26,7 @@ class App extends Component {
     super(props);
     this.state = {
         seleted_mode: 'home',
+        user: 'test_user',
     }
     
 }
