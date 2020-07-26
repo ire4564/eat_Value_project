@@ -57,11 +57,8 @@ class App extends Component {
   render(){
     return(
       <View style={styles.container}>
-        <Navigation style={styles.header_button}></Navigation>
-        <Text
-        children={this.headerText()}
-        style={styles.header}
-        ></Text>
+        <Navigation
+        mode={this.state.seleted_mode}/>
         {this.changePage()}
         <MenuBar
         style={styles.menu_component}
@@ -86,24 +83,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#40E0D0',
-    alignItems: 'center',
     justifyContent: 'center',
-  },
-
-  //상단 헤더부분 style
-  header: {
-    flex: 1,
-    marginTop: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: 20,
-  },
-
-  //상단 헤더 메뉴 버튼
-  header_button: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
   },
 
   //사용자 선택 화면 style
