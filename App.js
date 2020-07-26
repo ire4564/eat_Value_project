@@ -5,7 +5,7 @@
  *  - seleted_mode: 현재 선택된 모드
  * 
  * function :
- *  -  
+ *  - changePage: 모드에 따른 화면 전환 메소드
  *  
  ************************************************/
 
@@ -28,19 +28,6 @@ class App extends Component {
     }
     
 }
-  headerText(){
-    if(this.state.seleted_mode==='home'){
-        return "가치 value 먹자";
-      }else if(this.state.seleted_mode==='order-list'){
-        return "My Orders";
-      }else if(this.state.seleted_mode==='now-order'){
-        return "Now Order";
-      }else if(this.state.seleted_mode==='talk'){
-        return "Talk";
-      }else if(this.state.seleted_mode==='user'){
-        return "My Page";
-      }
-  }
   changePage(){
     if(this.state.seleted_mode==='home'){
       return <Home style={styles.page_component}/>;
