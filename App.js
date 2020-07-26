@@ -32,15 +32,30 @@ class App extends Component {
   }
   changePage(){
     if(this.state.seleted_mode==='home'){
-      return <Home style={styles.page_component}/>;
+      return <Home
+      style={styles.page_component}
+      user={this.state.user}
+      />;
     }else if(this.state.seleted_mode==='order-list'){
-      return <OrderList style={styles.page_component}/>;;
+      return <OrderList
+      style={styles.page_component}
+      user={this.state.user}
+      />;
     }else if(this.state.seleted_mode==='now-order'){
-      return <NowOrder style={styles.page_component}/>;;
+      return <NowOrder
+      style={styles.page_component}
+      user={this.state.user}
+      />;
     }else if(this.state.seleted_mode==='talk'){
-      return <Talk style={styles.page_component}/>;;
+      return <Talk
+      style={styles.page_component}
+      user={this.state.user}
+      />;
     }else if(this.state.seleted_mode==='user'){
-      return <User style={styles.page_component}/>;;
+      return <User
+      style={styles.page_component}
+      user={this.state.user}
+      />;
     }
   }
   render(){
