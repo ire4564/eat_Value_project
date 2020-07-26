@@ -1,12 +1,16 @@
 /************************************************
  * Class : HOT 주문 컴포넌트
  * 
+ * notice : 최소 인원 이상인 경우 현재 인원 수의 색상을 타 색상으로 설정함.
+ *          해당 변화 색상을 바꾸고 싶은 경우 getDerivedStateFromProps()의
+ *          if문 내 반환되는 색상 변경하면 됨.
+ * 
  * props :
  *  - name : 가게명
  *  - location : 주문 배달 위치
  *  - min : 최소 인원
  *  - current : 현재 인원
- *  - color : 버튼 색상
+ *  - color : 버튼 색상(기본 색상)
  * 
  * function :
  *  -  
