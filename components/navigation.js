@@ -4,8 +4,11 @@
  * state :
  *  - 
  * 
+ * props :
+ *  - mode: 상위 패널로부터 받아온 현재 모드
+ * 
  * function :
- *  -  
+ *  - headerText: 현재 모드에 따라 text 변환 기능
  *  
  ************************************************/
 
@@ -33,7 +36,7 @@ class Navigation extends Component {
             <View style={styles.container}>
                 <Text
                 children={this.headerText()}
-                style={styles.header}
+                style={styles.text}
                 ></Text>
                 <TouchableOpacity style={styles.header_button}>
                     <FontAwesome name="navicon" size={24} color="#222" />    
@@ -53,13 +56,13 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
 
-    //상단 헤더부분 style
-    header: {
+    //상단 모드 text style
+    text: {
         fontSize: 20,
         marginTop: 25,
     },
 
-    //상단 헤더 메뉴 버튼
+    //네비게이션 버튼 style
     header_button: {
         position: 'absolute',
         top: 25,
