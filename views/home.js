@@ -1,8 +1,15 @@
 /************************************************
  * Class : 홈 화면 
  * 
+ * props :
+ *  - user: 사용자의 id
+ * 
  * state :
- *  - 
+ *  - user: 사용자 id
+ *  - adress: 주문하고자 하는 위치
+ *  - hot_menu: 현재 인기 메뉴 리스트
+ *  - hot_order: 현재 인기 주문 리스트
+ *  - near_finish_order: 마감임박 주문 리스트
  * 
  * function :
  *  -  
@@ -10,8 +17,9 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import TouchableText from '../components/TouchableText';
 
 const ICON_COLOR = '#40E0D0';
 
@@ -26,12 +34,42 @@ class Home extends Component {
             near_finish_order: {},
         }   
     }
+    hotMemuList(){
+        var list = [];
+        var i = 0;
+        while(i<this.state.hot_menu.length){
+            list.push(<TouchableText
+                        text={this.state.hot_menu[i]}
+                        key={i}/>);
+            i = i + 1;
+        }
+        return list;
+    }
+
     render(){
         return(
             <View style={[this.props.style, styles.container]}>
+
+                <ScrollView style={styles.main_scroll}>
+                    <Text style={styles.headline}>
+                        <Text>지금</Text>
+                        <Text style={{fontWeight: "bold"}}> HOT한 </Text>
+                        <Text>주문</Text>
+                    </Text>
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                        {this.hotMemuList()}
+                    </ScrollView>
+
+
+                    <Text style={styles.headline}>
+                        <Text>곧</Text>
+                        <Text style={{fontWeight: "bold"}}> FINISH </Text>
+                        <Text>주문</Text>
+                    </Text>
+                </ScrollView>
+
                 {/*클릭시 투명화를 방지하기 위한 임시 패널*/}
                 <View style={styles.up_container}/>
-
                 <TouchableOpacity style={styles.up_container}>
                     <MaterialIcons
                     name="location-on"
@@ -40,18 +78,6 @@ class Home extends Component {
                     style={styles.adress_icon}/>
                     <Text style={styles.adress_text}>{this.state.adress}</Text>
                 </TouchableOpacity>
-                
-                <Text style={styles.headline}>
-                    <Text>지금</Text>
-                    <Text style={{fontWeight: "bold"}}> HOT한 </Text>
-                    <Text>주문</Text>
-                </Text>
-
-                <Text style={styles.headline}>
-                    <Text>곧</Text>
-                    <Text style={{fontWeight: "bold"}}> FINISH </Text>
-                    <Text>주문</Text>
-                </Text>
             </View>
         );
     }
@@ -61,7 +87,13 @@ const styles = StyleSheet.create({
     //전체 화면 설정
     container:{
         alignItems: 'center',
-        justifyContent: 'center',
+    },
+
+    main_scroll: {
+        width: '100%',
+        borderColor: '#fff',
+        borderTopWidth: 25,
+        borderLeftWidth: 30,
     },
 
     //header 부분을 침범해야하는 경우 추가할 style
@@ -92,7 +124,10 @@ const styles = StyleSheet.create({
 
     //headline style
     headline: {
+        width: '90%',
         fontSize: 25,
+        marginTop: 20,
+        marginBottom: 10,
     },
   });
 
