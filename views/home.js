@@ -28,7 +28,7 @@ class Home extends Component {
     }
     render(){
         return(
-            <View style={this.props.style}>
+            <View style={[this.props.style, styles.container]}>
                 {/*클릭시 투명화를 방지하기 위한 임시 패널*/}
                 <View style={styles.up_container}/>
 
@@ -58,10 +58,16 @@ class Home extends Component {
 }
 
 const styles = StyleSheet.create({
+    //전체 화면 설정
+    container:{
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
     //header 부분을 침범해야하는 경우 추가할 style
     up_container: {
         position: 'absolute',
-        top: -10,
+        top: -20,
         alignItems: 'center',
         //justifyContent: 'center',
         flexDirection: 'row',
