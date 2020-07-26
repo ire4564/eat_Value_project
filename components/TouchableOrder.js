@@ -44,7 +44,7 @@ class TouchableOrder extends Component {
     render(){
         return(
             <TouchableOpacity
-            style={styles.container}
+            style={[styles.container, {backgroundColor: this.props.color}]}
             onPress={function(){
                 if(this.props.event!==undefined){
                     this.props.event;
@@ -71,10 +71,9 @@ class TouchableOrder extends Component {
 const styles = StyleSheet.create({
     //컨테이너 style
     container: {
-        backgroundColor: '#00CED1',
         borderRadius: 20,
-        marginRight: 10,
-        width: 140,
+        marginRight: 15,
+        width: 150,
         height: 160,
         alignContent: 'space-between',
     },

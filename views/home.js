@@ -12,7 +12,7 @@
  *  - near_finish_order: 마감임박 주문 리스트
  * 
  * function :
- *  -  
+ *  - hotMenuList : hot_menu를 통해 해당 목록의 버튼들을 리스트로 출력
  *  
  ************************************************/
 
@@ -20,6 +20,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import TouchableText from '../components/TouchableText';
+import TouchableOrder from '../components/TouchableOrder';
 
 const ICON_COLOR = '#40E0D0';
 
@@ -30,8 +31,12 @@ class Home extends Component {
             user: this.props.user,
             adress: "대전 유성구 궁동 99",
             hot_menu: ['떡볶이', '치킨', '피자'],
-            hot_order: {},
-            near_finish_order: {},
+            hot_order: [
+                {name: '신가네 떡볶이', location: '궁동 로데오 거리', min: 4, current: 5},
+                {name: '동대문 엽기 떡볶이', location: '궁동 욧골 공원', min: 2, current: 4},
+                {name: '에꿍이 치킨', location: '궁동 충남대 막동', min: 3, current: 3},
+            ],
+            near_finish_order: [],
         }   
     }
     hotMemuList(){
@@ -40,7 +45,21 @@ class Home extends Component {
         while(i<this.state.hot_menu.length){
             list.push(<TouchableText
                         text={this.state.hot_menu[i]}
-                        key={i}/>);
+                        key={i+"_hot_menu"}/>);
+            i = i + 1;
+        }
+        return list;
+    }
+    hotOrderList(){
+        var colorList = ['#00CED1','#008080', '#40e0d0'];
+        var list = [];
+        var i = 0;
+        while(i<this.state.hot_menu.length){
+            list.push(<TouchableOrder
+                list={this.state.hot_order[i]}
+                key={i+"_hot_order"}
+                color={colorList[i%colorList.length]}
+                />);
             i = i + 1;
         }
         return list;
@@ -51,13 +70,24 @@ class Home extends Component {
             <View style={[this.props.style, styles.container]}>
 
                 <ScrollView style={styles.main_scroll}>
+
                     <Text style={styles.headline}>
                         <Text>지금</Text>
                         <Text style={{fontWeight: "bold"}}> HOT한 </Text>
                         <Text>주문</Text>
                     </Text>
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+
+                    <ScrollView 
+                    style={styles.horizontal_scroll}
+                    horizontal={true} 
+                    showsHorizontalScrollIndicator={false}>
                         {this.hotMemuList()}
+                    </ScrollView>
+                    <ScrollView 
+                    style={styles.horizontal_scroll}
+                    horizontal={true} 
+                    showsHorizontalScrollIndicator={false}>
+                        {this.hotOrderList()}
                     </ScrollView>
 
 
@@ -91,9 +121,9 @@ const styles = StyleSheet.create({
 
     main_scroll: {
         width: '100%',
-        borderColor: '#fff',
-        borderTopWidth: 25,
-        borderLeftWidth: 30,
+        //borderColor: '#fff',
+        //borderTopWidth: 25,
+        //borderLeftWidth: 30,
     },
 
     //header 부분을 침범해야하는 경우 추가할 style
@@ -126,8 +156,15 @@ const styles = StyleSheet.create({
     headline: {
         width: '90%',
         fontSize: 20,
-        marginTop: 20,
+        marginTop: 40,
+        marginLeft: 20,
         marginBottom: 10,
+    },
+
+    //가로 스크롤 style
+    horizontal_scroll: {
+        marginTop: 10,
+        paddingHorizontal: 20,
     },
   });
 
