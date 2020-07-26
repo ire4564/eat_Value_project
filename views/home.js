@@ -13,12 +13,13 @@
  * 
  * function :
  *  - hotMenuList : hot_menu를 통해 해당 목록의 버튼들을 리스트로 출력
+ *  - hotOrderList : hot_order를 통해 해당 목록의 버튼들을 리스트로 출력
  *  
  ************************************************/
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import TouchableText from '../components/TouchableText';
 import TouchableOrder from '../components/TouchableOrder';
 
@@ -96,7 +97,13 @@ class Home extends Component {
                         <Text style={{fontWeight: "bold"}}> FINISH </Text>
                         <Text>주문</Text>
                     </Text>
+
+                    <TouchableOpacity style={styles.makeOrder}>
+                        <MaterialCommunityIcons name="silverware-fork-knife" size={18} color="#fff" />
+                        <Text style={{color:'#fff'}}>방 만들기</Text>
+                    </TouchableOpacity>
                 </ScrollView>
+
 
                 {/*클릭시 투명화를 방지하기 위한 임시 패널*/}
                 <View style={styles.up_container}/>
@@ -121,8 +128,8 @@ const styles = StyleSheet.create({
 
     main_scroll: {
         width: '100%',
-        //borderColor: '#fff',
-        //borderTopWidth: 25,
+        borderColor: '#fff',
+        borderTopWidth: 25,
         //borderLeftWidth: 30,
     },
 
@@ -155,10 +162,10 @@ const styles = StyleSheet.create({
     //headline style
     headline: {
         width: '90%',
-        fontSize: 20,
-        marginTop: 40,
+        fontSize: 25,
+        marginTop: 25,
         marginLeft: 20,
-        marginBottom: 10,
+        //marginBottom: 10,
     },
 
     //가로 스크롤 style
@@ -166,6 +173,20 @@ const styles = StyleSheet.create({
         marginTop: 10,
         paddingHorizontal: 20,
     },
+
+    //방 만들기 버튼 style
+    makeOrder: {
+        marginTop: -30,
+        marginRight: 20,
+        alignSelf: 'flex-end',
+        backgroundColor: '#40e0d0',
+        borderRadius: 10,
+        paddingHorizontal: 20,
+        paddingVertical: 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: 120,
+    }
   });
 
 export default Home;
