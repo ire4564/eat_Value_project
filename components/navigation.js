@@ -39,7 +39,7 @@ class Navigation extends Component {
                 style={styles.text}
                 ></Text>
                 <TouchableOpacity style={styles.header_button}>
-                    <FontAwesome name="navicon" size={24} color="#222" />    
+                    <FontAwesome name="navicon" size={20} color="#222" />    
                 </TouchableOpacity>
                 
             </View>
