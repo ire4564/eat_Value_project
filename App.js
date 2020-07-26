@@ -29,7 +29,7 @@ class App extends Component {
         user: 'test_user',
     }
     
-}
+  }
   changePage(){
     if(this.state.seleted_mode==='home'){
       return <Home style={styles.page_component}/>;
