@@ -58,15 +58,13 @@ class TouchableText extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#999',
-        borderWidth: 1,
-        borderColor: '#999',
         borderRadius: 25,
     },
     text: {
-        width: 90,
+        width: 100,
         height: 25,
         color: '#fff',
-        fontSize: 15,
+        fontSize: 13,
         textAlign: 'center',
         textAlignVertical: 'center',
     }
