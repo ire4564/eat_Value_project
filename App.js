@@ -13,6 +13,11 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import MenuBar from './components/menuBar';
 import Page from './components/page';
+import Home from './views/home';
+import NowOrder from './views/now_order';
+import OrderList from './views/order_list';
+import Talk from './views/talk';
+import User from './views/user';
 
 class App extends Component {
 
@@ -35,7 +40,20 @@ class App extends Component {
       }else if(this.state.seleted_mode==='user'){
         return "My Page";
       }
+  }
+  changePage(){
+    if(this.state.seleted_mode==='home'){
+      return <Home style={styles.page_component}/>;
+    }else if(this.state.seleted_mode==='order-list'){
+      return <OrderList style={styles.page_component}/>;;
+    }else if(this.state.seleted_mode==='now-order'){
+      return <NowOrder style={styles.page_component}/>;;
+    }else if(this.state.seleted_mode==='talk'){
+      return <Talk style={styles.page_component}/>;;
+    }else if(this.state.seleted_mode==='user'){
+      return <User style={styles.page_component}/>;;
     }
+  }
   render(){
     return(
       <View style={styles.container}>
@@ -43,7 +61,7 @@ class App extends Component {
         children={this.headerText()}
         style={styles.header}
         ></Text>
-        <Page style={styles.page_component}></Page>
+        {this.changePage()}
         <MenuBar
         style={styles.menu_component}
         mode={this.state.seleted_mode}
