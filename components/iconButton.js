@@ -53,7 +53,6 @@ class IconButton extends Component {
     iconClick(){
         if(this.props.mode!==this.props.seleted_mode){
             this.props.modeChange(this.props.mode);
-            alert("now seleted mode is "+this.props.mode);   //변화 체크를 위한 임시 alert
         }
     }
     iconTag(){
