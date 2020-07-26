@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     header_button: {
         position: 'absolute',
         top: 25,
-        left: 10,
+        left: 20,
     },
   });
 
