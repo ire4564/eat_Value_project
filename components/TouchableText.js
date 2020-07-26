@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#999',
         borderRadius: 25,
-        marginRight: 10,
+        marginRight: 6,
     },
     text: {
         width: 100,
