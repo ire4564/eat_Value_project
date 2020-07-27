@@ -17,9 +17,10 @@
  *  - db_store: 가게 리스트
  * 
  * function :
- *  - (static) getDerivedStateFromProps : db를 통해 hot_menu와 hot_store 연산 수행
+ *  - (static) getDerivedStateFromProps : db를 통해 hot_menu와 hot_store 연산
  *  - hotMenuList : hot_menu를 통해 해당 목록의 버튼들을 리스트로 출력
  *  - hotOrderList : db_order와 db_store를 통해 해당 목록의 버튼들을 리스트로 출력
+ *                   또한 주문 목록 정리
  *  
  ************************************************/
 
@@ -57,6 +58,7 @@ class Home extends Component {
         }   
     }
     static getDerivedStateFromProps(nextProps, nextState){
+        //인기 메뉴, 인기 가게 목록 정리
         var hot_menu=[];
         var hot_store=[];
         var i = 0;
@@ -93,9 +95,17 @@ class Home extends Component {
         for(let j = 0; j < hot_store.length; j++){
             result_store.push(hot_store[j].store_num);
         }
+
+        //전체 주문 목록 정리
+        nextState.db_order.sort(function(a, b){
+            var temp_a = a.current_order/a.limit_order;
+            var temp_b = b.current_order/b.limit_order;
+            return temp_a > temp_b ? -1 : temp_a < temp_b ? 1 : 0;
+        });
         return {
             hot_menu: result_menu,
             hot_store: result_store,
+            db_order: nextState.db_order,
         };
     }
     hotMemuList(){
@@ -126,6 +136,9 @@ class Home extends Component {
             i = i + 1;
         }
         return list;
+    }
+    willFinishList(){
+        var list = [];
     }
 
     render(){
@@ -168,7 +181,8 @@ class Home extends Component {
                     style={styles.search}
                     placeholder="원하시는 음식을 검색해보세요"/>
 
-                    <TouchableList db_order={this.state.db_order[0]}></TouchableList>
+                    <TouchableList order={this.state.db_order[0]} store={this.state.db_store[this.state.db_order[0].store_num]}></TouchableList>
+                    <TouchableList order={this.state.db_order[1]} store={this.state.db_store[this.state.db_order[1].store_num]}></TouchableList>
                 </ScrollView>
                 
                 
