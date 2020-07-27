@@ -25,8 +25,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import TouchableText from '../components/touchableText';
-import TouchableOrder from '../components/touchableOrder';
+import TouchableText from '../components/TouchableText';
+import TouchableOrder from '../components/TouchableOrder';
 import LocationBar from '../components/locationBar';
 
 const COLOR_SET = ['#00CED1','#008080', '#40e0d0'];

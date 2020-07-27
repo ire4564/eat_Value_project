@@ -17,6 +17,7 @@ class TouchableText extends Component {
     constructor(props){
         super(props);
         this.state = {
+            db_order: this.props.order,
             style: styles.container,
             style_text: styles.text,
         }
