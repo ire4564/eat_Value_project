@@ -43,7 +43,14 @@ class Home extends Component {
                 {name: '동대문 엽기 떡볶이', location: '궁동 욧골 공원', limit_order: 4, current_order: 2, order_detail:[],},
                 {name: '에꿍이 치킨', location: '궁동 충남대 막동', limit_order: 3, current_order: 1, order_detail:[],},
             ],
-            near_finish_order: [],
+            db_store: [
+                {category: "떡볶이", min_order: 12000, name: '신가네 떡볶이'},
+                {category: "떡볶이", min_order: 10000, name: '동대문 엽기 떡볶이'},
+                {category: "치킨", min_order: 10000, name: '에꿍이 치킨'},
+                {category: "피자", min_order: 10000, name: '덤앤덤 피자 충남대점'},
+                {category: "중식", min_order: 5000, name: '하오치 궁동점'},
+                {category: "분식/돈가쓰", min_order: 12000, name: '숑숑 돈까스 노은점'},
+            ],
         }   
     }
     hotMemuList(){
