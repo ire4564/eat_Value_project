@@ -24,6 +24,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import TouchableText from '../components/touchableText';
 import TouchableOrder from '../components/touchableOrder';
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
     },
 
     main_scroll: {
-        width: '100%',
+        width: wp('100%'),
         borderColor: '#fff',
         borderTopWidth: 25,
         //borderLeftWidth: 30,
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
 
     //headline style
     headline: {
-        width: '90%',
+        width: wp('90%'),
         fontSize: 25,
         marginTop: 25,
         marginLeft: 20,
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
 
     //검색창 style
     search: {
-        width: '90%',
+        width: wp('90%'),
         height: 40,
         alignSelf: 'center',
         marginTop: 10,

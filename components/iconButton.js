@@ -32,6 +32,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity} from 'react-native';
 import { MaterialCommunityIcons, Ionicons, FontAwesome, Fontisto } from '@expo/vector-icons';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const NORMAL_BUTTON_COLOR = '#222';
 const SELETED_BUTTON_COLOR = '#fff';
@@ -109,8 +110,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        height: '80%',
-        width: '60%',
+        height: hp('80%'),
+        width: wp('60%'),
     },
     icon_text: {
         marginTop: 3,

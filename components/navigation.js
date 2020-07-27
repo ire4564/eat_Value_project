@@ -14,6 +14,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { FontAwesome } from '@expo/vector-icons';
 
 class Navigation extends Component {
@@ -51,9 +52,9 @@ const styles = StyleSheet.create({
 
     //헤더 컨테이너 style
     container: {
-        width: '100%',
+        width: wp('100%'),
         height: 50,
-        marginBottom: '10%',
+        marginBottom: hp('5%'),
         alignItems: 'center',
         justifyContent: 'flex-start',
     },

@@ -12,6 +12,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import MenuBar from './components/menuBar';
 import Home from './views/home';
 import NowOrder from './views/now_order';
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
 
   //사용자 선택 화면 style
   page_component: {
-    width: '100%',
+    width: wp('100%'),
     flex: 1,
     backgroundColor: '#fff',
     //alignItems: 'center',
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
   
   //하단 메뉴 컴포넌트 style
   menu_component: {
-    width: '100%',
+    width: wp('100%'),
     height: 60,
     flexDirection: 'row',
     //flex: 1,
