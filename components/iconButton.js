@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        height: hp('80%'),
+        height: hp('7%'),
         width: wp('60%'),
     },
     icon_text: {
