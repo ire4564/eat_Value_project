@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput, CheckBox } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Divider } from 'react-native-elements';
+import LocationBar from '../components/locationBar';
 // npm install react-native-elements
 
 class CheckOrder extends Component {
     constructor(props){
         super(props);
         this.state = {
+            db_user: this.props.db_user
         }   
     }
 
@@ -22,6 +24,8 @@ class CheckOrder extends Component {
                     <Text style={styles.title}>주문 가게 이름</Text>
                     <Divider style={styles.separator}/>
                 </View>
+
+                <LocationBar db_user={this.state.db_user}/>
             </View>
         );
     }
@@ -32,7 +36,7 @@ const styles = StyleSheet.create({
     headline: {
         width: wp('90%'),
         fontSize: hp('3%'),
-        marginTop: 25,
+        marginTop: 40,
         marginLeft: 20,
         //marginBottom: 10,
     },
