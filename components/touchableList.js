@@ -26,6 +26,9 @@ class TouchableList extends Component {
     computeGauge(){
         var i = this.state.order.current_order/this.state.order.limit_order;
         i = i * 100;
+        if(i>= 100){
+            i = 100;
+        }
         return i+"%";
     }
 
