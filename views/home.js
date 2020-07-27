@@ -10,8 +10,7 @@
  *                저장된 색상들이 순서대로 반복적으로 적용됨.
  *                (hotOrderList 참고)
  * state :
- *  - db_user: 사용자 id
- *  - adress: 주문하고자 하는 위치
+ *  - db_user: 사용자 정보
  *  - hot_menu: 현재 인기 메뉴 리스트
  *  - hot_order: 현재 인기 주문 리스트
  *  - near_finish_order: 마감임박 주문 리스트
@@ -37,7 +36,6 @@ class Home extends Component {
         super(props);
         this.state = {
             db_user: this.props.db_user,
-            adress: "대전 유성구 궁동 99",
             hot_menu: ['떡볶이', '치킨', '피자'],
             hot_order: [
                 {name: '신가네 떡볶이', location: '궁동 로데오 거리', min: 4, current: 5},
@@ -124,7 +122,7 @@ class Home extends Component {
                     size={25} 
                     color={ICON_COLOR}
                     style={styles.adress_icon}/>
-                    <Text style={styles.adress_text}>{this.state.adress}</Text>
+                    <Text style={styles.adress_text}>{this.state.db_user.location}</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -132,11 +130,12 @@ class Home extends Component {
 }
 
 const styles = StyleSheet.create({
-    //전체 화면 설정
+    //전체 화면 style
     container:{
         alignItems: 'center',
     },
 
+    //전체 화면 스크롤 style
     main_scroll: {
         width: wp('100%'),
         borderColor: '#fff',
