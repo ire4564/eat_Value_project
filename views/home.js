@@ -52,7 +52,7 @@ class Home extends Component {
                 {category: "치킨", min_order: 10000, name: '에꿍이 치킨'},
                 {category: "피자", min_order: 10000, name: '덤앤덤 피자 충남대점'},
                 {category: "중식", min_order: 5000, name: '하오치 궁동점'},
-                {category: "분식/돈가쓰", min_order: 12000, name: '숑숑 돈까스 노은점'},
+                {category: "분식/돈까스", min_order: 12000, name: '숑숑 돈까스 노은점'},
             ],
         }   
     }
