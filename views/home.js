@@ -40,6 +40,7 @@ class Home extends Component {
         super(props);
         this.state = {
             db_user: this.props.db_user,
+            search: '',
             hot_menu: [],
             hot_store:[],
             db_order: [
@@ -139,6 +140,39 @@ class Home extends Component {
     }
     willFinishList(){
         var list = [];
+        if(this.state.search===''){
+            var i = 0;
+            while(i < this.state.db_order.length){
+                list.push(
+                    <TouchableList
+                    key={i+"_order"}
+                    order={this.state.db_order[i]}
+                    store={this.state.db_store[this.state.db_order[i].store_num]}/>
+                );
+                i = i + 1;
+            }
+        }else{
+            var i = 0;
+            while(i < this.state.db_order.length){
+                if(this.state.db_store[this.state.db_order[i].store_num].name.indexOf(this.state.search)!== -1){
+                    list.push(
+                        <TouchableList
+                        key={i+"_order"}
+                        order={this.state.db_order[i]}
+                        store={this.state.db_store[this.state.db_order[i].store_num]}/>
+                    );
+                }else if(this.state.db_store[this.state.db_order[i].store_num].category.indexOf(this.state.search)!== -1){
+                    list.push(
+                        <TouchableList
+                        key={i+"_order"}
+                        order={this.state.db_order[i]}
+                        store={this.state.db_store[this.state.db_order[i].store_num]}/>
+                    );
+                }
+                i = i + 1;
+            }
+        }
+        return list;
     }
 
     render(){
@@ -179,10 +213,10 @@ class Home extends Component {
 
                     <TextInput
                     style={styles.search}
-                    placeholder="원하시는 음식을 검색해보세요"/>
-
-                    <TouchableList order={this.state.db_order[0]} store={this.state.db_store[this.state.db_order[0].store_num]}></TouchableList>
-                    <TouchableList order={this.state.db_order[1]} store={this.state.db_store[this.state.db_order[1].store_num]}></TouchableList>
+                    placeholder="원하시는 음식을 검색해보세요"
+                    onChangeText={(text)=>this.setState({search: text})}
+                    value={this.state.search}/>
+                    {this.willFinishList()}
                 </ScrollView>
                 
                 
