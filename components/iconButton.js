@@ -36,7 +36,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 const NORMAL_BUTTON_COLOR = '#222';
 const SELETED_BUTTON_COLOR = '#fff';
-const ICON_SIZE = 20;
+const ICON_SIZE = hp('2.7%');
 
 class IconButton extends Component {
     constructor(props){
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     },
     icon_text: {
         marginTop: 3,
-        fontSize: 10,
+        fontSize: hp('1.2%'),
     }
 });
 
