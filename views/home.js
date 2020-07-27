@@ -39,7 +39,7 @@ class Home extends Component {
         super(props);
         this.state = {
             db_user: this.props.db_user,
-            hot_menu: ["떡볶이", "치킨", "피자"],
+            hot_menu: [],
             hot_store:[],
             db_order: [
                 {store_num: 0, location: '궁동 로데오 거리', limit_order: 5, current_order: 4, order_detail:[],},
@@ -57,8 +57,46 @@ class Home extends Component {
         }   
     }
     static getDerivedStateFromProps(nextProps, nextState){
-        var list=[];
-        return {};
+        var hot_menu=[];
+        var hot_store=[];
+        var i = 0;
+        while(i < nextState.db_order.length){
+            var found_menu = hot_menu.find(element => 
+                element.category===nextState.db_store[nextState.db_order[i].store_num].category);
+            var found_store = hot_store.find(element =>
+                element.store_num==nextState.db_order[i].store_num);
+            if(found_menu==undefined){
+                hot_menu.push({category: nextState.db_store[nextState.db_order[i].store_num].category, amount: 1});
+            }else {
+                found_menu.amount = found_menu.amount + 1;
+            }
+            if(found_store==undefined){
+                hot_store.push({store_num: nextState.db_order[i].store_num, amount: 1});
+            }else{
+                found_store.amount = found_store.amount + 1;
+            }
+            i = i + 1;
+        }
+        hot_menu.sort(function (a, b){
+            return a.amount > b.amount ? -1 : a.amount < b.amount ? 1 : 0;
+        });
+        hot_store.sort(function (a, b){
+            return a.amount > b.amount ? -1 : a.amount < b.amount ? 1 : 0;
+        });
+
+        var result_menu = [];
+        var result_store = [];
+
+        for(let j = 0; j < hot_menu.length; j++){
+            result_menu.push(hot_menu[j].category);
+        }
+        for(let j = 0; j < hot_store.length; j++){
+            result_store.push(hot_store[j].store_num);
+        }
+        return {
+            hot_menu: result_menu,
+            hot_store: result_store,
+        };
     }
     hotMemuList(){
         var list = [];
@@ -70,7 +108,7 @@ class Home extends Component {
             i = i + 1;
         }
         if(list.length==0){
-            list.push(<Text key={"empty_hot_menu"}>대기중인 주문이 없어요!</Text>);
+            list.push(<Text key={"empty_hot_menu"}>주문이 없어요!</Text>);
         }
         return list;
     }
