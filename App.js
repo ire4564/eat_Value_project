@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   //사용자 선택 화면 style
   page_component: {
     width: '100%',
-    flex: 12,
+    flex: 1,
     backgroundColor: '#fff',
     //alignItems: 'center',
     //justifyContent: 'center',
@@ -102,11 +102,12 @@ const styles = StyleSheet.create({
   //하단 메뉴 컴포넌트 style
   menu_component: {
     width: '100%',
+    height: 60,
     flexDirection: 'row',
-    flex: 1,
+    //flex: 1,
     backgroundColor: '#40E0D0',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    //justifyContent: 'flex-end',
   },
 });
 
