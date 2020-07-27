@@ -105,8 +105,8 @@ class Home extends Component {
                     </Text>
 
                     <TouchableOpacity style={styles.makeOrder}>
-                        <MaterialCommunityIcons name="silverware-fork-knife" size={18} color="#fff" />
-                        <Text style={{color:'#fff'}}>방 만들기</Text>
+                        <MaterialCommunityIcons name="silverware-fork-knife" size={hp('2%')} color="#fff" />
+                        <Text style={{color:'#fff', fontSize:hp('1.9%')}}> 방 만들기</Text>
                     </TouchableOpacity>
 
                     <TextInput
@@ -140,14 +140,13 @@ const styles = StyleSheet.create({
     main_scroll: {
         width: wp('100%'),
         borderColor: '#fff',
-        borderTopWidth: 25,
-        //borderLeftWidth: 30,
+        borderTopWidth: hp('1.5%'),
     },
 
     //header 부분을 침범해야하는 경우 추가할 style
     up_container: {
         position: 'absolute',
-        top: -20,
+        top: hp('-3%'),
         alignItems: 'center',
         //justifyContent: 'center',
         flexDirection: 'row',
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
     //headline style
     headline: {
         width: wp('90%'),
-        fontSize: 25,
+        fontSize: hp('3%'),
         marginTop: 25,
         marginLeft: 20,
         //marginBottom: 10,
@@ -182,21 +181,21 @@ const styles = StyleSheet.create({
     //가로 스크롤 style
     horizontal_scroll: {
         marginTop: 10,
-        paddingHorizontal: 20,
+        paddingHorizontal: wp('5%'),
     },
 
     //방 만들기 버튼 style
     makeOrder: {
-        marginTop: -30,
-        marginRight: 20,
+        marginTop: hp('-4%'),
+        marginRight: wp('5%'),
         alignSelf: 'flex-end',
         backgroundColor: '#40e0d0',
         borderRadius: 10,
-        paddingHorizontal: 20,
-        paddingVertical: 5,
+        paddingHorizontal: wp('5%'),
+        paddingVertical: hp('1%'),
         flexDirection: 'row',
+        alignContent: 'center',
         justifyContent: 'space-between',
-        width: 120,
     },
 
     //검색창 style

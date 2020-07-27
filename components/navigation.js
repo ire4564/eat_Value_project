@@ -61,14 +61,14 @@ const styles = StyleSheet.create({
 
     //상단 모드 text style
     text: {
-        fontSize: 20,
-        marginTop: 30,
+        fontSize: hp('2.5%'),
+        marginTop: hp('4%'),
     },
 
     //네비게이션 버튼 style
     header_button: {
         position: 'absolute',
-        top: 30,
+        top: hp('4%'),
         left: 20,
     },
   });
