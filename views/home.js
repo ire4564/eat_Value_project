@@ -116,7 +116,7 @@ class Home extends Component {
         var list = [];
         var i = 0;
         //db에서 받은 정보를 가공, 혹은 가공된 정보를 state에 저장 후 아래 수행
-        while(i<this.state.hot_menu.length){
+        while(i<this.state.db_order.length){
             list.push(<TouchableOrder
                 store={this.state.db_store[this.state.db_order[i].store_num]}
                 order={this.state.db_order[i]}
