@@ -24,11 +24,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import TouchableText from '../components/touchableText';
 import TouchableOrder from '../components/touchableOrder';
+import LocationBar from '../components/locationBar';
 
-const ICON_COLOR = '#40E0D0';
 const COLOR_SET = ['#00CED1','#008080', '#40e0d0'];
 
 class Home extends Component {
@@ -73,9 +73,7 @@ class Home extends Component {
     render(){
         return(
             <View style={[this.props.style, styles.container]}>
-
                 <ScrollView style={styles.main_scroll}>
-
                     <Text style={styles.headline}>
                         <Text>지금</Text>
                         <Text style={{fontWeight: "bold"}}> HOT한 </Text>
@@ -110,20 +108,8 @@ class Home extends Component {
                     <TextInput
                     style={styles.search}
                     placeholder="원하시는 음식을 검색해보세요"/>
-
                 </ScrollView>
-
-
-                {/*클릭시 투명화를 방지하기 위한 임시 패널*/}
-                <View style={styles.up_container}/>
-                <TouchableOpacity style={styles.up_container}>
-                    <MaterialIcons
-                    name="location-on"
-                    size={25} 
-                    color={ICON_COLOR}
-                    style={styles.adress_icon}/>
-                    <Text style={styles.adress_text}>{this.state.db_user.location}</Text>
-                </TouchableOpacity>
+                <LocationBar db_user={this.state.db_user}/>
             </View>
         );
     }
@@ -140,32 +126,6 @@ const styles = StyleSheet.create({
         width: wp('100%'),
         borderColor: '#fff',
         borderTopWidth: hp('1.5%'),
-    },
-
-    //header 부분을 침범해야하는 경우 추가할 style
-    up_container: {
-        position: 'absolute',
-        top: hp('-3%'),
-        alignItems: 'center',
-        //justifyContent: 'center',
-        flexDirection: 'row',
-        backgroundColor: '#fff',
-        width: wp('90%'),
-        height: 50,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#ccc',
-    },
-
-    //주소 설정 패널 style
-    adress_text: {
-        fontSize: 15,
-        marginLeft: 10,
-    },
-
-    //주소창 아이콘 style
-    adress_icon: {
-        marginLeft: 10,
     },
 
     //headline style
