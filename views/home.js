@@ -27,6 +27,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import TouchableText from '../components/TouchableText';
 import TouchableOrder from '../components/TouchableOrder';
+import TouchableList from '../components/touchableList';
 import LocationBar from '../components/locationBar';
 
 const COLOR_SET = ['#00CED1','#008080', '#40e0d0'];
@@ -38,9 +39,9 @@ class Home extends Component {
             db_user: this.props.db_user,
             hot_menu: ['떡볶이', '치킨', '피자'],
             db_order: [
-                {name: '신가네 떡볶이', location: '궁동 로데오 거리', limit_order: 4, current_order: 5, order_detail:[],},
-                {name: '동대문 엽기 떡볶이', location: '궁동 욧골 공원', limit_order: 2, current_order: 4, order_detail:[],},
-                {name: '에꿍이 치킨', location: '궁동 충남대 막동', limit_order: 3, current_order: 3, order_detail:[],},
+                {name: '신가네 떡볶이', location: '궁동 로데오 거리', limit_order: 5, current_order: 4, order_detail:[],},
+                {name: '동대문 엽기 떡볶이', location: '궁동 욧골 공원', limit_order: 4, current_order: 2, order_detail:[],},
+                {name: '에꿍이 치킨', location: '궁동 충남대 막동', limit_order: 3, current_order: 1, order_detail:[],},
             ],
             near_finish_order: [],
         }   
@@ -75,6 +76,7 @@ class Home extends Component {
         return(
             <View style={[this.props.style, styles.container]}>
                 <ScrollView style={styles.main_scroll}>
+                    {/* 지금 HOT한 주문 부분 */}
                     <Text style={styles.headline}>
                         <Text>지금</Text>
                         <Text style={{fontWeight: "bold"}}> HOT한 </Text>
@@ -94,7 +96,7 @@ class Home extends Component {
                         {this.hotOrderList()}
                     </ScrollView>
 
-
+                    {/* 곧 FINISH 주문 부분 */}
                     <Text style={styles.headline}>
                         <Text>곧</Text>
                         <Text style={{fontWeight: "bold"}}> FINISH </Text>
@@ -109,6 +111,8 @@ class Home extends Component {
                     <TextInput
                     style={styles.search}
                     placeholder="원하시는 음식을 검색해보세요"/>
+
+                    <TouchableList></TouchableList>
                 </ScrollView>
                 
                 

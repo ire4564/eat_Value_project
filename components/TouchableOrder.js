@@ -8,7 +8,7 @@
  * props :
  *  - name : 가게명
  *  - location : 주문 배달 위치
- *  - min : 최소 인원
+ *  - limit : 최소 인원
  *  - current : 현재 인원
  *  - color : 버튼 색상(기본 색상)
  * 
@@ -29,7 +29,7 @@ class TouchableOrder extends Component {
         this.state = {
             name : this.props.list.name,
             location : this.props.list.location,
-            min : this.props.list.limit_order,
+            limit : this.props.list.limit_order,
             current : this.props.list.current_order,
             order_detail: this.props.list.order_detail,
             current_color : '#fff',
@@ -37,7 +37,7 @@ class TouchableOrder extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, nextState){
-        if(nextProps.list.limit_order<nextProps.list.current_order){
+        if(nextProps.list.limit_order-2<=nextProps.list.current_order){
             return {current_color: '#f00'};
         }
         return null;
@@ -62,7 +62,7 @@ class TouchableOrder extends Component {
                     <Text style={styles.location_text}> {this.state.location}</Text>
                 </View>
                 <View style={styles.amount}>
-                    <Text style={styles.amount_text}>현재인원 (<Text style={{color: this.state.current_color}}>{this.state.current}</Text>/{this.state.min})</Text>
+                    <Text style={styles.amount_text}>현재인원 (<Text style={{color: this.state.current_color}}>{this.state.current}</Text>/{this.state.limit})</Text>
                     <FontAwesome name="arrow-right" size={18} color="#fff" />
                 </View>
             </TouchableOpacity>
