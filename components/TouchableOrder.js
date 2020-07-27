@@ -29,14 +29,15 @@ class TouchableOrder extends Component {
         this.state = {
             name : this.props.list.name,
             location : this.props.list.location,
-            min : this.props.list.min,
-            current : this.props.list.current,
+            min : this.props.list.limit_order,
+            current : this.props.list.current_order,
+            order_detail: this.props.list.order_detail,
             current_color : '#fff',
         }
     }
 
     static getDerivedStateFromProps(nextProps, nextState){
-        if(nextProps.list.min<nextProps.list.current){
+        if(nextProps.list.limit_order<nextProps.list.current_order){
             return {current_color: '#f00'};
         }
         return null;
