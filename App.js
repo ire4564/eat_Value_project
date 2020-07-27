@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#40E0D0',
     justifyContent: 'center',
+    alignContent: 'space-between',
   },
 
   //사용자 선택 화면 style
@@ -105,7 +106,6 @@ const styles = StyleSheet.create({
     width: wp('100%'),
     height: 60,
     flexDirection: 'row',
-    //flex: 1,
     backgroundColor: '#40E0D0',
     alignItems: 'center',
     //justifyContent: 'flex-end',

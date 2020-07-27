@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         //justifyContent: 'center',
         flexDirection: 'row',
         backgroundColor: '#fff',
-        width: '90%',
+        width: wp('90%'),
         height: 50,
         borderRadius: 10,
         borderWidth: 1,

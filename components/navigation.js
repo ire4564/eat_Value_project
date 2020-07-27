@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     //헤더 컨테이너 style
     container: {
         width: wp('100%'),
-        height: 50,
+        height: hp('6%'),
         marginBottom: hp('5%'),
         alignItems: 'center',
         justifyContent: 'flex-start',
