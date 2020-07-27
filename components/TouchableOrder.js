@@ -27,17 +27,17 @@ class TouchableOrder extends Component {
     constructor(props){
         super(props);
         this.state = {
-            name : this.props.list.name,
-            location : this.props.list.location,
-            limit : this.props.list.limit_order,
-            current : this.props.list.current_order,
-            order_detail: this.props.list.order_detail,
+            store : this.props.store,
+            location : this.props.order.location,
+            limit : this.props.order.limit_order,
+            current : this.props.order.current_order,
+            order_detail: this.props.order.order_detail,
             current_color : '#fff',
         }
     }
 
     static getDerivedStateFromProps(nextProps, nextState){
-        if(nextProps.list.limit_order-2<=nextProps.list.current_order){
+        if(nextProps.order.limit_order-2<=nextProps.order.current_order){
             return {current_color: '#f00'};
         }
         return null;
@@ -56,7 +56,7 @@ class TouchableOrder extends Component {
                 <Text
                 style={styles.name}
                 numberOfLines={2}
-                >{this.state.name}</Text>
+                >{this.state.store.name}</Text>
                 <View style={styles.location}>
                     <Ionicons name="md-pin" size={18} color="#fff"/>
                     <Text style={styles.location_text}> {this.state.location}</Text>

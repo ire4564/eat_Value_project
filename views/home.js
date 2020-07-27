@@ -12,12 +12,14 @@
  * state :
  *  - db_user: 사용자 정보
  *  - hot_menu: 현재 인기 메뉴 리스트
- *  - db_order: 현재 인기 주문 리스트
- *  - near_finish_order: 마감임박 주문 리스트
+ *  - hot_store: 현재 인기 가게
+ *  - db_order: 현재 주문 리스트
+ *  - db_store: 가게 리스트
  * 
  * function :
+ *  - (static) getDerivedStateFromProps : db를 통해 hot_menu와 hot_store 연산 수행
  *  - hotMenuList : hot_menu를 통해 해당 목록의 버튼들을 리스트로 출력
- *  - hotOrderList : db_order를 통해 해당 목록의 버튼들을 리스트로 출력
+ *  - hotOrderList : db_order와 db_store를 통해 해당 목록의 버튼들을 리스트로 출력
  *  
  ************************************************/
 
@@ -37,11 +39,12 @@ class Home extends Component {
         super(props);
         this.state = {
             db_user: this.props.db_user,
-            hot_menu: ['떡볶이', '치킨', '피자'],
+            hot_menu: ["떡볶이", "치킨", "피자"],
+            hot_store:[],
             db_order: [
-                {name: '신가네 떡볶이', location: '궁동 로데오 거리', limit_order: 5, current_order: 4, order_detail:[],},
-                {name: '동대문 엽기 떡볶이', location: '궁동 욧골 공원', limit_order: 4, current_order: 2, order_detail:[],},
-                {name: '에꿍이 치킨', location: '궁동 충남대 막동', limit_order: 3, current_order: 1, order_detail:[],},
+                {store_num: 0, location: '궁동 로데오 거리', limit_order: 5, current_order: 4, order_detail:[],},
+                {store_num: 1, location: '궁동 욧골 공원', limit_order: 4, current_order: 2, order_detail:[],},
+                {store_num: 2, location: '궁동 충남대 막동', limit_order: 3, current_order: 1, order_detail:[],},
             ],
             db_store: [
                 {category: "떡볶이", min_order: 12000, name: '신가네 떡볶이'},
@@ -53,6 +56,10 @@ class Home extends Component {
             ],
         }   
     }
+    static getDerivedStateFromProps(nextProps, nextState){
+        var list=[];
+        return {};
+    }
     hotMemuList(){
         var list = [];
         var i = 0;
@@ -62,6 +69,9 @@ class Home extends Component {
                         key={i+"_hot_menu"}/>);
             i = i + 1;
         }
+        if(list.length==0){
+            list.push(<Text key={"empty_hot_menu"}>대기중인 주문이 없어요!</Text>);
+        }
         return list;
     }
     hotOrderList(){
@@ -70,7 +80,8 @@ class Home extends Component {
         //db에서 받은 정보를 가공, 혹은 가공된 정보를 state에 저장 후 아래 수행
         while(i<this.state.hot_menu.length){
             list.push(<TouchableOrder
-                list={this.state.db_order[i]}
+                store={this.state.db_store[this.state.db_order[i].store_num]}
+                order={this.state.db_order[i]}
                 key={i+"_hot_order"}
                 color={COLOR_SET[i%COLOR_SET.length]}
                 />);
@@ -119,7 +130,7 @@ class Home extends Component {
                     style={styles.search}
                     placeholder="원하시는 음식을 검색해보세요"/>
 
-                    <TouchableList></TouchableList>
+                    <TouchableList db_order={this.state.db_order[0]}></TouchableList>
                 </ScrollView>
                 
                 
