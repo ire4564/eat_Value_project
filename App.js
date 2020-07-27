@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
     width: wp('100%'),
     height: 60,
     flexDirection: 'row',
+
     backgroundColor: '#40E0D0',
     alignItems: 'center',
     //justifyContent: 'flex-end',
