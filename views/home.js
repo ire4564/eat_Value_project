@@ -12,12 +12,12 @@
  * state :
  *  - db_user: 사용자 정보
  *  - hot_menu: 현재 인기 메뉴 리스트
- *  - hot_order: 현재 인기 주문 리스트
+ *  - db_order: 현재 인기 주문 리스트
  *  - near_finish_order: 마감임박 주문 리스트
  * 
  * function :
  *  - hotMenuList : hot_menu를 통해 해당 목록의 버튼들을 리스트로 출력
- *  - hotOrderList : hot_order를 통해 해당 목록의 버튼들을 리스트로 출력
+ *  - hotOrderList : db_order를 통해 해당 목록의 버튼들을 리스트로 출력
  *  
  ************************************************/
 
@@ -37,10 +37,10 @@ class Home extends Component {
         this.state = {
             db_user: this.props.db_user,
             hot_menu: ['떡볶이', '치킨', '피자'],
-            hot_order: [
-                {name: '신가네 떡볶이', location: '궁동 로데오 거리', min: 4, current: 5},
-                {name: '동대문 엽기 떡볶이', location: '궁동 욧골 공원', min: 2, current: 4},
-                {name: '에꿍이 치킨', location: '궁동 충남대 막동', min: 3, current: 3},
+            db_order: [
+                {name: '신가네 떡볶이', location: '궁동 로데오 거리', limit_order: 4, current_order: 5, order_detail:[],},
+                {name: '동대문 엽기 떡볶이', location: '궁동 욧골 공원', limit_order: 2, current_order: 4, order_detail:[],},
+                {name: '에꿍이 치킨', location: '궁동 충남대 막동', limit_order: 3, current_order: 3, order_detail:[],},
             ],
             near_finish_order: [],
         }   
@@ -59,9 +59,10 @@ class Home extends Component {
     hotOrderList(){
         var list = [];
         var i = 0;
+        //db에서 받은 정보를 가공, 혹은 가공된 정보를 state에 저장 후 아래 수행
         while(i<this.state.hot_menu.length){
             list.push(<TouchableOrder
-                list={this.state.hot_order[i]}
+                list={this.state.db_order[i]}
                 key={i+"_hot_order"}
                 color={COLOR_SET[i%COLOR_SET.length]}
                 />);
@@ -109,6 +110,8 @@ class Home extends Component {
                     style={styles.search}
                     placeholder="원하시는 음식을 검색해보세요"/>
                 </ScrollView>
+                
+                
                 <LocationBar db_user={this.state.db_user}/>
             </View>
         );
