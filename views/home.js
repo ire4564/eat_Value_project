@@ -2,7 +2,7 @@
  * Class : 홈 화면 
  * 
  * props :
- *  - user: 사용자의 id
+ *  - db_user: 사용자의 id
  * 
  * const :
  *  - ICON_COLOR : 위치설정 칸 내 아이콘 색상
@@ -10,7 +10,7 @@
  *                저장된 색상들이 순서대로 반복적으로 적용됨.
  *                (hotOrderList 참고)
  * state :
- *  - user: 사용자 id
+ *  - db_user: 사용자 id
  *  - adress: 주문하고자 하는 위치
  *  - hot_menu: 현재 인기 메뉴 리스트
  *  - hot_order: 현재 인기 주문 리스트
@@ -36,7 +36,7 @@ class Home extends Component {
     constructor(props){
         super(props);
         this.state = {
-            user: this.props.user,
+            db_user: this.props.db_user,
             adress: "대전 유성구 궁동 99",
             hot_menu: ['떡볶이', '치킨', '피자'],
             hot_order: [

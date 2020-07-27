@@ -16,7 +16,7 @@ class Talk extends Component {
     constructor(props){
         super(props);
         this.state = {
-            user: this.props.user
+            db_user: this.props.db_user
         }   
     }
     render(){

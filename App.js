@@ -3,7 +3,7 @@
  * 
  * state :
  *  - seleted_mode: 현재 선택된 모드
- *  - user: 현재 유저의 id
+ *  - db_user: 현재 유저의 id
  * 
  * function :
  *  - changePage: 모드에 따른 화면 전환 메소드
@@ -27,7 +27,7 @@ class App extends Component {
     super(props);
     this.state = {
         seleted_mode: 'home',
-        user: 'test_user',
+        db_user: 'test_db_user',
     }
     
   }
@@ -35,27 +35,27 @@ class App extends Component {
     if(this.state.seleted_mode==='home'){
       return <Home
       style={styles.page_component}
-      user={this.state.user}
+      db_user={this.state.db_user}
       />;
     }else if(this.state.seleted_mode==='order-list'){
       return <OrderList
       style={styles.page_component}
-      user={this.state.user}
+      db_user={this.state.db_user}
       />;
     }else if(this.state.seleted_mode==='now-order'){
       return <NowOrder
       style={styles.page_component}
-      user={this.state.user}
+      db_user={this.state.db_user}
       />;
     }else if(this.state.seleted_mode==='talk'){
       return <Talk
       style={styles.page_component}
-      user={this.state.user}
+      db_user={this.state.db_user}
       />;
-    }else if(this.state.seleted_mode==='user'){
-      return <User
+    }else if(this.state.seleted_mode==='db_user'){
+      return <db_user
       style={styles.page_component}
-      user={this.state.user}
+      db_user={this.state.db_user}
       />;
     }
   }
