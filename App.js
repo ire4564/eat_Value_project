@@ -27,7 +27,13 @@ class App extends Component {
     super(props);
     this.state = {
         seleted_mode: 'home',
-        db_user: 'test_db_user',
+        db_user: {
+          coupon_num: 0,
+          id: "testID",
+          name: "테스트계정",
+          order_num: 0,
+          location: "대전 유성구 궁동 99",
+        },
     }
     
   }
