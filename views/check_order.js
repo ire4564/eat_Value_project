@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput, CheckB
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Divider } from 'react-native-elements';
 import LocationBar from '../components/locationBar';
+import OrderItem from '../components/orderItem';
+
+
 // npm install react-native-elements
 
 class CheckOrder extends Component {
@@ -23,8 +26,8 @@ class CheckOrder extends Component {
                 <View style={styles.orderlist}>
                     <Text style={styles.title}>주문 가게 이름</Text>
                     <Divider style={styles.separator}/>
+                    <OrderItem/>
                 </View>
-
                 <LocationBar db_user={this.state.db_user}/>
             </View>
         );
@@ -47,7 +50,7 @@ const styles = StyleSheet.create({
      
     orderlist: {
         width: wp('90%'),
-        height: wp('20%'),
+        height: wp('30%'),
         marginTop: wp('5%'),
         backgroundColor: '#ffffff',
         shadowColor: "#000000", 
