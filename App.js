@@ -21,6 +21,7 @@ import OrderList from './views/order_list';
 import Talk from './views/talk';
 import User from './views/user';
 import Navigation from './components/navigation';
+import MakeRoom from './views/make_room';
 
 class App extends Component {
 
@@ -63,8 +64,14 @@ class App extends Component {
       db_user={this.state.db_user}
       changMode={this.changeMode.bind(this)}
       />;
-    }else if(this.state.seleted_mode==='db_user'){
+    }else if(this.state.seleted_mode==='user'){
       return <User
+      style={styles.page_component}
+      db_user={this.state.db_user}
+      changMode={this.changeMode.bind(this)}
+      />;
+    }else if(this.state.seleted_mode==='make-room'){
+      return <MakeRoom
       style={styles.page_component}
       db_user={this.state.db_user}
       changMode={this.changeMode.bind(this)}
