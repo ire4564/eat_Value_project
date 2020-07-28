@@ -6,8 +6,13 @@
  *  //여기부터 아래의 state는 이후 수정이 필요함!!
  *  - order_list: 임시 데이터
  * 
+ * const :
+ *  - MAX_MENU_NUM: 각 주문 내 표시할 최대 자신이 주문한 메뉴 개수
+ *                  해당 숫자 이상의 메뉴를 주문한 경우 이후부터는 '그외 #개의 메뉴'로 대체
  * function :
- *  -  
+ *  - orderHistory_top: 주문 컴포넌트의 상단 부분에 추가할 컴포넌트 반환
+ *  - orderHistory_bottom: 주문 컴포넌트의 하단 부분에 추가할 컴포넌트 반환
+ *  - orderHistoryList: 주문 컴포넌트의 리스트를 반환
  *  
  ************************************************/
 
@@ -15,6 +20,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import TwoColorBlock from '../components/twoColorBlock';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+const MAX_MENU_NUM = 2;
 
 class OrderList extends Component {
     constructor(props){
@@ -24,13 +31,21 @@ class OrderList extends Component {
             //아래는 추후 db연동을 위해 수정해야함!!!!
             order_list: [
                 {store_name: "신당동 떡볶이 충남대점",
-                store_image: '../images/test_image.jpg',
+                store_image: '../images/test_image.jpg', //적용안됨. image 처리는 후에 수정
                 date: "2020-07-18-00-00",
-                order_detail: [{menu: '떡볶이(중간맛)', price: 4000, user_id: "testID"},
-                                {menu: '모둠 튀김', price: 3000, user_id: "testID"},
-                                {menu: '떡볶이(중간맛)', price: 4000, user_id: "other1"},
-                                {menu: '떡볶이(중간맛)', price: 4000, user_id: "other2"},],
-                            },
+                order_detail: [{menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "testID"},
+                                {menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID"},
+                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other1"},
+                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2"},],
+                },
+                {store_name: "신당동 떡볶이 충남대점",
+                store_image: '../images/test_image.jpg', //적용안됨. image 처리는 후에 수정
+                date: "2020-07-18-00-00",
+                order_detail: [{menu: '떡볶이(매운맛)', amount: 1, price: 4000, user_id: "testID"},
+                                {menu: '모둠 튀김', amount: 2, price: 3000, user_id: "testID"},
+                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "testID"},
+                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2"},],
+                },
             ],
         }   
     }
@@ -38,63 +53,89 @@ class OrderList extends Component {
         var date = this.state.order_list[_num].date.split('-');
         var order_detail = this.state.order_list[_num].order_detail;
         var user_menu = [];
-        var total_price = 0;
+        var user_menu_amount = 0;
+
+        //order_detail 연산 겸 price 연산도 함께 진행
+        var total_price = 0;    
         var user_price = 0;
+        
+
+        //해당 순서 데이터의 order_detail을 받아와 컴포넌트 생성
         for(let i=0; i<order_detail.length; i++){
             if(order_detail[i].user_id===this.state.db_user.id){
-                user_menu.push(
-                    <View key={i+"_user_menu"} style={styles.row_container}>
-                    <Text>{order_detail[i].menu}</Text>
-                    <Text>{order_detail[i].price.toLocaleString()}원</Text>
-                </View>);
-                user_price = user_price + order_detail[i].price;
+                user_price = user_price + order_detail[i].price*order_detail[i].amount;
+                user_menu_amount = user_menu_amount + 1;
+                if(user_menu.length<MAX_MENU_NUM){
+                    user_menu.push(
+                        <View key={i+"_user_menu"} style={styles.row_container}>
+                        <Text style={styles.user_menu_text}>
+                            {order_detail[i].menu}
+                            {' *'+order_detail[i].amount}
+                        </Text>
+                        <Text style={styles.user_menu_text}>{(order_detail[i].price*order_detail[i].amount).toLocaleString()}원</Text>
+                    </View>);
+                }
             }
-            total_price = total_price + order_detail[i].price;
+            total_price = total_price + order_detail[i].price*order_detail[i].amount;
+        }
+        //MAX_MENU_NUM 이상의 메뉴가 있을 경우 추가로 출력
+        if(user_menu_amount>MAX_MENU_NUM){
+            user_menu.push(<Text key="more_user_menu" style={styles.user_menu_text}>그 외 {user_menu_amount-MAX_MENU_NUM}개의 메뉴</Text>);
         }
 
+        //실질적인 top 블록에 추가할 컴포넌트
         var top = <View style={styles.top_order_history}>
             <Image
             style={styles.store_image}
             source={require('../images/test_image.jpg')}/>
-            <View>
-                <Text>주문 일시 {Number(date[0])}년 {Number(date[1])}월 {Number(date[2])}일 {date[3]}:{date[4]}</Text>
-                {user_menu}
+            <View style={styles.top_text_container}>
+                <Text style={styles.date_text}>
+                    주문 일시  {Number(date[0])}년 {Number(date[1])}월 {Number(date[2])}일 {date[3]}:{date[4]}
+                </Text>
+                <View style={styles.user_menu}>{user_menu}</View>
             </View>
         </View>;
-        return [top, total_price, user_price];
+        return [top, user_price, total_price];
     }
+
     orderHistory_bottom(_num, user_price, total_price){
-        return<View style={styles.row_container}>
-                <Text>{this.state.order_list[_num].store_name}</Text>
-                <View>
+        return<View style={styles.bottom_order_history}>
+                <Text style={styles.store_name}>
+                    {this.state.order_list[_num].store_name}
+                </Text>
+                <View style={styles.price_container}>
                     <View style={styles.row_container}>
-                        <Text>전체 결제 금액</Text>
-                        <Text>{total_price.toLocaleString()}</Text>
+                        <Text style={styles.total_price_text}>전체 결제 금액</Text>
+                        <Text style={styles.total_price}>{total_price.toLocaleString()}</Text>
                     </View>
                     <View style={styles.row_container}>
-                        <Text>개인 결제 금액</Text>
-                        <Text>{user_price.toLocaleString()}</Text>
+                        <Text style={styles.user_price_text}>개인 결제 금액</Text>
+                        <Text style={styles.user_price}>{user_price.toLocaleString()}</Text>
                     </View>
                 </View>
             </View>;
     }
+
     orderHistoryList(){
         var list = [];
         var i = 0;
-        var top_data = this.orderHistory_top(i);
         
-        list.push(
-            <TouchableOpacity
-            style={styles.order_history_container}
-            key={i+"_history"}>
-                <TwoColorBlock
-                    topHeight={2}
-                    bottomHeight={1}
-                    type={0}
-                    top={top_data[0]}
-                    bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}/>
-            </TouchableOpacity>
-        );
+        while(i<this.state.order_list.length){
+            var top_data = this.orderHistory_top(i);
+            list.push(
+                <TouchableOpacity
+                style={styles.order_history_container}
+                key={i+"_history"}>
+                    <TwoColorBlock
+                        topHeight={2}
+                        bottomHeight={1}
+                        type={0}
+                        top={top_data[0]}
+                        bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}/>
+                </TouchableOpacity>
+            );
+            i = i + 1;
+        }
         return list;
     }
 
@@ -126,6 +167,7 @@ const styles = StyleSheet.create({
     //주문 컴포넌트 style
     order_history_container: {
         height: hp('21%'),
+        marginBottom: hp('1.5%'),
     },
 
     //주문 컴포넌트 상위 블록 style
@@ -134,22 +176,85 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
 
+    //주문 컴포넌트 상단 블록의 우측 text 블록 style
+    top_text_container: {
+        width: wp('50%'),
+    },
+    
+    //주문일시 text style
+    date_text: {
+        fontSize: hp('1.5%'),
+        marginBottom: hp('1%'),
+    },
+
+    //메뉴 text style
+    user_menu_text: {
+        fontSize: hp('1.8%'),
+    },
+
     //주문 컴포넌트 하위 블록 style
     bottom_order_history: {
-
+        margin: hp('2%'),
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'space-between'
     },
 
     //주문별 가게 image style
     store_image: {
-        width: hp('10%'),
+        width: wp('20%'),
         height: hp('10%'),
         borderRadius: 10,
+        marginRight: wp('3%'),
     },
 
     //가로 나열 배치 및 각 content 간격 최대 style
     row_container: {
         flexDirection: 'row', 
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+    },
+
+    
+
+    //가게명 text style
+    store_name: {
+        width: '65%',
+        fontSize: hp('2%'),
+        fontWeight: 'bold',
+        alignSelf: 'center',
+    },
+
+    //결제 금액 블록 style
+    price_container:{
+        width: '35%',
+        justifyContent: 'space-between',
+    },
+
+    //전체 결제 금액 text style
+    total_price_text: {
+        fontSize: hp('1.5%'),
+        color: '#555',
+    },
+
+    //전체 결제 금액 style
+    total_price: {
+        fontSize: hp('1.5%'),
+        fontWeight: 'bold',
+        color: '#555',
+    },
+
+    //개인 결제 금액 text style
+    user_price_text: {
+        fontSize: hp('1.5%'),
+        fontWeight: 'bold',
+        color: '#555',
+    },
+
+    //개인 결제 금액 style
+    user_price: {
+        fontSize: hp('1.5%'),
+        fontWeight: 'bold',
+        color: '#40E0D0',
     },
   });
 
