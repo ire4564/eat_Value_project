@@ -38,15 +38,20 @@ class OrderList extends Component {
         var date = this.state.order_list[_num].date.split('-');
         var order_detail = this.state.order_list[_num].order_detail;
         var user_menu = [];
+        var total_price = 0;
+        var user_price = 0;
         for(let i=0; i<order_detail.length; i++){
             if(order_detail[i].user_id===this.state.db_user.id){
                 user_menu.push(
-                    <View key={i+"_user_menu"} style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View key={i+"_user_menu"} style={styles.row_container}>
                     <Text>{order_detail[i].menu}</Text>
                     <Text>{order_detail[i].price.toLocaleString()}원</Text>
                 </View>);
+                user_price = user_price + order_detail[i].price;
             }
+            total_price = total_price + order_detail[i].price;
         }
+
         var top = <View style={styles.top_order_history}>
             <Image
             style={styles.store_image}
@@ -56,13 +61,27 @@ class OrderList extends Component {
                 {user_menu}
             </View>
         </View>;
-        return top;
+        return [top, total_price, user_price];
     }
-    orderHistory_bottom(_num){
+    orderHistory_bottom(_num, user_price, total_price){
+        return<View style={styles.row_container}>
+                <Text>{this.state.order_list[_num].store_name}</Text>
+                <View>
+                    <View style={styles.row_container}>
+                        <Text>전체 결제 금액</Text>
+                        <Text>{total_price.toLocaleString()}</Text>
+                    </View>
+                    <View style={styles.row_container}>
+                        <Text>개인 결제 금액</Text>
+                        <Text>{user_price.toLocaleString()}</Text>
+                    </View>
+                </View>
+            </View>;
     }
     orderHistoryList(){
         var list = [];
         var i = 0;
+        var top_data = this.orderHistory_top(i);
         
         list.push(
             <TouchableOpacity
@@ -72,8 +91,8 @@ class OrderList extends Component {
                     topHeight={2}
                     bottomHeight={1}
                     type={0}
-                    top={this.orderHistory_top(i)}
-                    bottom={<Text>Test!!</Text>}/>
+                    top={top_data[0]}
+                    bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}/>
             </TouchableOpacity>
         );
         return list;
@@ -125,6 +144,12 @@ const styles = StyleSheet.create({
         width: hp('10%'),
         height: hp('10%'),
         borderRadius: 10,
+    },
+
+    //가로 나열 배치 및 각 content 간격 최대 style
+    row_container: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between'
     },
   });
 
