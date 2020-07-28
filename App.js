@@ -7,6 +7,7 @@
  * 
  * function :
  *  - changePage: 모드에 따른 화면 전환 메소드
+ *  - changeMode: 모드 전환 메소드
  *  
  ************************************************/
 
@@ -42,28 +43,40 @@ class App extends Component {
       return <Home
       style={styles.page_component}
       db_user={this.state.db_user}
+      changMode={this.changeMode.bind(this)}
       />;
     }else if(this.state.seleted_mode==='order-list'){
       return <OrderList
       style={styles.page_component}
       db_user={this.state.db_user}
+      changMode={this.changeMode.bind(this)}
       />;
     }else if(this.state.seleted_mode==='now-order'){
       return <NowOrder
       style={styles.page_component}
       db_user={this.state.db_user}
+      changMode={this.changeMode.bind(this)}
       />;
     }else if(this.state.seleted_mode==='talk'){
       return <Talk
       style={styles.page_component}
       db_user={this.state.db_user}
+      changMode={this.changeMode.bind(this)}
       />;
     }else if(this.state.seleted_mode==='db_user'){
-      return <db_user
+      return <User
       style={styles.page_component}
       db_user={this.state.db_user}
+      changMode={this.changeMode.bind(this)}
       />;
     }
+  }
+  changeMode(_mode){
+    if(this.state.seleted_mode!==_mode){
+              this.setState({
+                seleted_mode: _mode,
+              });
+            }
   }
   render(){
     return(
@@ -74,15 +87,7 @@ class App extends Component {
         <MenuBar
         style={styles.menu_component}
         mode={this.state.seleted_mode}
-        modeChange={
-          function(_mode){
-            if(this.state.seleted_mode!==_mode){
-              this.setState({
-                seleted_mode: _mode,
-              });
-            }
-          }.bind(this)
-        }
+        modeChange={this.changeMode.bind(this)}
         />
     </View>
     );
