@@ -28,30 +28,51 @@ class OrderList extends Component {
                 date: "2020-07-18-00-00",
                 order_detail: [{menu: '떡볶이(중간맛)', price: 4000, user_id: "testID"},
                                 {menu: '모둠 튀김', price: 3000, user_id: "testID"},
-                                {menu: '떡볶이(중간맛)', price: 4000, user_id: "other"},
-                                {menu: '떡볶이(중간맛)', price: 4000, user_id: "other"},],
+                                {menu: '떡볶이(중간맛)', price: 4000, user_id: "other1"},
+                                {menu: '떡볶이(중간맛)', price: 4000, user_id: "other2"},],
                             },
             ],
         }   
     }
-    orderHistoryList(){
-        var list = [];
-        var i = 0;
+    orderHistory_top(_num){
+        var date = this.state.order_list[_num].date.split('-');
+        var order_detail = this.state.order_list[_num].order_detail;
+        var user_menu = [];
+        for(let i=0; i<order_detail.length; i++){
+            if(order_detail[i].user_id===this.state.db_user.id){
+                user_menu.push(
+                    <View key={i+"_user_menu"} style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <Text>{order_detail[i].menu}</Text>
+                    <Text>{order_detail[i].price.toLocaleString()}원</Text>
+                </View>);
+            }
+        }
         var top = <View style={styles.top_order_history}>
             <Image
             style={styles.store_image}
             source={require('../images/test_image.jpg')}/>
-            <Text>주문 일시</Text>
+            <View>
+                <Text>주문 일시 {Number(date[0])}년 {Number(date[1])}월 {Number(date[2])}일 {date[3]}:{date[4]}</Text>
+                {user_menu}
+            </View>
         </View>;
+        return top;
+    }
+    orderHistory_bottom(_num){
+    }
+    orderHistoryList(){
+        var list = [];
+        var i = 0;
+        
         list.push(
             <TouchableOpacity
-            style={styles.order_history_container}>
+            style={styles.order_history_container}
+            key={i+"_history"}>
                 <TwoColorBlock
-                    key={i+"_history"}
                     topHeight={2}
                     bottomHeight={1}
                     type={0}
-                    top={top}
+                    top={this.orderHistory_top(i)}
                     bottom={<Text>Test!!</Text>}/>
             </TouchableOpacity>
         );
