@@ -10,10 +10,10 @@
  * 
  * props :
  *  - mode: 현재 모드
- *  - modeChange: modeChange에 대하여 모드 변화를 상위 컴포넌트에게 알림
+ *  - changeMode: changeMode에 대하여 모드 변화를 상위 컴포넌트에게 알림
  * 
  * function :
- *  - modeChange: 각 아이콘 클릭에 대한 이벤트
+ *  - changeMode: 각 아이콘 클릭에 대한 이벤트
  *  
  ************************************************/
 import React, { Component } from 'react';
@@ -28,12 +28,12 @@ class MenuBar extends Component {
         }
     }
 
-    modeChange(_mode){
+    changeMode(_mode){
         if(_mode !== this.state.seleted_mode){
             this.setState({
                 seleted_mode: _mode
             });
-            this.props.modeChange(_mode);
+            this.props.changeMode(_mode);
         }
     }
 
@@ -46,7 +46,7 @@ class MenuBar extends Component {
                 icon="MaterialCommunityIcons"
                 icon_name="home"
                 icon_text="홈"
-                modeChange={this.modeChange.bind(this)}/>
+                changeMode={this.changeMode.bind(this)}/>
 
                 <IconButton
                 seleted_mode={this.state.seleted_mode}
@@ -54,7 +54,7 @@ class MenuBar extends Component {
                 icon="Ionicons"
                 icon_name="ios-list-box"
                 icon_text="주문 내역"
-                modeChange={this.modeChange.bind(this)}/>
+                changeMode={this.changeMode.bind(this)}/>
 
                 <IconButton
                 seleted_mode={this.state.seleted_mode}
@@ -62,7 +62,7 @@ class MenuBar extends Component {
                 icon="Fontisto"
                 icon_name="motorcycle"
                 icon_text="Now 주문"
-                modeChange={this.modeChange.bind(this)}/>
+                changeMode={this.changeMode.bind(this)}/>
 
                 <IconButton
                 seleted_mode={this.state.seleted_mode}
@@ -70,7 +70,7 @@ class MenuBar extends Component {
                 icon="MaterialCommunityIcons"
                 icon_name="message-processing"
                 icon_text="Talk"
-                modeChange={this.modeChange.bind(this)}/>
+                changeMode={this.changeMode.bind(this)}/>
 
                 <IconButton
                 seleted_mode={this.state.seleted_mode}
@@ -78,7 +78,7 @@ class MenuBar extends Component {
                 icon="FontAwesome"
                 icon_name="user-circle-o"
                 icon_text="내 정보"
-                modeChange={this.modeChange.bind(this)}/>
+                changeMode={this.changeMode.bind(this)}/>
             </View>
         );
     }

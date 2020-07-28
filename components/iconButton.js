@@ -20,7 +20,7 @@
  *  - icon: expo/vector-icons의 컴포넌트 타입
  *  - icon_name: icon 이름
  *  - icon_text: icon 밑 표시될 글자
- *  - modeChange: 상위 컴포넌트가 수행할 메소드
+ *  - changeMode: 상위 컴포넌트가 수행할 메소드
  * 
  * function :
  *  - (static) getDerivedStateFromProps: 로드될때마다 현재 mode에 색상 변환
@@ -53,7 +53,7 @@ class IconButton extends Component {
     }
     iconClick(){
         if(this.props.mode!==this.props.seleted_mode){
-            this.props.modeChange(this.props.mode);
+            this.props.changeMode(this.props.mode);
         }
     }
     iconTag(){
