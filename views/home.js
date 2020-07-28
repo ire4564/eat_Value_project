@@ -206,7 +206,9 @@ class Home extends Component {
                         <Text>주문</Text>
                     </Text>
 
-                    <TouchableOpacity style={styles.makeOrder}>
+                    <TouchableOpacity
+                    style={styles.makeOrder}
+                    onPress={function(){this.props.changMode("make-room")}.bind(this)}>
                         <MaterialCommunityIcons name="silverware-fork-knife" size={hp('2%')} color="#fff" />
                         <Text style={{color:'#fff', fontSize:hp('1.9%')}}> 방 만들기</Text>
                     </TouchableOpacity>

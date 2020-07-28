@@ -94,7 +94,7 @@ class App extends Component {
         <MenuBar
         style={styles.menu_component}
         mode={this.state.seleted_mode}
-        modeChange={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
         />
     </View>
     );
