@@ -14,15 +14,14 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import MenuBar from './components/menuBar';
-import Home from './views/home';
-import NowOrder from './views/now_order';
-import OrderList from './views/order_list';
-import Talk from './views/talk';
-import User from './views/user';
-import Navigation from './components/navigation';
-import MakeRoom from './views/make_room';
-import CheckOrder from './views/check_order';
+import MenuBar from '../components/menuBar';
+import Home from '../views/home';
+import NowOrder from '../views/now_order';
+import OrderList from '../views/order_list';
+import Talk from '../views/talk';
+import User from '../views/user';
+import Navigation from '../components/navigation';
+import MakeRoom from '../views/make_room';
 
 class App extends Component {
 
@@ -47,13 +46,7 @@ class App extends Component {
       db_user={this.state.db_user}
       changMode={this.changeMode.bind(this)}
       />;
-    }else if(this.state.seleted_mode==='check-order'){
-      return <CheckOrder
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
-    } else if(this.state.seleted_mode==='order-list'){
+    }else if(this.state.seleted_mode==='order-list'){
       return <OrderList
       style={styles.page_component}
       db_user={this.state.db_user}

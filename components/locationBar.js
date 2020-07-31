@@ -36,7 +36,7 @@ class LocationBar extends Component {
                 {/*클릭시 투명화를 방지하기 위한 임시 패널*/}
                 <View style={styles.up_container}/>
                 <TouchableOpacity style={styles.up_container}>
-                    <MaterialIcons
+                <MaterialIcons
                     name="location-on"
                     size={25} 
                     color={ICON_COLOR}

@@ -22,11 +22,13 @@ class OrderItem extends Component {
                         borderWidth: 0
                     }}
                     buttonTextStyle={{
-                        color: '#00CED1',
+                        color: '#40E0D0',
                         fontWeight: 'bold'
                     }}
                     countTextStyle={{
-                        color: '#333',
+                        color: '#40E0D0',
+                        fontWeight: 'bold',
+                        fontSize: 15
                     }}
                 />
                 </View>
@@ -37,15 +39,14 @@ class OrderItem extends Component {
 
 const styles = StyleSheet.create({
     counter_container : {
-        marginTop: 10,
         borderColor: '#00CED1',
         borderWidth: 2,
-        width: wp('27%'),
+        width: wp('30%'),
         height: wp('9%'),
         borderRadius: 25,
         alignSelf: 'flex-end',
-        marginTop: 35,
-        marginRight: 10
+        marginRight: 10,
+        marginTop: -30
     },
 });
 
