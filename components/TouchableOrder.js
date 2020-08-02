@@ -85,13 +85,13 @@ const styles = StyleSheet.create({
     location: {
         flexDirection: 'row',
         height: hp('3%'),
-        marginLeft: 10,
+        marginLeft: wp('2.6%'),
     },
 
     //위치 문자열 style
     location_text: {
         color: '#fff',
-        fontSize: 13,
+        fontSize: hp('1.9%'),
     },
 
     //인원표시 컴포넌트 style (화살표 포함)
