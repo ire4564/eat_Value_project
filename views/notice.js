@@ -16,7 +16,6 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-nati
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import PostItBlock from '../components/postItBlock';
 import { MaterialIcons } from '@expo/vector-icons';
-import PostBlock from '../components/postItBlock';
 
 class Notice extends Component {
     constructor(props){
@@ -40,7 +39,7 @@ class Notice extends Component {
             list.push(<TouchableOpacity 
             key={i+"_notice"}
             style={styles.notice}>
-                <PostBlock color_type={i} text={this.state.notice[i]}/>
+                <PostItBlock color_type={i} text={this.state.notice[i]}/>
             </TouchableOpacity>);
         }
         return list;
