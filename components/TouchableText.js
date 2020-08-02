@@ -14,6 +14,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
 class TouchableText extends Component {
@@ -60,12 +61,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#999',
         borderRadius: 25,
         marginRight: 6,
+        alignContent: 'center',
+        justifyContent: 'center',
     },
     text: {
-        width: 100,
-        height: 25,
+        marginHorizontal: 20,
+        marginVertical: 2,
         color: '#fff',
         fontSize: 13,
+        alignSelf: 'center',
         textAlign: 'center',
         textAlignVertical: 'center',
     }
