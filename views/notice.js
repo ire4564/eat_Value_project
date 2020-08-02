@@ -10,7 +10,7 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import PostItBlock from '../components/postItBlock';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -35,7 +35,9 @@ class Notice extends Component {
     noticeList(){
         var list = [];
         for(let i=0; i<this.state.notice.length; i++){
-            list.push(<TouchableOpacity style={styles.notice}>
+            list.push(<TouchableOpacity 
+            key={i+"_notice"}
+            style={styles.notice}>
                 <PostBlock color_type={i} text={this.state.notice[i]}/>
             </TouchableOpacity>);
         }
@@ -48,9 +50,11 @@ class Notice extends Component {
                     <MaterialIcons name="notifications-active" size={hp('2.2%')} color="black" />
                     <Text style={styles.header_text}> PUSH 알림을 설정하고 쿠폰 및 주문 정보를 받아보세요!</Text>
                 </View>
-                <View style={styles.notice_container}>
-                    {this.noticeList()}
-                </View>
+                <ScrollView style={styles.main_scroll}>
+                    <View style={styles.notice_container}>
+                        {this.noticeList()}
+                    </View>
+                </ScrollView>
             </View>
         );
     }
@@ -69,7 +73,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         paddingTop: hp('2%'),
-        paddingBottom: hp('4%'),
+        paddingBottom: hp('2%'),
+    },
+
+    //전체 화면 스크롤 style
+    main_scroll: {
+        width: wp('100%'),
+        borderColor: '#fff',
+        borderTopWidth: hp('1.5%'),
     },
     //상위 text style
     header_text: {
