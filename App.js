@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   //사용자 선택 화면 style
   page_component: {
     width: wp('100%'),
-    height: hp('82%'),
+    height: hp('81%'),
     backgroundColor: '#fff',
   },
   
