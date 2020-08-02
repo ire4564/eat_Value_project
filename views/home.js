@@ -73,7 +73,7 @@ class Home extends Component {
      * @method "IsChange?"
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return (nextState.db_store != this.state.db_store) || (nextState.db_order != this.state.db_order);
+        return (nextState.db_store != this.state.db_store) || (nextState.db_order != this.state.db_order) || (nextState.search != this.state.search);
     }
 
     componentDidMount() {
