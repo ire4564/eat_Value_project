@@ -81,6 +81,9 @@ class Home extends Component {
     }
     
     static getDerivedStateFromProps(nextProps, nextState){
+        if(nextState.db_store.length == 0 || nextState.db_order.length == 0){
+            return null;
+        }
         //인기 메뉴, 인기 가게 목록 정리
         var hot_menu=[];
         var hot_store=[];
@@ -146,6 +149,9 @@ class Home extends Component {
         return list;
     }
     hotOrderList(){
+        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+            return null;
+        }
         var list = [];
         var i = 0;
         //db에서 받은 정보를 가공, 혹은 가공된 정보를 state에 저장 후 아래 수행
@@ -161,6 +167,9 @@ class Home extends Component {
         return list;
     }
     willFinishList(){
+        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+            return null;
+        }
         var list = [];
         if(this.state.search===''){
             var i = 0;
