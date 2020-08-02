@@ -20,6 +20,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
 class TouchableOrder extends Component {
@@ -47,12 +48,12 @@ class TouchableOrder extends Component {
                 numberOfLines={2}
                 >{this.state.store.name}</Text>
                 <View style={styles.location}>
-                    <Ionicons name="md-pin" size={18} color="#fff"/>
+                    <Ionicons name="md-pin" size={hp('2.2%')} color="#fff"/>
                     <Text style={styles.location_text}> {this.state.store.location}</Text>
                 </View>
                 <View style={styles.amount}>
                     <Text style={styles.amount_text}>현재 <Text style={{color: this.state.current_color}}>{this.state.amount}</Text>개의 주문 대기중  </Text>
-                    <FontAwesome name="arrow-right" size={18} color="#fff" />
+                    <FontAwesome name="arrow-right" size={hp('2%')} color="#fff" />
                 </View>
             </TouchableOpacity>
         );
@@ -63,28 +64,27 @@ const styles = StyleSheet.create({
     //컨테이너 style
     container: {
         borderRadius: 20,
-        marginRight: 15,
-        width: 150,
-        height: 160,
-        alignContent: 'space-between',
+        marginRight: wp('3%'),
+        width: wp('36%'),
+        height: hp('22%'),
     },
 
     //가게명 style
     name: {
-        marginTop: 10,
-        marginBottom: 20,
-        width: 100,
-        height: 50,
+        marginTop: hp('1.6%'),
+        marginBottom: hp('2%'),
+        width: "80%",
+        height: hp('8%'),
         color: '#000',
         fontWeight: 'bold',
-        fontSize: 21,
-        marginLeft: 15,
+        fontSize: hp('3%'),
+        marginHorizontal: wp('3%'),
     },
 
     //위치 컴포넌트 style
     location: {
         flexDirection: 'row',
-        height: 30,
+        height: hp('3%'),
         marginLeft: 10,
     },
 
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     amount: {
         flexDirection: 'row',
         marginLeft: 10,
-        marginRight: 30,
+        marginRight: 20,
         alignContent: 'flex-end',
         justifyContent: 'space-between',
     },
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     //인원표시 문자열 style
     amount_text: {
         color: '#fff',
-        fontSize: 13,
+        fontSize: hp('1.8%'),
     },
   });
 
