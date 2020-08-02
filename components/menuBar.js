@@ -13,6 +13,7 @@
  *  - changeMode: changeMode에 대하여 모드 변화를 상위 컴포넌트에게 알림
  * 
  * function :
+ *  - (static) getDerivedStateFromProps : 모드 변경 감지 후 반영
  *  - changeMode: 각 아이콘 클릭에 대한 이벤트
  *  
  ************************************************/
@@ -26,6 +27,13 @@ class MenuBar extends Component {
         this.state = {
             seleted_mode: this.props.mode
         }
+    }
+
+    static getDerivedStateFromProps(nextProps, nextState){
+        if(nextState.seleted_mode !== nextProps.mode){
+            return {seleted_mode: nextProps};
+        }
+        return null;
     }
 
     changeMode(_mode){
