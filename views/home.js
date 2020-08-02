@@ -34,6 +34,7 @@ import TouchableList from '../components/touchableList';
 import LocationBar from '../components/locationBar';
 
 const COLOR_SET = ['#00CED1','#008080', '#40e0d0'];
+const databaseURL = "https://cnu-eat-value.firebaseio.com/";
 
 class Home extends Component {
     constructor(props){
@@ -43,21 +44,42 @@ class Home extends Component {
             search: '',
             hot_menu: [],
             hot_store:[],
-            db_order: [
-                {store_num: 0, location: '궁동 로데오 거리', limit_order: 5, current_order: 4, order_detail:[],},
-                {store_num: 1, location: '궁동 욧골 공원', limit_order: 4, current_order: 2, order_detail:[],},
-                {store_num: 2, location: '궁동 충남대 막동', limit_order: 3, current_order: 1, order_detail:[],},
-            ],
-            db_store: [
-                {category: "떡볶이", min_order: 12000, name: '신가네 떡볶이'},
-                {category: "떡볶이", min_order: 10000, name: '동대문 엽기 떡볶이'},
-                {category: "치킨", min_order: 10000, name: '에꿍이 치킨'},
-                {category: "피자", min_order: 10000, name: '덤앤덤 피자 충남대점'},
-                {category: "중식", min_order: 5000, name: '하오치 궁동점'},
-                {category: "분식/돈까스", min_order: 12000, name: '숑숑 돈까스 노은점'},
-            ],
+            db_order: [],
+            db_store: [],
         }   
     }
+
+    /**
+     * @method "load data and then store to the state"
+     */
+    _get() {
+        fetch(`${databaseURL}/db_store.json`).then(res => {
+        if(res.status != 200) {
+            throw new Error(res.statusText);
+        }
+        return res.json();
+        }).then(db_store => this.setState({db_store: db_store}));
+
+        fetch(`${databaseURL}/db_order.json`).then(res => {
+            if(res.status != 200) {
+                throw new Error(res.statusText);
+            }
+            return res.json();
+        }).then(db_order => this.setState({db_order: db_order}));
+
+    }
+
+    /**
+     * @method "IsChange?"
+     */
+    shouldComponentUpdate(nextProps, nextState) {
+        return (nextState.db_store != this.state.db_store) || (nextState.db_order != this.state.db_order);
+    }
+
+    componentDidMount() {
+        this._get();
+    }
+    
     static getDerivedStateFromProps(nextProps, nextState){
         //인기 메뉴, 인기 가게 목록 정리
         var hot_menu=[];
