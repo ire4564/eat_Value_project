@@ -104,7 +104,9 @@ class App extends Component {
     return(
       <View style={styles.container}>
         <Navigation
-        mode={this.state.seleted_mode}/>
+        mode={this.state.seleted_mode}
+        changeMode={this.changeMode.bind(this)}
+        />
         {this.changePage()}
         <MenuBar
         style={styles.menu_component}
