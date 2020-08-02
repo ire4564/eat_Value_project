@@ -23,6 +23,7 @@ import User from './views/user';
 import Navigation from './components/navigation';
 import MakeRoom from './views/make_room';
 import CheckOrder from './views/check_order';
+import Notice from './views/notice';
 
 class App extends Component {
 
@@ -41,48 +42,55 @@ class App extends Component {
     
   }
   changePage(){
-    if(this.state.seleted_mode==='home'){
-      return <Home
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
-    }else if(this.state.seleted_mode==='check-order'){
-      return <CheckOrder
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
-    } else if(this.state.seleted_mode==='order-list'){
-      return <OrderList
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
-    }else if(this.state.seleted_mode==='now-order'){
-      return <NowOrder
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
-    }else if(this.state.seleted_mode==='talk'){
-      return <Talk
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
-    }else if(this.state.seleted_mode==='user'){
-      return <User
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
-    }else if(this.state.seleted_mode==='make-room'){
-      return <MakeRoom
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
+    switch(this.state.seleted_mode){
+      case 'home':
+        return <Home
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'check-order':
+        return <CheckOrder
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'order-list':
+        return <OrderList
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'now-order':
+        return <NowOrder
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'talk':
+        return <Talk
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'user':
+        return <User
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'make-room':
+        return <MakeRoom
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'notice':
+        return <Notice
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
     }
   }
   changeMode(_mode){
