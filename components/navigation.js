@@ -19,26 +19,58 @@ import { Ionicons } from '@expo/vector-icons';
 
 class Navigation extends Component {
     headerText(){
-        if(this.props.mode==='home'){
-            return "가치 value 먹자";
-          }else if(this.props.mode==='order-list'){
-            return "My Orders";
-          }else if(this.props.mode==='now-order'){
-            return "Now Order";
-          }else if(this.props.mode==='talk'){
-            return "Talk";
-          }else if(this.props.mode==='user'){
-            return "My Page";
-          }
+      switch(this.props.mode){
+        case 'home':
+          return <Text
+                  style={styles.text}>
+                    가치<Text style={{fontSize: hp('2%'),}}>value</Text>먹자
+                  </Text>;
+        case 'order-list':
+          return <Text
+                  style={styles.text}>
+                    My Orders
+                  </Text>;
+        case 'now-order':
+          return <Text
+                  style={styles.text}>
+                    Now Order
+                  </Text>;
+        case 'talk':
+          return <Text
+                  style={styles.text}>
+                    Talk
+                  </Text>;
+        case 'user':
+          return <Text
+                  style={styles.text}>
+                    내 정보
+                  </Text>;
+        case 'make-room':
+          return <Text
+                  style={styles.text}>
+                    방 만들기
+                  </Text>;
+        case 'notice':
+          return <Text
+                  style={styles.text}>
+                    내 알림
+                  </Text>;
+        case 'check-order':
+          return <Text
+                  style={styles.text}>
+                    주문 확인
+                  </Text>;
       }
+      return <Text
+      style={styles.text}>
+        test-page
+      </Text>;
+    }
 
     render(){
         return(
             <View style={styles.container}>
-                <Text
-                children={this.headerText()}
-                style={styles.text}
-                ></Text>
+              {this.headerText()}
                 <TouchableOpacity
                 style={styles.header_button}
                 onPress={function(){this.props.changeMode('notice')}.bind(this)}>
