@@ -13,8 +13,7 @@
  *  - color : 버튼 색상(기본 색상)
  * 
  * function :
- *  - getDerivedStateFromProp : 최소인원 수와 현재인원 수 값 비교를 통해
- *                              현재인원 출력 시 문자열 색상 변경 수행
+ *  - 
  *  
  ************************************************/
 
@@ -28,19 +27,9 @@ class TouchableOrder extends Component {
         super(props);
         this.state = {
             store : this.props.store,
-            location : this.props.order.location,
-            limit : this.props.order.limit_order,
-            current : this.props.order.current_order,
-            order_detail: this.props.order.order_detail,
+            amount : this.props.amount,
             current_color : '#fff',
         }
-    }
-
-    static getDerivedStateFromProps(nextProps, nextState){
-        if(nextProps.order.limit_order-2<=nextProps.order.current_order){
-            return {current_color: '#f00'};
-        }
-        return null;
     }
 
     render(){
@@ -59,10 +48,10 @@ class TouchableOrder extends Component {
                 >{this.state.store.name}</Text>
                 <View style={styles.location}>
                     <Ionicons name="md-pin" size={18} color="#fff"/>
-                    <Text style={styles.location_text}> {this.state.location}</Text>
+                    <Text style={styles.location_text}> {this.state.store.location}</Text>
                 </View>
                 <View style={styles.amount}>
-                    <Text style={styles.amount_text}>현재인원 (<Text style={{color: this.state.current_color}}>{this.state.current}</Text>/{this.state.limit})</Text>
+                    <Text style={styles.amount_text}>현재 <Text style={{color: this.state.current_color}}>{this.state.amount}</Text>개의 주문 대기중  </Text>
                     <FontAwesome name="arrow-right" size={18} color="#fff" />
                 </View>
             </TouchableOpacity>
@@ -85,7 +74,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 20,
         width: 100,
-        height: 60,
+        height: 50,
         color: '#000',
         fontWeight: 'bold',
         fontSize: 21,
@@ -95,7 +84,7 @@ const styles = StyleSheet.create({
     //위치 컴포넌트 style
     location: {
         flexDirection: 'row',
-        height: 35,
+        height: 30,
         marginLeft: 10,
     },
 
@@ -108,7 +97,8 @@ const styles = StyleSheet.create({
     //인원표시 컴포넌트 style (화살표 포함)
     amount: {
         flexDirection: 'row',
-        marginHorizontal: 10,
+        marginLeft: 10,
+        marginRight: 30,
         alignContent: 'flex-end',
         justifyContent: 'space-between',
     },

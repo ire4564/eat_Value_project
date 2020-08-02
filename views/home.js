@@ -113,13 +113,9 @@ class Home extends Component {
         });
 
         var result_menu = [];
-        var result_store = [];
 
         for(let j = 0; j < hot_menu.length; j++){
             result_menu.push(hot_menu[j].category);
-        }
-        for(let j = 0; j < hot_store.length; j++){
-            result_store.push(hot_store[j].store_num);
         }
 
         //전체 주문 목록 정리
@@ -130,7 +126,7 @@ class Home extends Component {
         });
         return {
             hot_menu: result_menu,
-            hot_store: result_store,
+            hot_store: hot_store,
             db_order: nextState.db_order,
         };
     }
@@ -148,18 +144,18 @@ class Home extends Component {
         }
         return list;
     }
-    hotOrderList(){
+    hotStoreList(){
         if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
             return null;
         }
         var list = [];
         var i = 0;
         //db에서 받은 정보를 가공, 혹은 가공된 정보를 state에 저장 후 아래 수행
-        while(i<this.state.db_order.length){
+        while(i<this.state.hot_store.length){
             list.push(<TouchableOrder
-                store={this.state.db_store[this.state.db_order[i].store_num]}
-                order={this.state.db_order[i]}
-                key={i+"_hot_order"}
+                store={this.state.db_store[this.state.hot_store[i].store_num]}
+                amount={this.state.hot_store[i].amount}
+                key={i+"_hot_store"}
                 color={COLOR_SET[i%COLOR_SET.length]}
                 />);
             i = i + 1;
@@ -214,7 +210,7 @@ class Home extends Component {
                     <Text style={styles.headline}>
                         <Text>지금</Text>
                         <Text style={{fontWeight: "bold"}}> HOT한 </Text>
-                        <Text>주문</Text>
+                        <Text>가게</Text>
                     </Text>
 
                     <ScrollView 
@@ -227,7 +223,7 @@ class Home extends Component {
                     style={styles.horizontal_scroll}
                     horizontal={true} 
                     showsHorizontalScrollIndicator={false}>
-                        {this.hotOrderList()}
+                        {this.hotStoreList()}
                     </ScrollView>
 
                     {/* 곧 FINISH 주문 부분 */}
