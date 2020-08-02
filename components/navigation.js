@@ -15,7 +15,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { FontAwesome } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 class Navigation extends Component {
     headerText(){
@@ -39,8 +39,10 @@ class Navigation extends Component {
                 children={this.headerText()}
                 style={styles.text}
                 ></Text>
-                <TouchableOpacity style={styles.header_button}>
-                    <FontAwesome name="navicon" size={20} color="#222" />    
+                <TouchableOpacity
+                style={styles.header_button}
+                onPress={function(){this.props.changeMode('notice')}.bind(this)}>
+                  <Ionicons name="md-notifications" size={23} color="#222" /> 
                 </TouchableOpacity>
                 
             </View>
