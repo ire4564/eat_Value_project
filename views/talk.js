@@ -21,6 +21,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 const UNNAMED = '../images/unnamed.jpg';
 
@@ -59,9 +61,23 @@ class Talk extends Component {
             talk: [
                 {user: 1,
                     detail:[
-                        {text: "안녕하세요", user:0, date:"2020-08-01 09:20" },
-                        {text: "안녕하세요!", user:1, date:"2020-08-01 09:23" },
-                        {text: "오늘 같이 시켜먹어요!!", user:1, date:"2020-08-01 13:51" },
+                        {text: "안녕하세요", user:0, date:"2020-08-03 09:20:32" },
+                        {text: "안녕하세요!", user:1, date:"2020-08-03 09:23:01" },
+                        {text: "오늘 같이 시켜먹어요!", user:1, date:"2020-08-03 13:51:28" },
+                    ]
+                },
+                {user: 3,
+                    detail:[
+                        {text: "안녕!!", user:0, date:"2020-08-03 09:20:32" },
+                        {text: "안뇽", user:3, date:"2020-08-03 09:23:01" },
+                        {text: "먹꼬쟈님이 [신당동 떡볶이]을(를) 제안하셨습니다.", user:3, date:"2020-08-03 17:43:10" },
+                    ]
+                },
+                {user: 2,
+                    detail:[
+                        {text: "안녕!!", user:0, date:"2020-08-03 10:20:32" },
+                        {text: "안뇽", user:3, date:"2020-08-03 10:23:01" },
+                        {text: "오늘 같이 시켜먹어요!", user:0, date:"2020-08-03 19:31:00" },
                     ]
                 },
             ],
@@ -73,13 +89,15 @@ class Talk extends Component {
         for(let i=0; i<this.state.talk.length; i++){
             var talk = this.state.talk[i];
             var user = this.state.test_users[talk.user];
+            //var now = moment().format('YYYY-MM-DD HH:mm:ss');
+            var time = moment(talk.detail[talk.detail.length-1].date, 'YYYY-MM-DD HH:mm:ss', true);
             list.push(<TouchableOpacity style={styles.talk_container} key={i+"_talk"}>
                     <Image source={require(UNNAMED)} style={styles.profile_img}/>
                     <View style={styles.talk_text_container}>
                         <Text style={[{fontWeight: 'bold'}, styles.talk_text]} numberOfLines={1}>{user.name}</Text>
                         <Text style={styles.talk_text} numberOfLines={1}>{talk.detail[talk.detail.length-1].text}</Text>
                     </View>
-                    <Text style={styles.talk_date}>{talk.detail[talk.detail.length-1].date}</Text>
+                    <Text style={styles.talk_date}>{time.fromNow()}</Text>
                 </TouchableOpacity>);
         }
         return list;
