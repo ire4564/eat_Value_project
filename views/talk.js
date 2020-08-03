@@ -28,7 +28,7 @@ class Talk extends Component {
             <View style={this.props.style}>
                 <View style={styles.main_container}>
                     <View style={styles.header_container}>
-                        <MaterialCommunityIcons name="message-processing" size={hp('3%')} color="black" />
+                        <MaterialCommunityIcons name="message-processing" size={hp('3%')} color='#40E0D0' />
                         <Text style={styles.header_text}><Text style={{fontWeight: 'bold'}}> 같이먹기</Text>를 제안해보세요!</Text>
                     </View>
                     <ScrollView style={styles.talk_scroll}>
