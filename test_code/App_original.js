@@ -14,14 +14,16 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import MenuBar from '../components/menuBar';
-import Home from '../views/home';
-import NowOrder from '../views/now_order';
-import OrderList from '../views/order_list';
-import Talk from '../views/talk';
-import User from '../views/user';
-import Navigation from '../components/navigation';
-import MakeRoom from '../views/make_room';
+import MenuBar from './components/menuBar';
+import Home from './views/home';
+import NowOrder from './views/now_order';
+import OrderList from './views/order_list';
+import Talk from './views/talk';
+import User from './views/user';
+import Navigation from './components/navigation';
+import MakeRoom from './views/make_room';
+import CheckOrder from './views/check_order';
+import Notice from './views/notice';
 
 class App extends Component {
 
@@ -40,42 +42,55 @@ class App extends Component {
     
   }
   changePage(){
-    if(this.state.seleted_mode==='home'){
-      return <Home
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
-    }else if(this.state.seleted_mode==='order-list'){
-      return <OrderList
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
-    }else if(this.state.seleted_mode==='now-order'){
-      return <NowOrder
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
-    }else if(this.state.seleted_mode==='talk'){
-      return <Talk
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
-    }else if(this.state.seleted_mode==='user'){
-      return <User
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
-    }else if(this.state.seleted_mode==='make-room'){
-      return <MakeRoom
-      style={styles.page_component}
-      db_user={this.state.db_user}
-      changMode={this.changeMode.bind(this)}
-      />;
+    switch(this.state.seleted_mode){
+      case 'home':
+        return <Home
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'check-order':
+        return <CheckOrder
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'order-list':
+        return <OrderList
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'now-order':
+        return <NowOrder
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'talk':
+        return <Talk
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'user':
+        return <User
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'make-room':
+        return <MakeRoom
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
+      case 'notice':
+        return <Notice
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        />;
     }
   }
   changeMode(_mode){
@@ -89,7 +104,9 @@ class App extends Component {
     return(
       <View style={styles.container}>
         <Navigation
-        mode={this.state.seleted_mode}/>
+        mode={this.state.seleted_mode}
+        changeMode={this.changeMode.bind(this)}
+        />
         {this.changePage()}
         <MenuBar
         style={styles.menu_component}
@@ -112,7 +129,7 @@ const styles = StyleSheet.create({
   //사용자 선택 화면 style
   page_component: {
     width: wp('100%'),
-    height: hp('82%'),
+    height: hp('81%'),
     backgroundColor: '#fff',
   },
   

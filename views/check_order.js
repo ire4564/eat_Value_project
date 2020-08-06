@@ -12,13 +12,50 @@ const ICON_COLOR = '#40E0D0';
 // npm install react-native-elements
 
 class CheckOrder extends Component {
+    /* 이 페이지에서 필요한 정보는 다음과 같음
+     * 가게 이름, 주문 메뉴 정보(가격, 수량)
+     * 모집 인원, 모인 금액
+     * 가게 주소, 혼자 같이 여부 표시
+     */
     constructor(props){
         super(props);
         this.state = {
-            db_user: this.props.db_user
+            db_user: this.props.db_user,
+            //아래는 추후 db연동을 위해 수정해야함!!!!
+            order_list: [
+                {store_name: "신당동 떡볶이 충남대점",
+                date: "2020-07-18-00-00",
+                order_detail: [{menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "testID"},
+                                {menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID"},
+                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other1"},
+                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2"},],
+                },
+            //리스트가 더 있어도 상관없음, 테스트를 위해 하나만 함 (메뉴는 여러 개)
+            ],
         }   
     }
 
+    //주문하기 밑에 주문 정보 탭
+    order_info(){
+        var list_info = <View>
+                        <Text style={styles.detail_title}>참치 마요 컵밥</Text>
+                        <Text style={styles.detail_prize}>● 기본: 3500원</Text>
+                        <Text style={styles.detail_prize}>7000원</Text> 
+                        <OrderItem/>
+                        <Divider style={styles.separator}/>
+                        <Text style={styles.detail_title}>튀김 오뎅</Text>
+                        <Text style={styles.detail_prize}>● 기본: 1500원</Text>
+                        <Text style={styles.detail_prize}>1500원</Text>
+                        <Divider style={styles.separator}/>
+                        </View>;
+        return [list_info];
+    }
+
+    //현재 인원, 남은 인원 계산 및 총 모인 금액 보여주기 탭
+    total_info() {
+
+    }
+    
     render(){
         return(
             <View style={[this.props.style, styles.container]}>
@@ -33,18 +70,12 @@ class CheckOrder extends Component {
                 {/*주문하는 리스트 안의 내용*/}
                 <View style={styles.orderlist}>
                     <View style = {styles.top_container_style}>
-                        <Text style={styles.title}>신전 떡볶이 충남대점</Text>
+                        {/*주문하는 가게 이름*/}
+                        <Text style={styles.title}>{this.state.order_list[0].store_name}</Text>
                     </View>
                     <ScrollView style={styles.scrollView}>
-                        <Text style={styles.detail_title}>참치 마요 컵밥</Text>
-                        <Text style={styles.detail_prize}>● 기본: 3500원</Text>
-                        <Text style={styles.detail_prize}>7000원</Text> 
-                        <OrderItem/>
-                        <Divider style={styles.separator}/>
-                        <Text style={styles.detail_title}>튀김 오뎅</Text>
-                        <Text style={styles.detail_prize}>● 기본: 1500원</Text>
-                        <Text style={styles.detail_prize}>1500원</Text> 
-                        <Divider style={styles.separator}/>
+                        
+                        {this.order_info()}
                     </ScrollView>
                 </View>
                 {/*위치 표시 바*/}
