@@ -17,7 +17,7 @@ class OrderItem extends Component {
             <View>
                 <View style={styles.counter_container}>
                 <Counter
-                    start={1}
+                    start={this.props.num}
                     buttonStyle={{
                         borderWidth: 0
                     }}
