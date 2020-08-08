@@ -33,7 +33,7 @@ import TouchableOrder from '../components/TouchableOrder';
 import TouchableList from '../components/touchableList';
 import LocationBar from '../components/locationBar';
 
-const COLOR_SET = ['#00CED1','#008080', '#40e0d0'];
+const COLOR_SET = ['#00CED1','#8BAAF0', '#7AD3FA', '#40e0d0'];
 const databaseURL = "https://cnu-eat-value.firebaseio.com/";
 
 class Home extends Component {
