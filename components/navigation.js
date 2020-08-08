@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
 
     //헤더 컨테이너 style
     container: {
-        flex: 1,
         width: wp('100%'),
         height: hp('12%'),
         alignItems: 'center',
