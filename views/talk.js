@@ -22,14 +22,33 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image } from 'rea
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import moment from 'moment';
+import posed from 'react-native-pose';
 import 'moment/locale/ko';
 
 const UNNAMED = '../images/unnamed.jpg';
+const Page = posed.View({
+    open: {
+        y: 0,
+        opacity: 1,
+        transition: {
+          y: { 
+              type: 'spring', 
+              stiffness: 500, 
+              damping: 100
+            },
+        }
+    },
+    closed: {
+        y: hp('5%'), 
+        opacity: 0
+    },
+});
 
 class Talk extends Component {
     constructor(props){
         super(props);
         this.state = {
+            event: 'closed',
             db_user: this.props.db_user,
             //이 아래부터는 db적용을 위해 수정이 필요한 state임!!
             test_users: [
@@ -84,6 +103,10 @@ class Talk extends Component {
         }   
     }
 
+    componentDidMount() {
+        this.setState({event: 'open'});
+    }
+
     chattingList(){
         var list = [];
         for(let i=0; i<this.state.talk.length; i++){
@@ -105,7 +128,7 @@ class Talk extends Component {
 
     render(){
         return(
-            <View style={this.props.style}>
+            <Page style={this.props.style} pose={this.state.event}>
                 <View style={styles.main_container}>
                     <View style={styles.header_container}>
                         <MaterialCommunityIcons name="message-processing" size={hp('3%')} color='#40E0D0' />
@@ -119,8 +142,7 @@ class Talk extends Component {
                         <Text style={styles.button_text}> 메세지 보내기</Text>
                     </TouchableOpacity>
                 </View>
-                
-            </View>
+            </Page>
         );
     }
 }
