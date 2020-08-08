@@ -14,6 +14,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { LinearGradient } from 'expo-linear-gradient';
 import MenuBar from './components/menuBar';
 import Home from './views/home';
 import NowOrder from './views/now_order';
@@ -102,7 +103,11 @@ class App extends Component {
   }
   render(){
     return(
-      <View style={styles.container}>
+      <LinearGradient 
+      colors={['#40E0D0', '#7AD3FA', '#8BAAF0']}
+      start={{x: 0, y: 1}}
+      end={{x: 1, y: 1}}
+      style={styles.container}>
         <Navigation
         mode={this.state.seleted_mode}
         changeMode={this.changeMode.bind(this)}
@@ -113,7 +118,7 @@ class App extends Component {
         mode={this.state.seleted_mode}
         changeMode={this.changeMode.bind(this)}
         />
-    </View>
+    </LinearGradient>
     );
   }
 }

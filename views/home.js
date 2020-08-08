@@ -32,9 +32,27 @@ import TouchableText from '../components/TouchableText';
 import TouchableOrder from '../components/TouchableOrder';
 import TouchableList from '../components/touchableList';
 import LocationBar from '../components/locationBar';
+import posed from 'react-native-pose';
 
 const COLOR_SET = ['#00CED1','#8BAAF0', '#7AD3FA', '#40e0d0'];
 const databaseURL = "https://cnu-eat-value.firebaseio.com/";
+const Page = posed.View({
+    open: {
+        y: 0,
+        opacity: 1,
+        transition: {
+          y: { 
+              type: 'spring', 
+              stiffness: 500, 
+              damping: 100
+            },
+        }
+    },
+    closed: {
+        y: hp('5%'), 
+        opacity: 0
+    },
+});
 
 class Home extends Component {
     constructor(props){
@@ -46,6 +64,7 @@ class Home extends Component {
             hot_store:[],
             db_order: [],
             db_store: [],
+            event: 'closed',
         }   
     }
 
@@ -78,6 +97,7 @@ class Home extends Component {
 
     componentDidMount() {
         this._get();
+        this.setState({event: 'open'});
     }
     
     static getDerivedStateFromProps(nextProps, nextState){
@@ -204,7 +224,7 @@ class Home extends Component {
 
     render(){
         return(
-            <View style={[this.props.style, styles.container]}>
+            <Page style={[this.props.style, styles.container]} pose={this.state.event}>
                 <ScrollView style={styles.main_scroll}>
                     {/* 지금 HOT한 주문 부분 */}
                     <Text style={styles.headline}>
@@ -247,10 +267,8 @@ class Home extends Component {
                     value={this.state.search}/>
                     {this.willFinishList()}
                 </ScrollView>
-                
-                
                 <LocationBar db_user={this.state.db_user}/>
-            </View>
+            </Page>
         );
     }
 }
