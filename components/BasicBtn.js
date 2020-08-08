@@ -1,44 +1,120 @@
+/************************************************
+ * Class : 기본 버튼 틀
+ * 
+ * state :
+ * - check: 버튼이 눌렸는지 체크하는 여부
+ * 
+ * props :
+ * - text: 버튼 안의 text 설정
+ * 
+ * function :
+ * - whiteBtn() : 기본 버튼 만들어서 컴포넌트로 리턴 (하얀색, 눌리지 않았을 때)
+ * - grayBtn() : 기본 버튼 만들어서 컴포넌트로 리턴 (회색, 눌렸을 때)
+ * - _clickThis() : 버튼 클릭 시 회색-> 하얀색, 
+ * 하얀색->회색으로 색 바뀌게 하기, state 변경
+ * - checkBtn() : 버튼이 눌렸는지, 눌리지 않았는지에 따라 색 바꾸기
+ *  
+ ************************************************/
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
+const GRAY = "#585858";
+const WHITE = "#FFFFFF";
 
-//컴포넌트 설정: 비슷한 버튼 컴포넌트로 빼기
-class BasicBtn extends Component {
+class basicBox extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            check: false,
+        };
+    }
+    //눌렀을 때
+    _clickThis = () => {
+        if(this.state.check == false){
+            //버튼이 눌려있지 않을 때
+            this.setState({
+                check: true,
+            });
+        } else {
+            //버튼이 눌려있을 때
+            this.setState({
+                check: false,
+            });
+        }
+    }
+    checkBtn() {
+        if(this.state.check == false){
+            return this.whiteBtn();
+        } else {
+            return this.grayBtn();
+        }
+    }
+    //기본 버튼 컴포넌트
+    whiteBtn() {
+        var btn = 
+            <TouchableOpacity style={styles.whiteBtn} onPress={this._clickThis}>
+                <Text style={styles.whiteFont}>{this.props.text}</Text>
+            </TouchableOpacity>;
+        return btn;
+    }
+    grayBtn() {
+        var btn = 
+            <TouchableOpacity style={styles.grayBtn} onPress={this._clickThis}>
+                <Text style={styles.grayFont}>{this.props.text}</Text>
+            </TouchableOpacity>;
+        return btn;
+    }
     render(){
         return(
             <View>
-                <View style={styles.BasicBtn}>
-                    <Text style={styles.BasicFont}>Test</Text>
-                </View>
+              {this.checkBtn()}
             </View>
         );
     }
 }
 
-//스타일 시트 설정
 const styles = StyleSheet.create({
- //기본 버튼
-    BasicBtn: {
-        borderColor: '#40E0D0',
-        backgroundColor: '#40E0D0',
+    //버튼 기본 디자인
+    whiteBtn: {
+        borderColor: GRAY,
+        backgroundColor: WHITE,
         borderWidth: 2,
-        width: wp('92%'),
-        height: wp('10%'),
-        borderRadius: 13,
+        width: wp('40%'),
+        height: wp('9%'),
+        borderRadius: 25,
         alignSelf: 'flex-end',
         marginRight: 15,
-        marginTop: 18,
+        marginTop: 8,
     },
-    //기본 폰트
-    BasicFont: {
+    //버튼 기본 폰트
+    whiteFont: {
         fontWeight: 'bold',
-        color: '#FFFFFF',
+        color: GRAY,
         alignSelf: "center",
-        fontSize: 18,
-        marginTop: -22,
-        marginLeft: 20
+        fontSize: 15,
+        marginTop: 5
     },
-});
+    //회색 버튼 디자인
+    grayBtn: {
+        borderColor: GRAY,
+        backgroundColor: GRAY,
+        borderWidth: 2,
+        width: wp('40%'),
+        height: wp('9%'),
+        borderRadius: 25,
+        alignSelf: 'flex-end',
+        marginRight: 15,
+        marginTop: 8,
+    },
+    //회색 버튼 폰트
+    grayFont: {
+        fontWeight: 'bold',
+        color: WHITE,
+        alignSelf: "center",
+        fontSize: 15,
+        marginTop: 5
+    },
+  });
 
-export default BasicBtn;
+export default basicBox;
