@@ -13,7 +13,8 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -69,15 +70,18 @@ class Navigation extends Component {
 
     render(){
         return(
-            <View style={styles.container}>
+            <LinearGradient
+            colors={['#40E0D0', '#7AD3FA', '#8BAAF0']}
+            start={{x: 0, y: 1}}
+            end={{x: 1, y: 1}}
+            style={styles.container}>
               {this.headerText()}
                 <TouchableOpacity
                 style={styles.header_button}
                 onPress={function(){this.props.changeMode('notice')}.bind(this)}>
                   <Ionicons name="md-notifications" size={23} color="#222" /> 
-                </TouchableOpacity>
-                
-            </View>
+                </TouchableOpacity>    
+            </LinearGradient>
         );
     }
 }
@@ -87,8 +91,7 @@ const styles = StyleSheet.create({
     //헤더 컨테이너 style
     container: {
         width: wp('100%'),
-        height: hp('7%'),
-        marginBottom: hp('5%'),
+        height: hp('12%'),
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
