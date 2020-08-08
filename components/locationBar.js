@@ -68,8 +68,9 @@ const styles = StyleSheet.create({
         width: wp('90%'),
         height: 50,
         borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#ccc',
+        borderTopWidth: 1,
+        borderWidth: 2,
+        borderColor: '#dddddd',
     },
 
     //주소 설정 패널 style
