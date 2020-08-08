@@ -47,6 +47,7 @@ class NowOrder extends Component {
     constructor(props){
         super(props);
         this.state = {
+            event: 'closed',
             db_user: this.props.db_user,
             //아래는 추후 db연동을 위해 수정해야함!!!!
             order_list: [
