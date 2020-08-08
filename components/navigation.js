@@ -29,7 +29,7 @@ class Navigation extends Component {
         case 'home':
           return <Text
                   style={styles.text}>
-                    가치<Text style={{fontSize: hp('2%'),}}>value</Text>먹자
+                    가치<Text style={{fontSize: hp('2%'), fontWeight: 'normal'}}>value</Text>먹자
                   </Text>;
         case 'order-list':
           return <Text
@@ -117,8 +117,10 @@ const styles = StyleSheet.create({
 
     //상단 모드 text style
     text: {
+        fontWeight: 'bold',
         fontSize: hp('2.5%'),
         marginTop: hp('4%'),
+        color: '#fff',
     },
 
     //네비게이션 버튼 style
