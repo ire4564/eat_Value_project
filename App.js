@@ -138,8 +138,6 @@ const styles = StyleSheet.create({
     width: wp('100%'),
     height: hp('7%'),
     flexDirection: 'row',
-
-    backgroundColor: '#40E0D0',
     alignItems: 'center',
   },
 });

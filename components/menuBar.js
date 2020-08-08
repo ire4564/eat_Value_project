@@ -18,8 +18,8 @@
  *  
  ************************************************/
 import React, { Component } from 'react';
-import { View } from 'react-native';
 import IconButton from './iconButton';
+import { LinearGradient } from 'expo-linear-gradient';
 
 class MenuBar extends Component {
     constructor(props){
@@ -28,7 +28,6 @@ class MenuBar extends Component {
             seleted_mode: this.props.mode
         }
     }
-
     static getDerivedStateFromProps(nextProps, nextState){
         if(nextState.seleted_mode !== nextProps.mode){
             return {seleted_mode: nextProps};
@@ -47,7 +46,11 @@ class MenuBar extends Component {
 
     render(){
         return(
-            <View style={this.props.style}>
+            <LinearGradient
+            colors={['#40E0D0', '#5DBBFA', '#7D89F0']} 
+            start={{x: 0, y: 1}}
+            end={{x: 1, y: 1}}
+            style={this.props.style}>
                 <IconButton
                 seleted_mode={this.state.seleted_mode}
                 mode="home"
@@ -87,7 +90,7 @@ class MenuBar extends Component {
                 icon_name="user-circle-o"
                 icon_text="내 정보"
                 changeMode={this.changeMode.bind(this)}/>
-            </View>
+            </LinearGradient>
         );
     }
 }
