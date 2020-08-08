@@ -22,8 +22,26 @@ import TwoColorBlock from '../components/twoColorBlock';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import LocationBar from '../components/locationBar';
+import posed from 'react-native-pose';
 
 const MAX_MENU_NUM = 2;
+const Page = posed.View({
+    open: {
+        y: 0,
+        opacity: 1,
+        transition: {
+          y: { 
+              type: 'spring', 
+              stiffness: 500, 
+              damping: 100
+            },
+        }
+    },
+    closed: {
+        y: hp('5%'), 
+        opacity: 0
+    },
+});
 
 class NowOrder extends Component {
     constructor(props){
@@ -141,9 +159,13 @@ class NowOrder extends Component {
         return list;
     }
 
+    componentDidMount() {
+        this.setState({event: 'open'});
+    }
+
     render(){
         return(
-            <View style={this.props.style}>
+            <Page style={this.props.style} pose={this.state.event}>
                 <View style={{top: hp('2%')}}>
                     <TouchableOpacity
                         style={styles.search_bar}>
@@ -172,7 +194,7 @@ class NowOrder extends Component {
                 <View style={{alignItems: 'center', top: hp('-77.5%'), alignItems: 'center'}}>
                     <LocationBar db_user={this.state.db_user}/>
                 </View>
-            </View>
+            </Page>
             
         );
     }
