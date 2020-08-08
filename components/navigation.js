@@ -1,6 +1,9 @@
 /************************************************
  * Class : 상단 우측 네비게이션 버튼 패널
  * 
+ * const :
+ *  - IMAGE: 네비게이션 백그라운드 이미지
+ * 
  * state :
  *  - 
  * 
@@ -13,10 +16,12 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Ionicons } from '@expo/vector-icons';
+
+const IMAGE = "../images/navigation.png";
 
 class Navigation extends Component {
     headerText(){
@@ -75,12 +80,13 @@ class Navigation extends Component {
             start={{x: 0, y: 1}}
             end={{x: 1, y: 1}}
             style={styles.container}>
+              <Image source={require(IMAGE)} style={styles.background_image}/>
               {this.headerText()}
                 <TouchableOpacity
                 style={styles.header_button}
                 onPress={function(){this.props.changeMode('notice')}.bind(this)}>
-                  <Ionicons name="md-notifications" size={23} color="#222" /> 
-                </TouchableOpacity>    
+                  <Ionicons name="md-notifications" size={23} color="#444"/>
+                </TouchableOpacity>
             </LinearGradient>
         );
     }
@@ -90,10 +96,23 @@ const styles = StyleSheet.create({
 
     //헤더 컨테이너 style
     container: {
+        flex: 1,
         width: wp('100%'),
         height: hp('12%'),
         alignItems: 'center',
         justifyContent: 'flex-start',
+    },
+
+    //백그라운드 이미지 style
+    background_image: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      flex: 1,
+      width: '100%',
+      height: hp('12%'),
+      opacity: 0.3,
+      resizeMode: 'repeat',
     },
 
     //상단 모드 text style
