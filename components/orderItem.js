@@ -23,12 +23,16 @@ class OrderItem extends Component {
                     }}
                     buttonTextStyle={{
                         color: '#40E0D0',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        marginRight: -15,
+                        marginTop: -3
                     }}
                     countTextStyle={{
                         color: '#40E0D0',
                         fontWeight: 'bold',
-                        fontSize: 15
+                        fontSize: 15,
+                        marginRight: -12,
+                        marginTop: -3
                     }}
                 />
                 </View>

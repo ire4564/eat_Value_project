@@ -10,11 +10,10 @@ Yarn version:
 Node version: 
   12.18.0
 
+
 Platform: 
   win32 x64
 
-Trace: 
-  Error: EPERM: operation not permitted, unlink 'C:\Users\한봉덕\Desktop\2020BottomUp\node_modules\react-native-linear-gradient\node_modules\.bin'
 
 npm manifest: 
   {
