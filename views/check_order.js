@@ -10,6 +10,8 @@
  * function :
  *  - order_info() 주문하기 밑에 주문 정보 탭
  *  - total_info() 현재 인원, 남은 인원 계산 및 총 모인 금액 보여주기 탭
+ *  - calPersonal(): 음식 별 개별 총 가격 계산 함수
+ *  - calTotal(): 버튼에 표시할 총 주문할 금액 계산 함수
  *  
  ***********************************************************************/
 
@@ -20,12 +22,10 @@ import { Divider } from 'react-native-elements';
 import LocationBar from '../components/locationBar';
 import OrderItem from '../components/orderItem';
 import { AntDesign } from '@expo/vector-icons';
-import { EvilIcons } from '@expo/vector-icons';
 import CompleteBtn from '../components/complete_IconBtn';
 import OrderBox from '../components/basicBox';
 import LocationBox from '../components/locationBox';
 const ICON_COLOR = '#40E0D0';
-
 // npm install react-native-elements
 
 class CheckOrder extends Component {
@@ -57,8 +57,29 @@ class CheckOrder extends Component {
                     exist: 4,
                     exist_prize: 25000
                 }
-            ]
+            ],
+            totalPrize: 8000,
         }
+    }
+
+    //총액 주문
+    calTotal() {
+        var details = this.state.order_list[0].order_detail;
+        var thisTotal = 0;
+        for(let i=0; i<details.length; i++){
+            thisTotal += details[i].amount * details[i].price;
+        }
+        this.setState({
+            totalPrize: thisTotal,
+        });
+    }
+
+    //개별 주문에 대한 연산 갱신
+    calPersonal() {
+        //눌린 컴포넌트가 몇 번째 요소인지 받아오기
+        //counter의 수량과 현재 음식의 가격을 곱한 값을 계산
+        //그 값을 수량에 표시해주기
+        //그런데 counter 버튼 눌린 것을 어떻게 표시하지?
     }
 
     //주문하기 밑에 주문 정보 탭
@@ -69,7 +90,7 @@ class CheckOrder extends Component {
             var this_total_prize = order_details[i].price * order_details[i].amount;
             //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
             list_info.push(
-                <View>
+                <View key={i}>
                     <Text style={styles.detail_title}>{order_details[i].menu}</Text>
                     <Text style={styles.detail_prize}>● 기본: {order_details[i].price} 원</Text>
                     <Text style={styles.detail_prize}> {this_total_prize} 원</Text>
@@ -95,7 +116,7 @@ class CheckOrder extends Component {
                     </Text> 모집 후 자동 주문
                 </Text>
                 <View style={styles.togetPrize}>
-                    <Text style={styles.togetFont}>모인 금액 <Text style={{ color: '#40E0D0' }}> 
+                    <Text style={styles.togetFont}>모인 금액  <Text style={{ color: '#40E0D0' }}> 
                         {this.state.room_info[0].exist_prize} 원</Text>
                     </Text>
                 </View>
@@ -134,8 +155,9 @@ class CheckOrder extends Component {
                 {/*위치 안내 패널*/}
                 <LocationBox></LocationBox>
 
+               
                 {/*주문 완료 버튼*/}
-                <CompleteBtn text="주문 완료 하기" iconName="rightcircleo"></CompleteBtn>
+                <CompleteBtn text = {this.state.totalPrize +' 원  주문 완료하기'} iconName="rightcircleo"></CompleteBtn>
                 
             </View>
         );

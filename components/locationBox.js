@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     orderlist: {
         width: wp('90%'),
         height: wp('50%'),
-        marginTop: wp('5%'),
+        marginTop: wp('4%'),
         backgroundColor: '#ffffff',
         shadowColor: "#000000",
         shadowOpacity: 0.1,

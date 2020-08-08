@@ -14,19 +14,12 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-class basicBox extends Component {
+class infoBox extends Component {
     putBox() {
         var Box = 
              <View style={styles.orderlist}>
-                    <View style={styles.top_container_style}>
-                        {/*주문하는 가게 이름*/}
-                        <Text style={styles.title}>{this.props.title}
-                        </Text>
-                    </View>
-                    <ScrollView style={styles.scrollView}>
-                        {/*주문할 메뉴 함수로 return 받기*/}
-                        {this.props.func}
-                    </ScrollView>
+                    {/*주문할 메뉴 함수로 return 받기*/}
+                    {this.props.func}
                 </View>
         return Box;
     }
@@ -53,19 +46,11 @@ const styles = StyleSheet.create({
     scrollView: {
         marginHorizontal: 7,
     },
-    //주문 가게 이름 표시 바탕
-    top_container_style: {
-        width: '100%',
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        alignContent: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#eeeeee',
-    },
     orderlist: {
         width: wp('90%'),
-        height: wp('40%'),
+        height: wp('30%'),
         marginTop: wp('5%'),
+        marginBottom: wp('-3%'),
         backgroundColor: '#ffffff',
         shadowColor: "#000000",
         shadowOpacity: 0.1,
@@ -75,4 +60,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default basicBox;
+export default infoBox;

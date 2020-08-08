@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         height: wp('10%'),
         borderRadius: 13,
         alignSelf: 'flex-end',
-        marginTop: 18,
+        marginTop: 10,
     },
     //주문 완료 버튼
     completeFont: {
@@ -65,11 +65,11 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         fontSize: 18,
         marginTop: -22,
-        marginLeft: 20
+        marginLeft: 30
     },
     icon: {
         alignSelf: "center",
-        marginRight: 100,
+        marginRight: 160,
         marginTop: 8
     }
   });
