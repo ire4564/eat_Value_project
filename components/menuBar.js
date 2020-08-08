@@ -47,7 +47,7 @@ class MenuBar extends Component {
     render(){
         return(
             <LinearGradient
-            colors={['#40E0D0', '#5DBBFA', '#7D89F0']} 
+            colors={['#40E0D0', '#7AD3FA', '#8BAAF0']} 
             start={{x: 0, y: 1}}
             end={{x: 1, y: 1}}
             style={this.props.style}>
