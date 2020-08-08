@@ -16,11 +16,31 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-nati
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import PostItBlock from '../components/postItBlock';
 import { MaterialIcons } from '@expo/vector-icons';
+import posed from 'react-native-pose';
+
+const Page = posed.View({
+    open: {
+        y: 0,
+        opacity: 1,
+        transition: {
+          y: { 
+              type: 'spring', 
+              stiffness: 500, 
+              damping: 100
+            },
+        }
+    },
+    closed: {
+        y: hp('5%'), 
+        opacity: 0
+    },
+});
 
 class Notice extends Component {
     constructor(props){
         super(props);
         this.state = {
+            event: 'closed',
             db_user: this.props.db_user,
             //이 아래부터의 state는 db 변경 이후 수정해야함!!!!
             notice : [
@@ -33,6 +53,10 @@ class Notice extends Component {
             ],
         }
     }
+    componentDidMount() {
+        this.setState({event: 'open'});
+    }
+
     noticeList(){
         var list = [];
         for(let i=0; i<this.state.notice.length; i++){
@@ -46,7 +70,7 @@ class Notice extends Component {
     }
     render(){
         return(
-            <View style={[this.props.style, styles.container]}>
+            <Page style={[this.props.style, styles.container]} pose={this.state.event}>
                 <View style={styles.header_contanier}>
                     <MaterialIcons name="notifications-active" size={hp('2.2%')} color="black" />
                     <Text style={styles.header_text}> PUSH 알림을 설정하고 쿠폰 및 주문 정보를 받아보세요!</Text>
@@ -56,7 +80,7 @@ class Notice extends Component {
                         {this.noticeList()}
                     </View>
                 </ScrollView>
-            </View>
+            </Page>
         );
     }
 }
