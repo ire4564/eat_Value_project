@@ -52,7 +52,7 @@ class TouchableOrder extends Component {
                     <Text style={styles.location_text}> {this.state.store.location}</Text>
                 </View>
                 <View style={styles.amount}>
-                    <Text style={styles.amount_text}>현재 <Text style={{color: this.state.current_color}}>{this.state.amount}</Text>개의 주문 대기중  </Text>
+        <Text style={styles.amount_text}>현재 <Text style={{color: this.state.current_color}}>{this.state.amount}</Text>개의 주문 {"\n"}대기중  </Text>
                     <FontAwesome name="arrow-right" size={hp('2%')} color="#fff" />
                 </View>
             </TouchableOpacity>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     container: {
         borderRadius: 20,
         marginRight: wp('3%'),
-        width: wp('36%'),
+        width: hp('19%'),
         height: hp('22%'),
     },
 
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     //위치 문자열 style
     location_text: {
         color: '#fff',
-        fontSize: hp('1.9%'),
+        fontSize: hp('1.6%'),
     },
 
     //인원표시 컴포넌트 style (화살표 포함)

@@ -96,8 +96,8 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this._get();
         this.setState({event: 'open'});
+        this._get();
     }
     
     static getDerivedStateFromProps(nextProps, nextState){
