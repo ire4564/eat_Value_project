@@ -20,13 +20,32 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import TwoColorBlock from '../components/twoColorBlock';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import posed from 'react-native-pose';
 
 const MAX_MENU_NUM = 2;
+const Page = posed.View({
+    open: {
+        y: 0,
+        opacity: 1,
+        transition: {
+          y: { 
+              type: 'spring', 
+              stiffness: 500, 
+              damping: 100
+            },
+        }
+    },
+    closed: {
+        y: hp('5%'), 
+        opacity: 0
+    },
+});
 
 class OrderList extends Component {
     constructor(props){
         super(props);
         this.state = {
+            event: 'closed',
             db_user: this.props.db_user,
             //아래는 추후 db연동을 위해 수정해야함!!!!
             order_list: [
@@ -49,6 +68,10 @@ class OrderList extends Component {
             ],
         }   
     }
+    componentDidMount() {
+        this.setState({event: 'open'});
+    }
+
     orderHistory_top(_num){
         var date = this.state.order_list[_num].date.split('-');
         var order_detail = this.state.order_list[_num].order_detail;
@@ -141,13 +164,11 @@ class OrderList extends Component {
 
     render(){
         return(
-            <View style={this.props.style}>
+            <Page style={this.props.style} pose={this.state.event}>
                 <ScrollView style={styles.main_scroll}>
                     {this.orderHistoryList()} 
                 </ScrollView>
-                
-                
-            </View>
+            </Page>
         );
     }
 }
