@@ -34,7 +34,7 @@ import { StyleSheet, Text, TouchableOpacity} from 'react-native';
 import { MaterialCommunityIcons, Ionicons, FontAwesome, Fontisto } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const NORMAL_BUTTON_COLOR = '#222';
+const NORMAL_BUTTON_COLOR = '#444';
 const SELETED_BUTTON_COLOR = '#fff';
 const ICON_SIZE = hp('2.7%');
 
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     icon_text: {
         marginTop: 3,
         fontSize: hp('1.2%'),
+        fontWeight: "bold",
     }
 });
 
