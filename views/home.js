@@ -303,9 +303,10 @@ const styles = StyleSheet.create({
         height: 40,
         alignSelf: 'center',
         marginTop: 10,
+        marginBottom: 10,
         borderRadius: 10,
         borderColor: '#ccc',
-        borderWidth: 1,
+        borderWidth: 2,
         paddingHorizontal: 10,
     },
   });
