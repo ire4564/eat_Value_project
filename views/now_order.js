@@ -17,7 +17,7 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native';
 import TwoColorBlock from '../components/twoColorBlock';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
@@ -48,6 +48,9 @@ class NowOrder extends Component {
         super(props);
         this.state = {
             event: 'closed',
+            search: '',
+            search_mode : 0,
+            search_status : [0, 0, 0],
             db_user: this.props.db_user,
             //아래는 추후 db연동을 위해 수정해야함!!!!
             order_list: [
@@ -164,16 +167,79 @@ class NowOrder extends Component {
         this.setState({event: 'open'});
     }
 
+    IsSearchMode() {
+        var unpressed = {color: "#FFF", fontWeight: "bold"};
+        if(this.state.search_mode == 0) {
+            return(
+            <TouchableOpacity
+                style={styles.search_bar}
+                onPress={function() {
+                    this.setState({search_mode: 1});
+                }.bind(this)}>
+                    <Text style={{color:'#fff', fontSize:hp('1.9%')}}> Search </Text>
+                    <AntDesign name="downcircleo" size={hp('2%')} color="#fff" />
+            </TouchableOpacity>
+            );
+        } else if(this.state.search_mode == 1) {
+            var btn_txt = ["#가격 순 정렬", "#별점 순 정렬", "#배달 팁 없음", "#가까운 곳", "#혼자먹어요", "#같이먹어요"];
+            var btn_list_1 = [];
+            var btn_list_2 = [];
+
+            for(let i = 0; i < 3; i++) {
+                btn_list_1.push(
+                <View key={i + "_search_btn"} style={styles.search_btn}>
+                    <Text style={unpressed}>{btn_txt[i]}</Text>
+                </View>
+                );
+            }
+
+            for(let i = 3; i < 6; i++) {
+                btn_list_2.push(
+                <View key={i + "_search_btn"} style={styles.search_btn}>
+                    <Text style={unpressed}>{btn_txt[i]}</Text>
+                </View>
+                );
+            }
+
+            return(
+            <TouchableOpacity
+                style={styles.search_bar_open}
+                onPress={function() {
+                    this.setState({search_mode: 0});
+                }.bind(this)}>
+                <View style={{flex:2}}>
+                    <View style={{flex:1}}>
+                        <Text style={{color: "#FFF", fontWeight: "bold", fontSize: 18}}># 골라먹기</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            {btn_list_1}
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            {btn_list_2}
+                        </View>
+                    </View>
+                    <View style={{flex:1, marginTop: 30}}>
+                        <Text style={{color: "#FFF", fontWeight: "bold", fontSize: 18}}># 먹고싶은음식</Text>
+                        <TextInput
+                        style={styles.search}
+                        placeholder="원하시는 음식을 검색해보세요"
+                        onChangeText={(text)=>this.setState({search: text})}
+                        value={this.state.search}/>
+                    </View>
+
+                </View>
+
+            </TouchableOpacity>
+            );
+        } else {
+            alert('state error!');
+        }
+    }
     render(){
         return(
             <Page style={this.props.style} pose={this.state.event}>
                 <View style={{top: hp('2%')}}>
-                    <TouchableOpacity
-                        style={styles.search_bar}>
-                            <Text style={{color:'#fff', fontSize:hp('1.9%')}}> Search </Text>
-                            <AntDesign name="downcircleo" size={hp('2%')} color="#fff" />
-                    </TouchableOpacity>
-                    <View style={{marginLeft:'5%', marginTop:'2%', flexDirection: 'row'}}>
+                    
+                    <View style={{marginLeft:'5%', marginTop:'18.3%', flexDirection: 'row'}}>
                         <AntDesign name="checkcircle" size={hp('2%')} color="#40e0d0" />
                         <Text style={{fontSize:hp('2%'), fontWeight: 'bold', marginLeft: '2%'}}>NOW 주문</Text>
                     </View>
@@ -190,6 +256,7 @@ class NowOrder extends Component {
                             <MaterialCommunityIcons name="silverware-fork-knife" size={hp('2%')} color="#fff" />
                             <Text style={{color:'#fff', fontSize:hp('1.9%'), fontWeight: 'bold'}}> 방 만들기</Text>
                     </TouchableOpacity>
+                    {this.IsSearchMode()}
                 </View>
                 
                 <View style={{alignItems: 'center', top: hp('-77.5%'), alignItems: 'center'}}>
@@ -320,6 +387,7 @@ const styles = StyleSheet.create({
     },
 
     search_bar: {
+        position: 'absolute',
         width: wp('90%'),
         height: hp('5%'),
         marginTop: '5%',
@@ -331,7 +399,54 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-    }
+        opacity: 0.9
+    },
+
+    search_bar_open: {
+        position: 'absolute',
+        width: wp('90%'),
+        height: hp('23%'),
+        marginTop: '5%',
+        alignSelf: 'center',
+        backgroundColor: '#40e0d0',
+        borderRadius: 10,
+        paddingHorizontal: wp('5%'),
+        paddingVertical: hp('1%'),
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+
+    search_btn: {
+        backgroundColor:'#999',
+        borderRadius: 10,
+        alignItems: 'center',
+        paddingHorizontal: 17,
+        paddingVertical: 5,
+        marginRight: 7,
+        marginBottom: 6,
+        marginTop: 6
+    },
+
+    search_btn_pressed: {
+        backgroundColor:'#FFF',
+        borderRadius: 10,
+        alignItems: 'center',
+        paddingHorizontal: 17,
+        paddingVertical: 5,
+    },
+    //검색창 style
+    search: {
+        width: wp('80%'),
+        height: 35,
+        backgroundColor: "#FFF",
+        alignSelf: 'center',
+        borderRadius: 10,
+        borderColor: '#ccc',
+        borderWidth: 2,
+        paddingHorizontal: 10,
+        marginTop: 5
+    },
 
   });
 
