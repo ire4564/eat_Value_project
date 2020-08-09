@@ -24,6 +24,7 @@ import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import LocationBar from '../components/locationBar';
 import posed from 'react-native-pose';
 
+const databaseURL = "https://cnu-eat-value.firebaseio.com/";
 const MAX_MENU_NUM = 2;
 const Page = posed.View({
     open: {
@@ -50,32 +51,41 @@ class NowOrder extends Component {
             event: 'closed',
             search: '',
             search_mode : 0,
-            search_status : [0, 0, 0],
             db_user: this.props.db_user,
             //아래는 추후 db연동을 위해 수정해야함!!!!
-            order_list: [
-                {store_name: "신당동 떡볶이 충남대점",
-                store_image: '../images/test_image.jpg', //적용안됨. image 처리는 후에 수정
-                date: "2020-07-18-00-00",
-                order_detail: [{menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "testID"},
-                                {menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID"},
-                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other1"},
-                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2"},],
-                },
-                {store_name: "신당동 떡볶이 충남대점",
-                store_image: '../images/test_image.jpg', //적용안됨. image 처리는 후에 수정
-                date: "2020-07-18-00-00",
-                order_detail: [{menu: '떡볶이(매운맛)', amount: 1, price: 4000, user_id: "testID"},
-                                {menu: '모둠 튀김', amount: 2, price: 3000, user_id: "testID"},
-                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "testID"},
-                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2"},],
-                },
-            ],
+            order_list: [],
         }   
     }
+    
+    /**
+     * @method "load data and then store to the state"
+     */
+    _get() {
+        fetch(`${databaseURL}/order_list.json`).then(res => {
+        if(res.status != 200) {
+            throw new Error(res.statusText);
+        }
+        return res.json();
+        }).then(order_list => this.setState({order_list: order_list}));
+
+    }
+
+    /**
+     * @method "IsChange?"
+     */
+    shouldComponentUpdate(nextProps, nextState) {
+        return (nextState.order_list != this.state.order_list) || (nextState.search != this.state.search);
+    }
+
+    componentDidMount() {
+        this.setState({event: 'open'});
+        this._get();
+    }
+
     orderHistory_top(_num){
         var date = this.state.order_list[_num].date.split('-');
         var order_detail = this.state.order_list[_num].order_detail;
+        var store_image = this.state.order_list[_num].store_image;
         var user_menu = [];
         var user_menu_amount = 0;
 
@@ -86,20 +96,19 @@ class NowOrder extends Component {
 
         //해당 순서 데이터의 order_detail을 받아와 컴포넌트 생성
         for(let i=0; i<order_detail.length; i++){
-            if(order_detail[i].user_id===this.state.db_user.id){
-                user_price = user_price + order_detail[i].price*order_detail[i].amount;
-                user_menu_amount = user_menu_amount + 1;
-                if(user_menu.length<MAX_MENU_NUM){
-                    user_menu.push(
-                        <View key={i+"_user_menu"} style={styles.row_container}>
-                        <Text style={styles.user_menu_text}>
-                            {order_detail[i].menu}
-                            {' *'+order_detail[i].amount}
-                        </Text>
-                        <Text style={styles.user_menu_text}>{(order_detail[i].price*order_detail[i].amount).toLocaleString()}원</Text>
-                    </View>);
-                }
+            user_price = user_price + order_detail[i].price*order_detail[i].amount;
+            user_menu_amount = user_menu_amount + 1;
+            if(user_menu.length<MAX_MENU_NUM){
+                user_menu.push(
+                    <View key={i+"_user_menu"} style={styles.row_container}>
+                    <Text style={styles.user_menu_text}>
+                        {order_detail[i].menu}
+                        {' * '+order_detail[i].amount}
+                    </Text>
+                    <Text style={styles.user_menu_text}>{(order_detail[i].price*order_detail[i].amount).toLocaleString()}원</Text>
+                </View>);
             }
+            
             total_price = total_price + order_detail[i].price*order_detail[i].amount;
         }
         //MAX_MENU_NUM 이상의 메뉴가 있을 경우 추가로 출력
@@ -161,10 +170,6 @@ class NowOrder extends Component {
             i = i + 1;
         }
         return list;
-    }
-
-    componentDidMount() {
-        this.setState({event: 'open'});
     }
 
     searchResult() {
