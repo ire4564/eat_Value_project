@@ -74,7 +74,7 @@ class NowOrder extends Component {
      * @method "IsChange?"
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return (nextState.order_list != this.state.order_list) || (nextState.search != this.state.search);
+        return (nextState.order_list != this.state.order_list) || (nextState.search != this.state.search) || (nextState.search_mode != this.state.search_mode);
     }
 
     componentDidMount() {
@@ -228,7 +228,11 @@ class NowOrder extends Component {
             <TouchableOpacity
                 style={styles.search_bar}
                 onPress={function() {
-                    this.setState({search_mode: 1});
+                    if(this.state.search_mode == 1) {
+                        this.setState({search_mode: 0});
+                    } else {
+                        this.setState({search_mode: 1});
+                    }
                 }.bind(this)}>
                     <Text style={{color:'#fff', fontSize:hp('1.9%')}}> Search </Text>
                     <AntDesign name="downcircleo" size={hp('2%')} color="#fff" />
@@ -259,7 +263,11 @@ class NowOrder extends Component {
             <TouchableOpacity
                 style={styles.search_bar_open}
                 onPress={function() {
-                    this.setState({search_mode: 0});
+                    if(this.state.search_mode == 1) {
+                        this.setState({search_mode: 0});
+                    } else {
+                        this.setState({search_mode: 1});
+                    }
                 }.bind(this)}>
                 <View style={{flex:2}}>
                     <View style={{flex:1}}>
@@ -313,7 +321,7 @@ class NowOrder extends Component {
                     {this.IsSearchMode()}
                 </View>
                 
-                <View style={{alignItems: 'center', top: hp('-77.5%'), alignItems: 'center'}}>
+                <View style={{alignItems: 'center', top: hp('-76%'), alignItems: 'center'}}>
                     <LocationBar db_user={this.state.db_user}/>
                 </View>
             </Page>
