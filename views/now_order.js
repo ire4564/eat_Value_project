@@ -167,6 +167,55 @@ class NowOrder extends Component {
         this.setState({event: 'open'});
     }
 
+    searchResult() {
+        if(this.state.order_list.length == 0){
+            return null;
+        }
+
+        var list = [];
+        if(this.state.search === ''){
+            var i = 0;
+            
+            while(i < this.state.order_list.length){
+                var top_data = this.orderHistory_top(i);
+                list.push(
+                    <TouchableOpacity
+                    style={styles.order_history_container}
+                    key={i+"_history"}>
+                        <TwoColorBlock
+                            topHeight={2}
+                            bottomHeight={1}
+                            type={0}
+                            top={top_data[0]}
+                            bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}/>
+                    </TouchableOpacity>
+                );
+                i = i + 1;
+            }
+        } else {
+            var i = 0;
+            while(i < this.state.order_list.length){
+                if(this.state.order_list[i].store_name.indexOf(this.state.search) !== -1){
+                    var top_data = this.orderHistory_top(i);
+                    list.push(
+                        <TouchableOpacity
+                        style={styles.order_history_container}
+                        key={i+"_history"}>
+                            <TwoColorBlock
+                                topHeight={2}
+                                bottomHeight={1}
+                                type={0}
+                                top={top_data[0]}
+                                bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}/>
+                        </TouchableOpacity>
+                    );
+                }
+                i = i + 1;
+            }
+        }
+        return list;
+    }
+
     IsSearchMode() {
         var unpressed = {color: "#FFF", fontWeight: "bold"};
         if(this.state.search_mode == 0) {
@@ -246,7 +295,7 @@ class NowOrder extends Component {
 
                     <ScrollView style={styles.main_scroll}>
                         
-                        {this.orderHistoryList()} 
+                        {this.searchResult()} 
     
                     </ScrollView>
 
@@ -375,7 +424,7 @@ const styles = StyleSheet.create({
     },
     makeOrder: {
         width: wp('90%'),
-        marginTop: hp('63%'),
+        marginTop: hp('61%'),
         alignSelf: 'center',
         backgroundColor: '#40e0d0',
         borderRadius: 10,
