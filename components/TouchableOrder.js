@@ -40,6 +40,7 @@ class TouchableOrder extends Component {
             onPress={function(){
                 if(this.props.event!==undefined){
                     this.props.event();
+                    this.props.sendData(this.state.store.name);
                 }
             }.bind(this)}
             >
