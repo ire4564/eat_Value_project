@@ -25,6 +25,7 @@ import Navigation from './components/navigation';
 import MakeRoom from './views/make_room';
 import CheckOrder from './views/check_order';
 import Notice from './views/notice';
+import DetailOrder from './views/detail_order';
 
 class App extends Component {
 
@@ -103,6 +104,14 @@ class App extends Component {
         />;
       case 'notice':
         return <Notice
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
+        />;
+      case 'detail-order':
+        return <DetailOrder
         style={styles.page_component}
         db_user={this.state.db_user}
         changMode={this.changeMode.bind(this)}
