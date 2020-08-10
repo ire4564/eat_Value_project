@@ -32,6 +32,7 @@ class App extends Component {
     super(props);
     this.state = {
         seleted_mode: 'home',
+        change_mode_data: '',
         db_user: {
           coupon_num: 0,
           id: "testID",
@@ -49,58 +50,80 @@ class App extends Component {
         style={styles.page_component}
         db_user={this.state.db_user}
         changMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'check-order':
         return <CheckOrder
         style={styles.page_component}
         db_user={this.state.db_user}
         changMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'order-list':
         return <OrderList
         style={styles.page_component}
         db_user={this.state.db_user}
         changMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'now-order':
         return <NowOrder
         style={styles.page_component}
         db_user={this.state.db_user}
         changMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'talk':
         return <Talk
         style={styles.page_component}
         db_user={this.state.db_user}
         changMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'user':
         return <User
         style={styles.page_component}
         db_user={this.state.db_user}
         changMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'make-room':
         return <MakeRoom
         style={styles.page_component}
         db_user={this.state.db_user}
         changMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'notice':
         return <Notice
         style={styles.page_component}
         db_user={this.state.db_user}
         changMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
     }
   }
   changeMode(_mode){
     if(this.state.seleted_mode!==_mode){
-              this.setState({
-                seleted_mode: _mode,
-              });
-            }
+        this.setState({
+          seleted_mode: _mode,
+        });
+      }
   }
+  sendData(_data){
+    this.setState({
+      change_mode_data: _data,
+    });
+  }
+
   render(){
     return(
       <LinearGradient 
