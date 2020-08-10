@@ -74,7 +74,6 @@ class NowOrder extends Component {
             event: 'closed',
             search: '',
             search_bar: 'closed',
-            data: this.props.data,
             search_mode : 0,
             db_user: this.props.db_user,
             //아래는 추후 db연동을 위해 수정해야함!!!!
@@ -104,6 +103,13 @@ class NowOrder extends Component {
 
     componentDidMount() {
         this.setState({event: 'open'});
+        if(this.props.data !== ''){
+            this.setState({
+                search: this.props.data,
+                search_mode: 1,
+                search_bar: 'opened',
+            });
+        }
         this._get();
     }
 
