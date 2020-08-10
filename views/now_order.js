@@ -158,16 +158,28 @@ class NowOrder extends Component {
         while(i<this.state.order_list.length){
             var top_data = this.orderHistory_top(i);
             list.push(
-                <TouchableOpacity
-                style={styles.order_history_container}
+                <View
                 key={i+"_history"}>
-                    <TwoColorBlock
-                        topHeight={2}
-                        bottomHeight={1}
-                        type={0}
-                        top={top_data[0]}
-                        bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}/>
-                </TouchableOpacity>
+                    <View
+                    style={{position: 'absolute', height: hp('21%'), width: '100%', zIndex: -1}}>
+                        <TwoColorBlock
+                            topHeight={2}
+                            bottomHeight={1}
+                            type={0}
+                            shadow={true}/>
+                    </View>
+                    <TouchableOpacity
+                        style={styles.order_history_container}
+                        >
+                            <TwoColorBlock
+                                topHeight={2}
+                                bottomHeight={1}
+                                type={0}
+                                top={top_data[0]}
+                                bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}
+                                shadow={false}/>
+                    </TouchableOpacity>
+                </View>
             );
             i = i + 1;
         }
@@ -190,16 +202,28 @@ class NowOrder extends Component {
             while(i < this.state.order_list.length){
                 var top_data = this.orderHistory_top(i);
                 list.push(
-                    <TouchableOpacity
-                    style={styles.order_history_container}
-                    key={i+"_history"}>
+                    <View
+                key={i+"_history"}>
+                    <View
+                    style={{position: 'absolute', height: hp('21%'), width: '100%', zIndex: -1}}>
                         <TwoColorBlock
                             topHeight={2}
                             bottomHeight={1}
                             type={0}
-                            top={top_data[0]}
-                            bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}/>
+                            shadow={true}/>
+                    </View>
+                    <TouchableOpacity
+                        style={styles.order_history_container}
+                        >
+                            <TwoColorBlock
+                                topHeight={2}
+                                bottomHeight={1}
+                                type={0}
+                                top={top_data[0]}
+                                bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}
+                                shadow={false}/>
                     </TouchableOpacity>
+                </View>
                 );
                 i = i + 1;
             }
@@ -209,16 +233,28 @@ class NowOrder extends Component {
                 if(this.state.order_list[i].store_name.indexOf(this.state.search) !== -1){
                     var top_data = this.orderHistory_top(i);
                     list.push(
-                        <TouchableOpacity
+                        <View
+                key={i+"_history"}>
+                    <View
+                    style={{position: 'absolute', height: hp('21%'), width: '100%', zIndex: -1}}>
+                        <TwoColorBlock
+                            topHeight={2}
+                            bottomHeight={1}
+                            type={0}
+                            shadow={true}/>
+                    </View>
+                    <TouchableOpacity
                         style={styles.order_history_container}
-                        key={i+"_history"}>
+                        >
                             <TwoColorBlock
                                 topHeight={2}
                                 bottomHeight={1}
                                 type={0}
                                 top={top_data[0]}
-                                bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}/>
-                        </TouchableOpacity>
+                                bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}
+                                shadow={false}/>
+                    </TouchableOpacity>
+                </View>
                     );
                 }
                 i = i + 1;
