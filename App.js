@@ -142,12 +142,14 @@ class App extends Component {
         <Navigation
         mode={this.state.seleted_mode}
         changeMode={this.changeMode.bind(this)}
+        sendData={this.sendData.bind(this)}
         />
         {this.changePage()}
         <MenuBar
         style={styles.menu_component}
         mode={this.state.seleted_mode}
         changeMode={this.changeMode.bind(this)}
+        sendData={this.sendData.bind(this)}
         />
     </LinearGradient>
     );
