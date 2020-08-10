@@ -172,12 +172,16 @@ class Home extends Component {
         var i = 0;
         //db에서 받은 정보를 가공, 혹은 가공된 정보를 state에 저장 후 아래 수행
         while(i<this.state.hot_store.length){
+            var store_num = this.state.hot_store[i].store_num;
             list.push(<TouchableOrder
-                store={this.state.db_store[this.state.hot_store[i].store_num]}
+                store={this.state.db_store[store_num]}
                 amount={this.state.hot_store[i].amount}
                 key={i+"_hot_store"}
                 color={COLOR_SET[i%COLOR_SET.length]}
-                event={function(){this.props.changMode("waiting-list")}.bind(this)}
+                event={function(){
+                    this.props.changMode("waiting-list");
+                    this.props.sendData(store_num);
+                }.bind(this)}
                 />);
             i = i + 1;
         }
