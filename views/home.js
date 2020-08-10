@@ -156,6 +156,12 @@ class Home extends Component {
         while(i<this.state.hot_menu.length){
             list.push(<TouchableText
                         text={this.state.hot_menu[i]}
+                        event={function(_text){
+                            this.props.sendData(_text);
+                            this.props.changMode('now-order');
+                        }.bind(this)}
+                        sendData={this.props.sendData.bind(this)}
+                        changeMode={this.props.changeMode}
                         key={i+"_hot_menu"}/>);
             i = i + 1;
         }

@@ -46,7 +46,7 @@ class TouchableText extends Component {
             style={this.state.style}
             onPress={function(){
                 if(this.props.event!==undefined){
-                    this.props.event;
+                    this.props.event(this.props.text);
                 }
             }.bind(this)}
             >
