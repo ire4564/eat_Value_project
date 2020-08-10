@@ -353,32 +353,29 @@ class NowOrder extends Component {
     }
     render(){
         return(
-            <Page style={this.props.style} pose={this.state.event}>
-                <View style={{top: hp('2%')}}>
-                    
-                    <View style={{marginLeft:'5%', marginTop:'18.3%', flexDirection: 'row'}}>
+            <Page style={[this.props.style, styles.container]} pose={this.state.event}>
+                <View style={styles.main_container}>
+                    <View style={{ marginTop:'18.5%', marginBottom: '2%',
+                     flexDirection: 'row', width: '90%', alignSelf: 'center'}}>
                         <AntDesign name="checkcircle" size={hp('2%')} color="#40e0d0" />
                         <Text style={{fontSize:hp('2%'), fontWeight: 'bold', marginLeft: '2%'}}>NOW 주문</Text>
                     </View>
-
                     <ScrollView style={styles.main_scroll}>
                         
                         {this.searchResult()} 
     
                     </ScrollView>
 
-                    <TouchableOpacity
-                        style={styles.makeOrder}
-                        onPress={function(){this.props.changMode("make-room")}.bind(this)}>
-                            <MaterialCommunityIcons name="silverware-fork-knife" size={hp('2%')} color="#fff" />
-                            <Text style={{color:'#fff', fontSize:hp('1.9%'), fontWeight: 'bold'}}> 방 만들기</Text>
-                    </TouchableOpacity>
+                    
                     {this.IsSearchMode()}
                 </View>
-                
-                <View style={{alignItems: 'center', top: hp('-76%'), alignItems: 'center'}}>
-                    <LocationBar db_user={this.state.db_user}/>
-                </View>
+                <TouchableOpacity
+                    style={styles.makeOrder}
+                    onPress={function(){this.props.changMode("make-room")}.bind(this)}>
+                        <MaterialCommunityIcons name="silverware-fork-knife" size={hp('2%')} color="#fff" />
+                        <Text style={{color:'#fff', fontSize:hp('1.9%'), fontWeight: 'bold'}}> 방 만들기</Text>
+                    </TouchableOpacity>
+                <LocationBar db_user={this.state.db_user}/>
             </Page>
             
         );
@@ -386,16 +383,21 @@ class NowOrder extends Component {
 }
 
 const styles = StyleSheet.create({
+    //최상위 컨테이너 style
+    container: {
+        alignItems: 'center',
+    },
+    //내용물 중 목록이 들어갈 컨테이너 style
+    main_container: {
+        width: wp('100%'),
+        height: '100%',
+    },
+
     //메인 스크롤 style
     main_scroll: {
-        position: 'absolute',
-        marginTop: '25%',
-        width: wp('100%'),
-        height: hp('85%'),
-        top: hp('-1%'),
-        paddingHorizontal: wp('5%'),
-        paddingVertical: hp('3%'),
-        backgroundColor: '#fff',
+        width: '90%',
+        alignSelf: 'center',
+        alignContent: 'center',
     },
 
     //주문 컴포넌트 style
@@ -492,8 +494,9 @@ const styles = StyleSheet.create({
     },
     // 방만들기
     makeOrder: {
+        position: 'absolute',
+        marginTop: hp('75%'),
         width: wp('90%'),
-        marginTop: hp('61%'),
         alignSelf: 'center',
         backgroundColor: '#40e0d0',
         borderRadius: 10,
@@ -509,7 +512,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: wp('90%'),
         height: hp('5%'),
-        marginTop: '5%',
+        marginTop: '6.5%',
         alignSelf: 'center',
         backgroundColor: '#40e0d0',
         borderRadius: 10,
@@ -526,7 +529,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: wp('90%'),
         height: hp('23%'),
-        marginTop: '5%',
+        marginTop: '6.5%',
         alignSelf: 'center',
         backgroundColor: '#40e0d0',
         borderRadius: 10,
