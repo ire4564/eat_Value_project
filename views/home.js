@@ -179,8 +179,8 @@ class Home extends Component {
                 key={i+"_hot_store"}
                 color={COLOR_SET[i%COLOR_SET.length]}
                 event={function(){
-                    this.props.changMode("waiting-list");
                     this.props.sendData(store_num);
+                    this.props.changMode("waiting-list");
                 }.bind(this)}
                 />);
             i = i + 1;

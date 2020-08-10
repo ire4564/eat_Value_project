@@ -33,7 +33,7 @@ class WaitingList extends Component {
     render(){
         return(
             <View style={this.props.style}>
-                <Text>WaitingList</Text>
+                <Text>{this.props.data}</Text>
             </View>
         );
     }
