@@ -109,6 +109,14 @@ class App extends Component {
         data={this.state.change_mode_data}
         sendData={this.sendData.bind(this)}
         />;
+      case 'waiting-list':
+        return <Notice
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
+        />;
     }
   }
   changeMode(_mode){
