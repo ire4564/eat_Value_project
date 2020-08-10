@@ -8,6 +8,7 @@
  *  - top: 상위 블록에 넣어야하는 컴포넌트
  *  - bottom: 하위 블록에 넣어야하는 컴포넌트
  *  - type: 블록 컬러 설정
+ *  - shadow: 그림자 여부 설정
  * 
  * 
  * state :
@@ -48,9 +49,15 @@ class TwoColorBlock extends Component {
         }
         return COLOR_2;
     }
+    shadowStyle(){
+        if(this.props.shadow){
+            return styles.shadow;
+        }
+        return null;
+    }
     render(){
         return(
-            <View style={[styles.container,{height: this.props.height}]}>
+            <View style={[styles.container,{height: this.props.height}, this.shadowStyle()]}>
                 <View style={[styles.top_container,
                             {height: this.topHeight(),
                             backgroundColor: this.topColor()}]}>
@@ -73,10 +80,6 @@ const styles = StyleSheet.create({
         alignContent: 'space-around',
         borderColor: '#F2F2F2',
         borderWidth: 1,
-        shadowColor: "#000000",
-        shadowOpacity: 0.1,
-        shadowOffset: { width: 2, height: 4 },
-        elevation: 2,
         borderRadius: 18,
     },
     top_container: {
@@ -94,6 +97,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         alignContent: 'center',
         justifyContent: 'center',
+    },
+    shadow: {
+        shadowColor: "#000000",
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 2, height: 4 },
+        elevation: 2,
     },
 });
 
