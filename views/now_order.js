@@ -3,7 +3,6 @@
  * 
  * state :
  *  - db_user: 유저 정보
- *  //여기부터 아래의 state는 이후 수정이 필요함!!
  *  - order_list: 임시 데이터
  * 
  * const :
@@ -24,7 +23,7 @@ import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import LocationBar from '../components/locationBar';
 import posed from 'react-native-pose';
 
-const databaseURL = "https://cnu-eat-value.firebaseio.com/";
+const databaseURL = "https://cnu-eat-value.firebaseio.com/"; // firebase URL
 const MAX_MENU_NUM = 2;
 const Page = posed.View({
     open: {
@@ -149,6 +148,9 @@ class NowOrder extends Component {
             </View>;
     }
 
+    /**
+     * @method "order list loading"
+     */
     orderHistoryList(){
         var list = [];
         var i = 0;
@@ -172,6 +174,10 @@ class NowOrder extends Component {
         return list;
     }
 
+    
+    /**
+     * @method "search-bar result loading"
+     */
     searchResult() {
         if(this.state.order_list.length == 0){
             return null;
@@ -221,8 +227,16 @@ class NowOrder extends Component {
         return list;
     }
 
+    
+    /**
+     * @method "search mode on/off"
+     */
     IsSearchMode() {
         var unpressed = {color: "#FFF", fontWeight: "bold"};
+
+        /**
+         * @condition "is search mode off?"
+         */
         if(this.state.search_mode == 0) {
             return(
             <TouchableOpacity
@@ -238,10 +252,15 @@ class NowOrder extends Component {
                     <AntDesign name="downcircleo" size={hp('2%')} color="#fff" />
             </TouchableOpacity>
             );
+
+        /**
+         * @condition "is search mode on?"
+         */
         } else if(this.state.search_mode == 1) {
             var btn_txt = ["#가격 순 정렬", "#별점 순 정렬", "#배달 팁 없음", "#가까운 곳", "#혼자먹어요", "#같이먹어요"];
-            var btn_list_1 = [];
-            var btn_list_2 = [];
+            
+            var btn_list_1 = []; // 1열 : 가격, 별점, 배달팁
+            var btn_list_2 = []; // 2열 : 가까운, 혼자, 같이
 
             for(let i = 0; i < 3; i++) {
                 btn_list_1.push(
@@ -435,6 +454,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#40E0D0',
     },
+    // 방만들기
     makeOrder: {
         width: wp('90%'),
         marginTop: hp('61%'),
@@ -448,6 +468,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
+    // 닫힌 검색바
     search_bar: {
         position: 'absolute',
         width: wp('90%'),
@@ -464,6 +485,7 @@ const styles = StyleSheet.create({
         opacity: 0.9
     },
 
+    // 열린 검색바
     search_bar_open: {
         position: 'absolute',
         width: wp('90%'),
@@ -479,6 +501,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
 
+    // 검색 버튼
     search_btn: {
         backgroundColor:'#999',
         borderRadius: 10,
@@ -490,6 +513,7 @@ const styles = StyleSheet.create({
         marginTop: 6
     },
 
+    // 검색 버튼 눌림
     search_btn_pressed: {
         backgroundColor:'#FFF',
         borderRadius: 10,
