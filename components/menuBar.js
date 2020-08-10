@@ -41,6 +41,7 @@ class MenuBar extends Component {
                 seleted_mode: _mode
             });
             this.props.changeMode(_mode);
+            this.props.sendData("");
         }
     }
 

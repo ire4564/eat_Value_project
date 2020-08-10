@@ -84,7 +84,10 @@ class Navigation extends Component {
               {this.headerText()}
                 <TouchableOpacity
                 style={styles.header_button}
-                onPress={function(){this.props.changeMode('notice')}.bind(this)}>
+                onPress={function(){
+                  this.props.changeMode('notice');
+                  this.props.sendData("");
+                }.bind(this)}>
                   <Ionicons name="md-notifications" size={23} color="#444"/>
                 </TouchableOpacity>
             </LinearGradient>
