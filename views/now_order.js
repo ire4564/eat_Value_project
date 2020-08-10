@@ -42,6 +42,30 @@ const Page = posed.View({
         opacity: 0
     },
 });
+const SearchPage = posed.View({
+    closed: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            y: { 
+                type: 'spring', 
+                stiffness: 1000, 
+                damping: 100
+              },
+          }
+    },
+    opened: {
+        y: hp('18%'),
+        opacity: 1,
+        transition: {
+            y: { 
+                type: 'spring', 
+                stiffness: 1000, 
+                damping: 100
+              },
+          }
+    },
+});
 
 class NowOrder extends Component {
     constructor(props){
@@ -49,6 +73,8 @@ class NowOrder extends Component {
         this.state = {
             event: 'closed',
             search: '',
+            search_bar: 'closed',
+            data: this.props.data,
             search_mode : 0,
             db_user: this.props.db_user,
             //아래는 추후 db연동을 위해 수정해야함!!!!
@@ -279,9 +305,9 @@ class NowOrder extends Component {
                 style={styles.search_bar}
                 onPress={function() {
                     if(this.state.search_mode == 1) {
-                        this.setState({search_mode: 0});
+                        this.setState({search_mode: 0, search_bar: 'closed'});
                     } else {
-                        this.setState({search_mode: 1});
+                        this.setState({search_mode: 1, search_bar: 'opened'});
                     }
                 }.bind(this)}>
                     <Text style={{color:'#fff', fontSize:hp('1.9%')}}> Search </Text>
@@ -319,9 +345,9 @@ class NowOrder extends Component {
                 style={styles.search_bar_open}
                 onPress={function() {
                     if(this.state.search_mode == 1) {
-                        this.setState({search_mode: 0});
+                        this.setState({search_mode: 0, search_bar: 'closed'});
                     } else {
-                        this.setState({search_mode: 1});
+                        this.setState({search_mode: 1, search_bar: 'opened'});
                     }
                 }.bind(this)}>
                 <View style={{flex:2}}>
@@ -354,7 +380,7 @@ class NowOrder extends Component {
     render(){
         return(
             <Page style={[this.props.style, styles.container]} pose={this.state.event}>
-                <View style={styles.main_container}>
+                <SearchPage style={styles.main_container} pose={this.state.search_bar}>
                     <View style={{ marginTop:'18.5%', marginBottom: '2%',
                      flexDirection: 'row', width: '90%', alignSelf: 'center'}}>
                         <AntDesign name="checkcircle" size={hp('2%')} color="#40e0d0" />
@@ -366,9 +392,10 @@ class NowOrder extends Component {
     
                     </ScrollView>
 
-                    
-                    {this.IsSearchMode()}
-                </View>
+                </SearchPage>
+
+                {this.IsSearchMode()}
+
                 <TouchableOpacity
                     style={styles.makeOrder}
                     onPress={function(){this.props.changMode("make-room")}.bind(this)}>
