@@ -146,16 +146,28 @@ class OrderList extends Component {
         while(i<this.state.order_list.length){
             var top_data = this.orderHistory_top(i);
             list.push(
-                <TouchableOpacity
-                style={styles.order_history_container}
+                <View
                 key={i+"_history"}>
-                    <TwoColorBlock
-                        topHeight={2}
-                        bottomHeight={1}
-                        type={0}
-                        top={top_data[0]}
-                        bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}/>
-                </TouchableOpacity>
+                    <View
+                    style={{position: 'absolute', height: hp('21%'), width: '100%', zIndex: -1}}>
+                        <TwoColorBlock
+                            topHeight={2}
+                            bottomHeight={1}
+                            type={0}
+                            shadow={true}/>
+                    </View>
+                    <TouchableOpacity
+                        style={styles.order_history_container}
+                        >
+                            <TwoColorBlock
+                                topHeight={2}
+                                bottomHeight={1}
+                                type={0}
+                                top={top_data[0]}
+                                bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}
+                                shadow={false}/>
+                    </TouchableOpacity>
+                </View>
             );
             i = i + 1;
         }
@@ -218,7 +230,7 @@ const styles = StyleSheet.create({
         margin: hp('2%'),
         flexDirection: 'row',
         alignContent: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
 
     //주문별 가게 image style
