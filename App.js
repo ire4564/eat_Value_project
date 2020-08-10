@@ -25,7 +25,6 @@ import Navigation from './components/navigation';
 import MakeRoom from './views/make_room';
 import CheckOrder from './views/check_order';
 import Notice from './views/notice';
-import WaitingList from './views/waiting_list';
 
 class App extends Component {
 
@@ -104,14 +103,6 @@ class App extends Component {
         />;
       case 'notice':
         return <Notice
-        style={styles.page_component}
-        db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
-        data={this.state.change_mode_data}
-        sendData={this.sendData.bind(this)}
-        />;
-      case 'waiting-list':
-        return <WaitingList
         style={styles.page_component}
         db_user={this.state.db_user}
         changMode={this.changeMode.bind(this)}

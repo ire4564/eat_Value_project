@@ -180,7 +180,7 @@ class Home extends Component {
                 color={COLOR_SET[i%COLOR_SET.length]}
                 event={function(){
                     this.props.sendData(store_num);
-                    this.props.changMode("waiting-list");
+                    this.props.changMode("now-order");
                 }.bind(this)}
                 />);
             i = i + 1;
