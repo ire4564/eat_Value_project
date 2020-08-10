@@ -39,7 +39,7 @@ class TouchableOrder extends Component {
             style={[styles.container, {backgroundColor: this.props.color}]}
             onPress={function(){
                 if(this.props.event!==undefined){
-                    this.props.event;
+                    this.props.event();
                 }
             }.bind(this)}
             >

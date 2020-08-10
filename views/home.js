@@ -177,7 +177,7 @@ class Home extends Component {
                 amount={this.state.hot_store[i].amount}
                 key={i+"_hot_store"}
                 color={COLOR_SET[i%COLOR_SET.length]}
-                onPress={function(){this.props.changMode("waiting-list")}.bind(this)}
+                event={function(){this.props.changMode("waiting-list")}.bind(this)}
                 />);
             i = i + 1;
         }
