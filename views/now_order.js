@@ -387,7 +387,7 @@ class NowOrder extends Component {
         return(
             <Page style={[this.props.style, styles.container]} pose={this.state.event}>
                 <SearchPage style={styles.main_container} pose={this.state.search_bar}>
-                    <View style={{ marginTop:'18.5%', marginBottom: '2%',
+                    <View style={{ marginTop:'22%', marginBottom: '2%',
                      flexDirection: 'row', width: '90%', alignSelf: 'center'}}>
                         <AntDesign name="checkcircle" size={hp('2%')} color="#40e0d0" />
                         <Text style={{fontSize:hp('2%'), fontWeight: 'bold', marginLeft: '2%'}}>NOW 주문</Text>
@@ -545,7 +545,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: wp('90%'),
         height: hp('5%'),
-        marginTop: '6.5%',
+        marginTop: '9%',
         alignSelf: 'center',
         backgroundColor: '#40e0d0',
         borderRadius: 10,
@@ -562,7 +562,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: wp('90%'),
         height: hp('23%'),
-        marginTop: '6.5%',
+        marginTop: '9%',
         alignSelf: 'center',
         backgroundColor: '#40e0d0',
         borderRadius: 10,
