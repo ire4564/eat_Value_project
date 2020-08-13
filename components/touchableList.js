@@ -38,14 +38,20 @@ class TouchableList extends Component {
             style={styles.container}
             onPress={function(){
                 if(this.props.event!==undefined){
-                    this.props.event;
+                    this.props.event(this.state.order, this.props.store);
                 }
             }.bind(this)}
             >
                 <TouchableText
                 text={this.state.store.category}
                 style={styles.category_container}
-                style_text={styles.category_text}/>
+                style_text={styles.category_text}
+                event={function(_text){
+                    this.props.sendData(_text);
+                    this.props.changeMode('now-order');
+                }.bind(this)}
+                sendData={this.props.sendData}
+                changeMode={this.props.changeMode}/>
                 <Text style={styles.text}>{this.state.store.name}</Text>
 
                 <View style={styles.gaugeBar}>
