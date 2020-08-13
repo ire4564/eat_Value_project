@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         alignContent: 'center',
         justifyContent: 'center',
-        height: hp('2%'),
+        height: wp('4.5%'),
         width: wp('15%'),
         alignSelf: 'center',
     },
