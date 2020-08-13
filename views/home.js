@@ -158,7 +158,7 @@ class Home extends Component {
                         text={this.state.hot_menu[i]}
                         event={function(_text){
                             this.props.sendData(_text);
-                            this.props.changMode('now-order');
+                            this.props.changeMode('now-order');
                         }.bind(this)}
                         sendData={this.props.sendData.bind(this)}
                         changeMode={this.props.changeMode}
@@ -186,7 +186,7 @@ class Home extends Component {
                 key={i+"_hot_store"}
                 color={COLOR_SET[i%COLOR_SET.length]}
                 event={function(){
-                    this.props.changMode("now-order");
+                    this.props.changeMode("now-order");
                 }.bind(this)}
                 sendData={this.props.sendData.bind(this)}
                 />);
