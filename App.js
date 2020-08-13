@@ -50,7 +50,7 @@ class App extends Component {
         return <Home
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
         data={this.state.change_mode_data}
         sendData={this.sendData.bind(this)}
         />;
@@ -58,7 +58,7 @@ class App extends Component {
         return <CheckOrder
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
         data={this.state.change_mode_data}
         sendData={this.sendData.bind(this)}
         />;
@@ -66,7 +66,7 @@ class App extends Component {
         return <OrderList
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
         data={this.state.change_mode_data}
         sendData={this.sendData.bind(this)}
         />;
@@ -74,7 +74,7 @@ class App extends Component {
         return <NowOrder
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
         data={this.state.change_mode_data}
         sendData={this.sendData.bind(this)}
         />;
@@ -82,7 +82,7 @@ class App extends Component {
         return <Talk
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
         data={this.state.change_mode_data}
         sendData={this.sendData.bind(this)}
         />;
@@ -90,7 +90,7 @@ class App extends Component {
         return <User
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
         data={this.state.change_mode_data}
         sendData={this.sendData.bind(this)}
         />;
@@ -98,7 +98,7 @@ class App extends Component {
         return <MakeRoom
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
         data={this.state.change_mode_data}
         sendData={this.sendData.bind(this)}
         />;
@@ -106,7 +106,7 @@ class App extends Component {
         return <Notice
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
         data={this.state.change_mode_data}
         sendData={this.sendData.bind(this)}
         />;
@@ -114,7 +114,7 @@ class App extends Component {
         return <DetailOrder
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
         data={this.state.change_mode_data}
         sendData={this.sendData.bind(this)}
         />;
