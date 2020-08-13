@@ -206,7 +206,11 @@ class Home extends Component {
                     <TouchableList
                     key={i+"_order"}
                     order={this.state.db_order[i]}
-                    store={this.state.db_store[this.state.db_order[i].store_num]}/>
+                    store={this.state.db_store[this.state.db_order[i].store_num]}
+                    event={function(){
+                        this.props.changMode("detail-order");
+                    }.bind(this)}
+                    sendData={this.props.sendData.bind(this)}/>
                 );
                 i = i + 1;
             }
