@@ -208,9 +208,10 @@ class Home extends Component {
                     order={this.state.db_order[i]}
                     store={this.state.db_store[this.state.db_order[i].store_num]}
                     event={function(){
-                        this.props.changMode("detail-order");
+                        this.props.changeMode("detail-order");
                     }.bind(this)}
-                    sendData={this.props.sendData.bind(this)}/>
+                    sendData={this.props.sendData.bind(this)}
+                    changeMode={this.props.changeMode}/>
                 );
                 i = i + 1;
             }
