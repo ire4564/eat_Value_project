@@ -15,7 +15,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const COLOR_SET = ['#00CED1','#008080', '#40e0d0'];
+const COLOR_SET = ['#00CED1','#8BAAF0', '#7AD3FA', '#40e0d0'];
 
 class PostBlock extends Component {
     constructor(props){
