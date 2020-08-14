@@ -33,7 +33,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-        seleted_mode: 'complete-order',
+        seleted_mode: 'home',
         change_mode_data: '',
         db_user: {
           coupon_num: 0,
