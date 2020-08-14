@@ -14,6 +14,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { LinearGradient } from 'expo-linear-gradient';
 import MenuBar from './components/menuBar';
 import Home from './views/home';
 import NowOrder from './views/now_order';
@@ -24,6 +25,8 @@ import Navigation from './components/navigation';
 import MakeRoom from './views/make_room';
 import CheckOrder from './views/check_order';
 import Notice from './views/notice';
+import DetailOrder from './views/detail_order';
+import CompleteOrder from './views/complete_order';
 
 class App extends Component {
 
@@ -31,6 +34,7 @@ class App extends Component {
     super(props);
     this.state = {
         seleted_mode: 'home',
+        change_mode_data: '',
         db_user: {
           coupon_num: 0,
           id: "testID",
@@ -43,77 +47,121 @@ class App extends Component {
   }
   changePage(){
     switch(this.state.seleted_mode){
+      case 'complete-order':
+        return <CompleteOrder
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
+        />;
       case 'home':
         return <Home
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'check-order':
         return <CheckOrder
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'order-list':
         return <OrderList
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'now-order':
         return <NowOrder
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'talk':
         return <Talk
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'user':
         return <User
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'make-room':
         return <MakeRoom
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
       case 'notice':
         return <Notice
         style={styles.page_component}
         db_user={this.state.db_user}
-        changMode={this.changeMode.bind(this)}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
+        />;
+      case 'detail-order':
+        return <DetailOrder
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
         />;
     }
   }
   changeMode(_mode){
     if(this.state.seleted_mode!==_mode){
-              this.setState({
-                seleted_mode: _mode,
-              });
-            }
+        this.setState({
+          seleted_mode: _mode,
+        });
+      }
   }
+  sendData(_data){
+    this.setState({
+      change_mode_data: _data,
+    });
+  }
+
   render(){
     return(
-      <View style={styles.container}>
+      <LinearGradient 
+      colors={['#40E0D0', '#7AD3FA', '#8BAAF0']}
+      start={{x: 0, y: 1}}
+      end={{x: 1, y: 1}}
+      style={styles.container}>
         <Navigation
         mode={this.state.seleted_mode}
         changeMode={this.changeMode.bind(this)}
+        sendData={this.sendData.bind(this)}
         />
         {this.changePage()}
         <MenuBar
         style={styles.menu_component}
         mode={this.state.seleted_mode}
         changeMode={this.changeMode.bind(this)}
+        sendData={this.sendData.bind(this)}
         />
-    </View>
+    </LinearGradient>
     );
   }
 }
@@ -138,8 +186,6 @@ const styles = StyleSheet.create({
     width: wp('100%'),
     height: hp('7%'),
     flexDirection: 'row',
-
-    backgroundColor: '#40E0D0',
     alignItems: 'center',
   },
 });
