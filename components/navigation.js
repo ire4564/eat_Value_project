@@ -71,6 +71,11 @@ class Navigation extends Component {
                   style={styles.text}>
                     상세 주문
                   </Text>;
+        case 'complete-order':
+          return <Text
+                  style={styles.text}>
+                    주문 완료
+                  </Text>;
       }
       return <Text
       style={styles.text}>
