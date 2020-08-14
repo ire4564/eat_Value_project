@@ -1,11 +1,31 @@
 /************************************************
  * Class : 선택주문에 대한 상세 페이지
  * 
+ * const :
+ *  - TEST_IMG: 최상단 위치하는 가게 이미지(임시)
+ *  - COLOR_SET: 기본 컬러 팔레트
+ *  - Page: (pose) 최상위 컴포넌트 애니메이션 설정 정보
+ * 
  * state :
- *  - 
+ *  - data: 이전 mode로부터 받아온 주문 번호
+ *  - member: 해당 주문의 참여한 유저 목록
+ *  - total_price: 전체 주문 금액
+ *  - user: 사용자 본인
+ *  - order: 현재 주문 정보
+ *  - store: 현재 가게 정보
+ *  - event: 애니메이션을 위한 state
+ *  **********여기서부터는 db************
+ *  - db_user: 유저 정보들 모음
+ *  - db_store: 가게 정보 모음
+ *  - db_order: 전체 주문 모음
  * 
  * function :
- *  -  
+ *  - computeTotalPrice: 전체 주문 금액 계산 후 state에 반영
+ *  - computeMember: 주문에 참여한 유저 목록 state에 반영
+ *  - computeGauge: 주문 금액에 따라 게이지 길이 조정하는 메소드
+ *  - printOrderDetail: 상세 주문 정보 출력
+ *  - printCloseButton: 주문 참여 시 주문 마감 버튼, 아닌 경우 참여 버튼 출력
+ *  - printDeleteButton: 주문 참여한 경우 취소 버튼 출력
  *  
  ************************************************/
 
@@ -81,8 +101,8 @@ class DetailOrder extends Component {
                 limit_order: 4,
                 alone: 0,
                 order_detail: [
-                    {menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "testID"},
-                    {menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID"},
+                    {menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "other2"},
+                    {menu: '모둠 튀김', amount: 1, price: 3000, user_id: "other2"},
                     {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other1"},  
                 ],
             },
