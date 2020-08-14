@@ -13,7 +13,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { EvilIcons } from '@expo/vector-icons';
-import  Btn  from '../components/basicBtn';
+import  Btn  from '../components/BasicBtn';
 const ICON_COLOR = '#40E0D0';
 
 class locationBox extends Component {

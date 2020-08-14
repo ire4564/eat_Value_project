@@ -16,7 +16,7 @@
 
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View , TextInput} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Divider } from 'react-native-elements';
 import LocationBar from '../components/locationBar';
@@ -27,6 +27,7 @@ import OrderBox from '../components/basicBox';
 import LocationBox from '../components/locationBox';
 import InfoBox from '../components/infoBox';
 const ICON_COLOR = '#40E0D0';
+var first = true;
 
 class MakeRoom extends Component {
     constructor(props) {
@@ -48,13 +49,56 @@ class MakeRoom extends Component {
             //방의 정보: 모집 인원, 모인 인원, 모인 금액에 대한 정보
             room_info: [
                 {
-                    want: 5, //사용
-                    exist: 4,
-                    exist_prize: 25000
+                    want: 1, //사용
+                    exist: 0,
+                    exist_prize: 0
                 }
             ],
-            totalPrize: 8000, //사용
+            totalPrize: 0, //사용
+            aloneORtogether: true
         }
+    }
+
+    //주문 완료시 DB 처리를 위한 function
+    completeOrder = () => {
+        //주문하기로 화면 전환 예정
+
+        /* **** DB 저장 정보 ****
+         * 
+         * room info: 
+           want(모집하고 싶은 사람 수), exist(현재 모집 인원은 0명을 넘어감), exist_prize(방 만드는 주문자 금액만 더해서 넘기기)
+         * total prize: 총 모집을 원하는 금액
+         * db_user: 사용자 정보
+         * order_list: 주문한 음식에 대한 정보 (메뉴, 가격, 양 등의 정보),
+         * aloneORtogether: 혼자 먹을래요, 같이 먹을래요에 관한 선택 여부
+         * 
+         */
+    }
+
+    //숫자 입력 값에 표기하기
+    addComma(x) {
+        if(first == true){
+            first = false;
+            return '';
+        }
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    //주문하기에 입력된 값 체크, 한도 300,000이상 입력 불가 방지
+    check_input() {
+        if(this.state.totalPrize > 300000) {
+            alert("입력 금액 한도를 초과하였습니다! \n원하시는 금액을 정확히 입력해주세요.");
+            this.setState({totalPrize: ''});
+        }
+    }
+
+    // 콤마 추가를 했다가, DB에는 빼고 숫자로 저장하는 용도
+    replaceComma(x){
+        if(x.indexOf(",") != -1) {
+            //콤마가 있으면 replace
+            x = x.replace(/,/gi, '');
+        }
+        return x;
     }
 
      //주문하기 밑에 주문 정보 탭
@@ -67,8 +111,8 @@ class MakeRoom extends Component {
             list_info.push(
                 <View key={i}>
                     <Text style={styles.detail_title}>{order_details[i].menu}</Text>
-                    <Text style={styles.detail_prize}>● 기본: {order_details[i].price} 원</Text>
-                    <Text style={styles.detail_prize}> {this_total_prize} 원</Text>
+                    <Text style={styles.detail_prize}>● 기본: {this.addComma(order_details[i].price)} 원</Text>
+                    <Text style={styles.detail_prize}> {this.addComma(this_total_prize)} 원</Text>
                     <OrderItem num={order_details[i].amount}/>
                     <Divider style={styles.separator} />
                 </View>
@@ -87,17 +131,22 @@ class MakeRoom extends Component {
             <Text style = {styles.detail_title}>
                 총 모집 인원
             </Text>
-            <OrderItem num={1}/>
+            <OrderItem num={this.state.room_info[0].want}/>
             <Divider style={styles.separator} />
             <Text style = {styles.detail_title}>
                 총 모집 금액
             </Text>
             {/*이 부분 input 받는 곳으로, 키보드 입력 받는 곳으로 수정*/}
+                   
             <View style={styles.togetPrize}>
-                    <Text style={styles.togetFont}>총 모집 금액  <Text style={{ color: '#40E0D0' }}> 
-                        {this.state.room_info[0].exist_prize} 원</Text>
-                    </Text>
-                </View>
+              <TextInput
+                    style={styles.search}
+                    keyboardType = 'numeric'
+                    placeholder="총 모집 금액 입력"
+                    onChangeText={(text)=>this.setState({totalPrize: this.replaceComma(text)})}
+                    value={this.addComma(this.state.totalPrize)}/>
+                <Text style={styles.won}> 원</Text>
+            </View>
         </View>
        
         ;
@@ -124,6 +173,7 @@ class MakeRoom extends Component {
                     title = {this.state.order_list[0].store_name}
                     func = {this.select_info()}
                 ></InfoBox>
+                   {this.check_input()}
 
                 {/*주문하는 리스트 안의 내용*/}
                 <OrderBox 
@@ -137,7 +187,12 @@ class MakeRoom extends Component {
 
                
                 {/*주문 완료 버튼*/}
-                <CompleteBtn text = '주문하고 모집 시작하기' iconName="rightcircleo"></CompleteBtn>
+                <CompleteBtn 
+                    text = '주문하고 모집 시작하기' 
+                    iconName="rightcircleo"
+                    clickFunc = {this.completeOrder}
+                    >
+                </CompleteBtn>
                 
             </View>
         );
@@ -228,6 +283,22 @@ const styles = StyleSheet.create({
         marginRight: -15,
         marginTop: 15
     },
+    search: {
+        fontSize: 13,
+        marginLeft: 20,
+        marginTop: 2,
+        color: ICON_COLOR,
+        fontWeight: "bold",
+        justifyContent: 'flex-end',
+    }, 
+    won: {
+        fontSize: 14,
+        fontWeight: "bold",
+        color: ICON_COLOR,
+        justifyContent: 'flex-end',
+        marginTop: -23,
+        marginLeft: 130
+    }
   });
 
 export default MakeRoom;

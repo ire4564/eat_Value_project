@@ -18,15 +18,10 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { AntDesign } from '@expo/vector-icons';
 
 class complete_IconBtn extends Component {
-    //주문 완료시 
-    completeOrder = () => {
-        alert("주문이 완료되었습니다.")
-        //임시 화면 처리
-    }
     //버튼 컴포넌트 리턴
     putBtn() {
         var btn =
-        <TouchableOpacity style={styles.completeBtn} onPress={this.completeOrder}>
+        <TouchableOpacity style={styles.completeBtn} onPress={this.props.clickFunc}>
             <AntDesign
                 name={this.props.iconName}
                 size={20}
