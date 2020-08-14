@@ -49,9 +49,9 @@ class MakeRoom extends Component {
             //방의 정보: 모집 인원, 모인 인원, 모인 금액에 대한 정보
             room_info: [
                 {
-                    want: 1, //사용
-                    exist: 0,
-                    exist_prize: 0
+                    limit_order: 5, //최대 인원
+                    current_order: 4, //현재 인원
+                    exist_prize: 25000 //현재 모인 돈
                 }
             ],
             totalPrize: 0, //사용
@@ -131,7 +131,7 @@ class MakeRoom extends Component {
             <Text style = {styles.detail_title}>
                 총 모집 인원
             </Text>
-            <OrderItem num={this.state.room_info[0].want}/>
+            <OrderItem num={this.state.room_info[0].limit_order}/>
             <Divider style={styles.separator} />
             <Text style = {styles.detail_title}>
                 총 모집 금액

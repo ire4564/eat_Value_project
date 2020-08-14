@@ -42,6 +42,7 @@ class CheckOrder extends Component {
             order_list: [
                 {
                     store_name: "신당동 떡볶이 충남대점",
+                    store_num: '1234', //가게 고유 넘버
                     date: "2020-07-18-00-00",
                     order_detail: [{ menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "testID" },
                     { menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID" },
@@ -53,9 +54,9 @@ class CheckOrder extends Component {
             //방의 정보: 모집 인원, 모인 인원, 모인 금액에 대한 정보
             room_info: [
                 {
-                    want: 5,
-                    exist: 4,
-                    exist_prize: 25000
+                    limit_order: 5, //최대 인원
+                    current_order: 4, //현재 인원
+                    exist_prize: 25000 //현재 모인 돈
                 }
             ],
             totalPrize: 8000,
@@ -104,12 +105,12 @@ class CheckOrder extends Component {
 
     //현재 인원, 남은 인원 계산 및 총 모인 금액 보여주기 탭
     total_info() {
-        var other_people = this.state.room_info[0].want - this.state.room_info[0].exist;
+        var other_people = this.state.room_info[0].limit_order - this.state.room_info[0].current_order;
         var total =
             <View>
                 <Text style={styles.detail_title}>현재 인원 <Text style={{ color: '#DF0101' }}>
-                    {this.state.room_info[0].exist}</Text>
-                    /{this.state.room_info[0].want}
+                    {this.state.room_info[0].current_order}</Text>
+                    /{this.state.room_info[0].limit_order}
                 </Text>
                 <Text style={styles.detail_title}>앞으로 
                     <Text style={{ color: '#40E0D0' }}> {other_people} 명

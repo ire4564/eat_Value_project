@@ -26,13 +26,14 @@ import MakeRoom from './views/make_room';
 import CheckOrder from './views/check_order';
 import Notice from './views/notice';
 import DetailOrder from './views/detail_order';
+import CompleteOrder from './views/complete_order';
 
 class App extends Component {
 
   constructor(props){
     super(props);
     this.state = {
-        seleted_mode: 'home',
+        seleted_mode: 'complete-order',
         change_mode_data: '',
         db_user: {
           coupon_num: 0,
@@ -46,6 +47,14 @@ class App extends Component {
   }
   changePage(){
     switch(this.state.seleted_mode){
+      case 'complete-order':
+        return <CompleteOrder
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
+        />;
       case 'home':
         return <Home
         style={styles.page_component}
