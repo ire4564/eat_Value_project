@@ -15,6 +15,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import moment from 'moment'; 
 import posed from 'react-native-pose';
 import { AntDesign } from '@expo/vector-icons'; 
+import TwoColorBlock from '../components/twoColorBlock';
 
 const TEST_IMG = '../images/detail_order_sample.png';
 const COLOR_SET = ['#00CED1','#8BAAF0', '#7AD3FA', '#40e0d0'];
@@ -82,7 +83,7 @@ class DetailOrder extends Component {
                 order_detail: [
                     {menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "testID"},
                     {menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID"},
-                    
+                    {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other1"},  
                 ],
             },
             store: {
@@ -136,51 +137,39 @@ class DetailOrder extends Component {
     //컴포넌트 출력 관련 함수들
     printOrderDetail(){
         var list = [];
-        //보안을 위해 주문에 참가한 경우에만 다른 맴버에 대한 아이디가 출력됨
-        if(this.state.member.includes(this.state.user.id)){
-            for(let i=0; i<this.state.member.length; i++){
-                let temp = [];
-                for(let j=0; j<this.state.order.order_detail.length; j++){
-                    let temp_order = this.state.order.order_detail[j];
-                    //현재 탐색하고자 하는 유저의 주문들 저장
-                    if(this.state.member[i]==temp_order.user_id){
-                        temp.push(<View key={"user_menu_"+j} style={styles.row_container}>
-                        <Text style={styles.user_menu_text}>
-                            {temp_order.menu}
-                            {' *'+temp_order.amount}
-                        </Text>
-                        <Text style={styles.user_menu_text}>{(temp_order.price*temp_order.amount).toLocaleString()}원</Text>
-                    </View>);
-                    }    
-                }
-                list.push(<View key={i+"_user"}>
-                        <Text>{this.state.member[i]}</Text>
-                        {temp}
-                    </View>);
+        //안전을 위해 주문에 참가한 경우에만 다른 맴버에 대한 아이디가 출력됨
+        for(let i=0; i<this.state.member.length; i++){
+            let temp = [];
+            let temp_price = 0;
+            for(let j=0; j<this.state.order.order_detail.length; j++){
+                let temp_order = this.state.order.order_detail[j];
+                //현재 탐색하고자 하는 유저의 주문들 저장
+                if(this.state.member[i]==temp_order.user_id){
+                    temp.push(<View key={"user_menu_"+j} style={styles.detail_order_menu}>
+                    <Text style={styles.detail_order_menu_text}>
+                        {temp_order.menu}
+                        {' *'+temp_order.amount}
+                    </Text>
+                    <Text style={styles.detail_order_menu_text}>{(temp_order.price*temp_order.amount).toLocaleString()}원</Text>
+                </View>);
+                temp_price = temp_price + temp_order.price* temp_order.amount;
+                }    
             }
-        }else{
-            for(let i=0; i<this.state.member.length; i++){
-                let temp = [];
-                for(let j=0; j<this.state.order.order_detail.length; j++){
-                    let temp_order = this.state.order.order_detail[j];
-                    //현재 탐색하고자 하는 유저의 주문들 저장
-                    if(this.state.member[i]==temp_order.user_id){
-                        temp.push(<View key={"user_menu_"+j} style={styles.row_container}>
-                        <Text style={styles.user_menu_text}>
-                            {temp_order.menu}
-                            {' *'+temp_order.amount}
-                        </Text>
-                        <Text style={styles.user_menu_text}>{(temp_order.price*temp_order.amount).toLocaleString()}원</Text>
-                    </View>);
-                    }    
-                }
-                list.push(<View key={i+"_user"}>
-                        <Text>{"맴버_" + i}</Text>
+            list.push(<View key={i+"_user"} style={{width:wp('80%'), alignSelf:'center', marginBottom: wp('2%')}}>
+                <TwoColorBlock
+                top={<View style={styles.detail_order_container}>
+                        <Text style={styles.detail_order_text}>{this.state.member.includes(this.state.user.id)?this.state.member[i]:"맴버_" + i}</Text>
                         {temp}
-                    </View>);
-            }
-
+                    </View>}
+                bottom={<View style={styles.detail_order_bottom_container}>
+                        <Text style={styles.detail_order_menu_text}>전체 주문 금액</Text>
+                        <Text style={[styles.detail_order_menu_text, {fontWeight: 'bold'}]}>{temp_price.toLocaleString()}원</Text>
+                    </View>}
+                shadow={true}
+                />
+                </View>);
         }
+        
         return list;
     }
     printCloseButton(){
@@ -202,7 +191,13 @@ class DetailOrder extends Component {
                     <Text style={styles.button_text}>참여하기 (<Text>2</Text>/<Text>4</Text>)</Text>
                 </TouchableOpacity>);
     }
-
+    printDeleteButton(){
+        if(this.state.member.includes(this.state.user.id)){
+            return (<TouchableOpacity style={styles.delete_button}>
+                        <Text style={styles.button_text}>참여 취소하기</Text>
+                    </TouchableOpacity>);
+        }
+    }
 
     render(){
         return(
@@ -260,6 +255,7 @@ class DetailOrder extends Component {
 
                 {/* 화면 위치 고정 버튼 컴포넌트들 */}    
                 </ScrollView>
+                {this.printDeleteButton()}
                 {this.printCloseButton()}
             </Page>
         );
@@ -409,6 +405,19 @@ const styles = StyleSheet.create({
         borderRadius: wp('2.5%'),
       },
 
+      //참여 취소 버튼 style
+      delete_button : {
+        position: 'absolute',
+        alignSelf: 'center',
+        top: hp('65.5%'),
+        width: wp('90%'),
+        height: hp('6%'),
+        backgroundColor: '#ff3030',
+        alignContent: 'center',
+        justifyContent: 'center',
+        borderRadius: wp('2.5%'),
+    },
+
       //게이지바 style
     gaugeBar: {
         width: wp('80%'),
@@ -435,6 +444,44 @@ const styles = StyleSheet.create({
         height: hp('4.1%'),
         borderRadius: wp('2.4%'),
         backgroundColor: COLOR_SET[1],
+    },
+    
+    //상세 주문 내역 컴포넌트 style
+    detail_order_container:{
+        width: wp('80%'),
+        alignSelf: 'center',
+        marginBottom: wp('1%'),
+        paddingVertical: wp('2%'),
+    },
+
+    //상세 주문 내역 유저ID text style
+    detail_order_text: {
+        fontSize: wp('4%'),
+        fontWeight: 'bold',
+        paddingHorizontal: wp('2%'),
+        textAlign: 'center',
+    },
+
+    //상세 주문 내역 메뉴 컴포넌트 style
+    detail_order_menu: {
+        width: '90%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+
+    //상세 주문 내역 메뉴 text style
+    detail_order_menu_text: {
+
+    },
+
+    //상세 주문 내역 하단 style
+    detail_order_bottom_container: {
+        paddingVertical: wp('2%'),
+        width: '90%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
   });
 
