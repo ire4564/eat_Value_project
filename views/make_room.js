@@ -26,6 +26,7 @@ import CompleteBtn from '../components/complete_IconBtn';
 import OrderBox from '../components/basicBox';
 import LocationBox from '../components/locationBox';
 import InfoBox from '../components/infoBox';
+import returnProps from '../components/return_props';
 const ICON_COLOR = '#40E0D0';
 var first = true;
 
