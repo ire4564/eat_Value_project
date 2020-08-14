@@ -26,6 +26,7 @@ import CompleteBtn from '../components/complete_IconBtn';
 import OrderBox from '../components/basicBox';
 import LocationBox from '../components/locationBox';
 import InfoBox from '../components/infoBox';
+import returnProps from '../components/return_props';
 const ICON_COLOR = '#40E0D0';
 var first = true;
 
@@ -55,7 +56,7 @@ class MakeRoom extends Component {
                 }
             ],
             totalPrize: 0, //사용
-            aloneORtogether: true
+            alone: true //혼자 먹을래요면 true, 함께면 false
         }
     }
 
@@ -66,13 +67,25 @@ class MakeRoom extends Component {
         /* **** DB 저장 정보 ****
          * 
          * room info: 
-           want(모집하고 싶은 사람 수), exist(현재 모집 인원은 0명을 넘어감), exist_prize(방 만드는 주문자 금액만 더해서 넘기기)
+           limit_order(모집하고 싶은 사람 수), current_order(현재 모집 인원은 0명을 넘어감), exist_prize(방 만드는 주문자 금액만 더해서 넘기기)
          * total prize: 총 모집을 원하는 금액
          * db_user: 사용자 정보
          * order_list: 주문한 음식에 대한 정보 (메뉴, 가격, 양 등의 정보),
-         * aloneORtogether: 혼자 먹을래요, 같이 먹을래요에 관한 선택 여부
+         * alone: 혼자 먹을래요, 같이 먹을래요에 관한 선택 여부
          * 
          */
+        var alertText = 
+        "모집 인원: " + this.state.room_info[0].limit_order + " \n" +
+        "현재 모집 인원: " + this.state.room_info[0].current_order + " \n"  +
+        "총 모집 희망금액: " + this.state.totalPrize + " \n" +
+        "방 만든 사람이 주문한 금액: " + this.state.room_info[0].exist_prize + " \n" +
+        "혼자 먹을래요: " + this.state.alone + " \n" +
+        "주문한 list 길이: " + this.state.order_list[0].order_detail.length + " \n" 
+        ;
+
+        //DB 연동시 모아둘 것 확인 차 해놓음, 연동 끝나면 없앨 것
+        alert(alertText) 
+        {{this.props.changeMode("complete-order")}} //화면 전환
     }
 
     //숫자 입력 값에 표기하기
@@ -190,7 +203,7 @@ class MakeRoom extends Component {
                 <CompleteBtn 
                     text = '주문하고 모집 시작하기' 
                     iconName="rightcircleo"
-                    clickFunc = {function(){this.props.changeMode("complete-order")}.bind(this)}
+                    clickFunc = {this.completeOrder}
                     >
                 </CompleteBtn>
                 

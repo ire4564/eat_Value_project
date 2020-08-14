@@ -14,6 +14,7 @@ import { StyleSheet, Text, View} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { EvilIcons } from '@expo/vector-icons';
 import  Btn  from '../components/BasicBtn';
+import ReturnProps from '../components/return_props';
 const ICON_COLOR = '#40E0D0';
 var b1 = false;
 var b2 = false;
@@ -23,7 +24,8 @@ class locationBox extends Component {
         super(props);
         this.state = {
             btn1_check: false,
-            btn2_check: false
+            btn2_check: false,
+            final_check: 1 //default
         };
     }
     //눌렀을 때 (btn1: 혼자 먹어요)
@@ -34,19 +36,23 @@ class locationBox extends Component {
                 btn1_check: true,
                 btn2_check: false
             });
-            return 0;
-        }
-        if(this.state.btn1_check == false){
+        } 
+        else if(this.state.btn1_check == false){
             //버튼이 눌려있지 않을 때
             this.setState({
                 btn1_check: true,
             });
-        } else {
+        } else { 
             //버튼이 눌려있을 때
             this.setState({
                 btn1_check: false,
             });
         }
+        //혼자 먹을래요 버튼 눌림
+        this.setState({
+            final_check: 1
+        });
+        return 1;
     }
 
     //눌렀을 때 (btn2: 같이 먹어요)
@@ -57,20 +63,25 @@ class locationBox extends Component {
                 btn1_check: false,
                 btn2_check: true
             });
-            return 0;
         }
-        if(this.state.btn2_check == false){
+        else if(this.state.btn2_check == false){
             //버튼이 눌려있지 않을 때
             this.setState({
                 btn1_check: false,
                 btn2_check: true,
             });
+
         } else {
             //버튼이 눌려있을 때
             this.setState({
                 btn2_check: false,
             });
         }
+        //같이 먹을래요 버튼 눌림
+        this.setState({
+            final_check: 2
+        });
+        return 2;
     }
 
     //혼자 먹기 같이 먹기 선택하기 버튼
@@ -113,7 +124,6 @@ class locationBox extends Component {
                     {/*혼자 먹기, 같이 먹기 선택하기 버튼*/}
                     {this.select_btn()}
                     </View>
-
                 </View>
         return Box;
     }
@@ -122,6 +132,7 @@ class locationBox extends Component {
         return(
             <View>
               {this.putBox()}
+              <ReturnProps chooseBtn={this.state.final_check}></ReturnProps>
             </View>
         );
     }
