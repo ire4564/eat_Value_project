@@ -29,24 +29,8 @@ class basicBox extends Component {
             check: false,
         };
     }
-    //눌렀을 때
-    _clickThis = () => {
-        if(this.state.check == false){
-            //버튼이 눌려있지 않을 때
-            this.setState({
-                check: true,
-            });
-            return false;
-        } else {
-            //버튼이 눌려있을 때
-            this.setState({
-                check: false,
-            });
-            return true;
-        }
-    }
     checkBtn() {
-        if(this.state.check == false){
+        if(this.props.pushBtn == false){
             return this.whiteBtn();
         } else {
             return this.grayBtn();
@@ -55,14 +39,14 @@ class basicBox extends Component {
     //기본 버튼 컴포넌트
     whiteBtn() {
         var btn = 
-            <TouchableOpacity style={styles.whiteBtn} onPress={this._clickThis}>
+            <TouchableOpacity style={styles.whiteBtn} onPress={this.props.clicks}>
                 <Text style={styles.whiteFont}>{this.props.text}</Text>
             </TouchableOpacity>;
         return btn;
     }
     grayBtn() {
         var btn = 
-            <TouchableOpacity style={styles.grayBtn} onPress={this._clickThis}>
+            <TouchableOpacity style={styles.grayBtn} onPress={this.props.clicks}>
                 <Text style={styles.grayFont}>{this.props.text}</Text>
             </TouchableOpacity>;
         return btn;

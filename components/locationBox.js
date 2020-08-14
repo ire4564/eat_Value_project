@@ -15,18 +15,74 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { EvilIcons } from '@expo/vector-icons';
 import  Btn  from '../components/BasicBtn';
 const ICON_COLOR = '#40E0D0';
+var b1 = false;
+var b2 = false;
 
 class locationBox extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            btn1_check: false,
+            btn2_check: false
+        };
+    }
+    //눌렀을 때 (btn1: 혼자 먹어요)
+    _clickBtn1 = () => {
+        if(this.state.btn2_check == true){
+            //이미 버튼 2가 눌려있을 때
+            this.setState({
+                btn1_check: true,
+                btn2_check: false
+            });
+            return 0;
+        }
+        if(this.state.btn1_check == false){
+            //버튼이 눌려있지 않을 때
+            this.setState({
+                btn1_check: true,
+            });
+        } else {
+            //버튼이 눌려있을 때
+            this.setState({
+                btn1_check: false,
+            });
+        }
+    }
+
+    //눌렀을 때 (btn2: 같이 먹어요)
+    _clickBtn2 = () => {
+        if(this.state.btn1_check == true){
+            //이미 버튼 1가 눌려있을 때
+            this.setState({
+                btn1_check: false,
+                btn2_check: true
+            });
+            return 0;
+        }
+        if(this.state.btn2_check == false){
+            //버튼이 눌려있지 않을 때
+            this.setState({
+                btn1_check: false,
+                btn2_check: true,
+            });
+        } else {
+            //버튼이 눌려있을 때
+            this.setState({
+                btn2_check: false,
+            });
+        }
+    }
+
     //혼자 먹기 같이 먹기 선택하기 버튼
     select_btn() {
         var btn_1 = 
         <View>
-            <Btn text="혼자 먹을래요"></Btn>
+            <Btn key={"btn1"} text="혼자 먹을래요" clicks={this._clickBtn1} pushBtn={this.state.btn1_check}></Btn>
         </View>;
 
         var btn_2 =
         <View>
-            <Btn text="같이 먹을래요"></Btn>
+            <Btn key={"btn2"} text="같이 먹을래요" clicks={this._clickBtn2} pushBtn={this.state.btn2_check}></Btn>
         </View>;
 
         return [btn_1, btn_2];
