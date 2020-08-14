@@ -5,7 +5,7 @@
 
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
 const databaseURL = "https://cnu-eat-value.firebaseio.com/";
 
@@ -43,6 +43,24 @@ export default class DB_Loader extends React.Component {
       return res.json();
     }).then(db_user => this.setState({db_user: db_user}));
   }
+  /**
+   * @method "insert data to firebase DB"
+   */
+  _post(jsondata) {
+    return fetch(`${databaseURL}/db_user.json`, { // TODO : set table json name
+      method: 'POST',
+      body: JSON.stringify(jsondata)
+    }).then(res => {
+      if(res.status != 200) {
+        throw new Error(res.statusText); // throw exception
+      }
+      return res.json();
+    }).then(data => {
+      let nextState = this.state.db_user; // TODO : set table json name
+      nextState[data.name] = jsondata
+      this.setState({db_user : nextState});
+    });
+  }
 
   /**
    * @method "IsChange?"
@@ -55,6 +73,15 @@ export default class DB_Loader extends React.Component {
     this._get();
   }
   
+  _add_user() {
+    const jsondata = {
+      coupon_num: 123,
+      id: "123123test",
+      name: "insert",
+      order_num: 1
+    }
+    this._post(jsondata);
+  }
   /**
    * @return "main render"
    */
@@ -74,6 +101,7 @@ export default class DB_Loader extends React.Component {
               const user = this.state.db_user[id];
               return(<Text key={id}>{user.id} {user.name} {user.coupon_num} {user.order_num}</Text>);
             })}
+          <Button title="add user" onPress={this._add_user.bind(this)}/>
           </View>
         </View>
     );
