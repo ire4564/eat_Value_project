@@ -3,7 +3,7 @@
  * 
  * state :
  *  - db_user: 유저 정보
- *  - order_list: 임시 데이터
+ *  - db_order: 임시 데이터
  * 
  * const :
  *  - MAX_MENU_NUM: 각 주문 내 표시할 최대 자신이 주문한 메뉴 개수
@@ -77,7 +77,7 @@ class NowOrder extends Component {
             search_mode : 0,
             db_user: this.props.db_user,
             //아래는 추후 db연동을 위해 수정해야함!!!!
-            order_list: [],
+            db_order: [],
         }   
     }
     
@@ -85,12 +85,12 @@ class NowOrder extends Component {
      * @method "load data and then store to the state"
      */
     _get() {
-        fetch(`${databaseURL}/order_list.json`).then(res => {
+        fetch(`${databaseURL}/db_order.json`).then(res => {
         if(res.status != 200) {
             throw new Error(res.statusText);
         }
         return res.json();
-        }).then(order_list => this.setState({order_list: order_list}));
+        }).then(db_order => this.setState({db_order: db_order}));
 
     }
 
@@ -98,7 +98,7 @@ class NowOrder extends Component {
      * @method "IsChange?"
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return (nextState.order_list != this.state.order_list) || (nextState.search != this.state.search) || (nextState.search_mode != this.state.search_mode);
+        return (nextState.db_order != this.state.db_order) || (nextState.search != this.state.search) || (nextState.search_mode != this.state.search_mode);
     }
 
     componentDidMount() {
@@ -114,9 +114,9 @@ class NowOrder extends Component {
     }
 
     orderHistory_top(_num){
-        var date = this.state.order_list[_num].date.split('-');
-        var order_detail = this.state.order_list[_num].order_detail;
-        var store_image = this.state.order_list[_num].store_image;
+        var date = this.state.db_order[_num].date.split('-');
+        var order_detail = this.state.db_order[_num].order_detail;
+        var store_image = this.state.db_order[_num].store_image;
         var user_menu = [];
         var user_menu_amount = 0;
 
@@ -165,7 +165,7 @@ class NowOrder extends Component {
     orderHistory_bottom(_num, user_price, total_price){
         return<View style={styles.bottom_order_history}>
                 <Text style={styles.store_name}>
-                    {this.state.order_list[_num].store_name}
+                    {this.state.db_order[_num].store_name}
                 </Text>
                 <View style={styles.price_container}>
                     <View style={styles.row_container}>
@@ -187,7 +187,7 @@ class NowOrder extends Component {
         var list = [];
         var i = 0;
         
-        while(i<this.state.order_list.length){
+        while(i<this.state.db_order.length){
             var top_data = this.orderHistory_top(i);
             list.push(
                 <View
@@ -223,7 +223,7 @@ class NowOrder extends Component {
      * @method "search-bar result loading"
      */
     searchResult() {
-        if(this.state.order_list.length == 0){
+        if(this.state.db_order.length == 0){
             return null;
         }
 
@@ -231,7 +231,7 @@ class NowOrder extends Component {
         if(this.state.search === ''){
             var i = 0;
             
-            while(i < this.state.order_list.length){
+            while(i < this.state.db_order.length){
                 var top_data = this.orderHistory_top(i);
                 list.push(
                     <View
@@ -261,8 +261,8 @@ class NowOrder extends Component {
             }
         } else {
             var i = 0;
-            while(i < this.state.order_list.length){
-                if(this.state.order_list[i].store_name.indexOf(this.state.search) !== -1){
+            while(i < this.state.db_order.length){
+                if(this.state.db_order[i].store_name.indexOf(this.state.search) !== -1){
                     var top_data = this.orderHistory_top(i);
                     list.push(
                         <View
