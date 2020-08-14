@@ -19,13 +19,17 @@ const ICON_COLOR = '#40E0D0';
 class locationBox extends Component {
     //혼자 먹기 같이 먹기 선택하기 버튼
     select_btn() {
-        var btn = 
+        var btn_1 = 
         <View>
             <Btn text="혼자 먹을래요"></Btn>
+        </View>;
+
+        var btn_2 =
+        <View>
             <Btn text="같이 먹을래요"></Btn>
         </View>;
 
-        return btn;
+        return [btn_1, btn_2];
     }
     //박스 자체 컴포넌트
     putBox() {

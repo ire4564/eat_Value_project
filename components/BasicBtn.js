@@ -36,11 +36,13 @@ class basicBox extends Component {
             this.setState({
                 check: true,
             });
+            return false;
         } else {
             //버튼이 눌려있을 때
             this.setState({
                 check: false,
             });
+            return true;
         }
     }
     checkBtn() {
