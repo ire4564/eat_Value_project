@@ -100,31 +100,31 @@ class Home extends Component {
         this._get();
     }
     
-    static getDerivedStateFromProps(nextProps, nextState){
+    static getDerivedStateFromProps(nextProps, nextState) {
         if(nextState.db_store.length == 0 || nextState.db_order.length == 0){
             return null;
         }
         //인기 메뉴, 인기 가게 목록 정리
         var hot_menu=[];
         var hot_store=[];
-        var i = 0;
-        while(i < nextState.db_order.length){
+
+        Object.keys(nextState.db_order).map(id => {
             var found_menu = hot_menu.find(element => 
-                element.category===nextState.db_store[nextState.db_order[i].store_num].category);
+                element.category===nextState.db_store[nextState.db_order[id].store_num].category);
             var found_store = hot_store.find(element =>
-                element.store_num==nextState.db_order[i].store_num);
+                element.store_num==nextState.db_order[id].store_num);
             if(found_menu==undefined){
-                hot_menu.push({category: nextState.db_store[nextState.db_order[i].store_num].category, amount: 1});
+                hot_menu.push({category: nextState.db_store[nextState.db_order[id].store_num].category, amount: 1});
             }else {
                 found_menu.amount = found_menu.amount + 1;
             }
             if(found_store==undefined){
-                hot_store.push({store_num: nextState.db_order[i].store_num, amount: 1});
+                hot_store.push({store_num: nextState.db_order[id].store_num, amount: 1});
             }else{
                 found_store.amount = found_store.amount + 1;
             }
-            i = i + 1;
-        }
+        });
+
         hot_menu.sort(function (a, b){
             return a.amount > b.amount ? -1 : a.amount < b.amount ? 1 : 0;
         });
@@ -138,12 +138,12 @@ class Home extends Component {
             result_menu.push(hot_menu[j].category);
         }
 
-        //전체 주문 목록 정리
-        nextState.db_order.sort(function(a, b){
-            var temp_a = a.current_order/a.limit_order;
-            var temp_b = b.current_order/b.limit_order;
-            return temp_a > temp_b ? -1 : temp_a < temp_b ? 1 : 0;
-        });
+        //전체 주문 목록 정리(에러때메 빼놓음)
+        // nextState.db_order.sort(function(a, b){
+        //     var temp_a = a.current_order/a.limit_order;
+        //     var temp_b = b.current_order/b.limit_order;
+        //     return temp_a > temp_b ? -1 : temp_a < temp_b ? 1 : 0;
+        // });
         return {
             hot_menu: result_menu,
             hot_store: hot_store,
@@ -200,48 +200,47 @@ class Home extends Component {
         }
         var list = [];
         if(this.state.search===''){
-            var i = 0;
-            while(i < this.state.db_order.length){
+            Object.keys(this.state.db_order).map(id => {
                 list.push(
                     <TouchableList
-                    key={i+"_order"}
-                    order={this.state.db_order[i]}
-                    store={this.state.db_store[this.state.db_order[i].store_num]}
+                    key={id+"_order"}
+                    order={this.state.db_order[id]}
+                    store={this.state.db_store[this.state.db_order[id].store_num]}
                     event={function(){
                         this.props.changeMode("detail-order");
                     }.bind(this)}
                     sendData={this.props.sendData.bind(this)}
                     changeMode={this.props.changeMode}/>
                 );
-                i = i + 1;
-            }
+            });
+
         }else{
-            var i = 0;
-            while(i < this.state.db_order.length){
-                if(this.state.db_store[this.state.db_order[i].store_num].name.indexOf(this.state.search)!== -1){
+            Object.keys(this.state.db_order).map(id => {
+                if(this.state.db_store[this.state.db_order[id].store_num].name.indexOf(this.state.search)!== -1){
                     list.push(
                         <TouchableList
-                        key={i+"_order"}
-                        order={this.state.db_order[i]}
-                        store={this.state.db_store[this.state.db_order[i].store_num]}/>
+                        key={id+"_order"}
+                        order={this.state.db_order[id]}
+                        store={this.state.db_store[this.state.db_order[id].store_num]}/>
                     );
-                }else if(this.state.db_store[this.state.db_order[i].store_num].category.indexOf(this.state.search)!== -1){
+                }else if(this.state.db_store[this.state.db_order[id].store_num].category.indexOf(this.state.search)!== -1){
                     list.push(
                         <TouchableList
-                        key={i+"_order"}
-                        order={this.state.db_order[i]}
-                        store={this.state.db_store[this.state.db_order[i].store_num]}/>
+                        key={id+"_order"}
+                        order={this.state.db_order[id]}
+                        store={this.state.db_store[this.state.db_order[id].store_num]}/>
                     );
                 }
-                i = i + 1;
-            }
+            });
         }
         return list;
     }
 
     render(){
         return(
+            
             <Page style={[this.props.style, styles.container]} pose={this.state.event}>
+                
                 <ScrollView style={styles.main_scroll}>
                     {/* 지금 HOT한 주문 부분 */}
                     <Text style={styles.headline}>

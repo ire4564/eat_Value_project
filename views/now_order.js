@@ -91,7 +91,6 @@ class NowOrder extends Component {
         }
         return res.json();
         }).then(db_order => this.setState({db_order: db_order}));
-
     }
 
     /**
@@ -111,6 +110,7 @@ class NowOrder extends Component {
             });
         }
         this._get();
+        
     }
 
     orderHistory_top(_num){
@@ -185,13 +185,11 @@ class NowOrder extends Component {
      */
     orderHistoryList(){
         var list = [];
-        var i = 0;
-        
-        while(i<this.state.db_order.length){
-            var top_data = this.orderHistory_top(i);
+        Object.keys(this.state.db_order).map(id => {
+            var top_data = this.orderHistory_top(id);
             list.push(
                 <View
-                key={i+"_history"}>
+                key={id + "_history"}>
                     <View
                     style={{position: 'absolute', height: hp('21%'), width: '100%', zIndex: -1}}>
                         <TwoColorBlock
@@ -208,20 +206,18 @@ class NowOrder extends Component {
                                 bottomHeight={1}
                                 type={0}
                                 top={top_data[0]}
-                                bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}
+                                bottom={this.orderHistory_bottom(id, top_data[1], top_data[2])}
                                 shadow={false}/>
                     </TouchableOpacity>
                 </View>
             );
-            i = i + 1;
-        }
+        });
         return list;
     }
 
-    
     /**
      * @method "search-bar result loading"
-     */
+     */   
     searchResult() {
         if(this.state.db_order.length == 0){
             return null;
@@ -229,13 +225,12 @@ class NowOrder extends Component {
 
         var list = [];
         if(this.state.search === ''){
-            var i = 0;
             
-            while(i < this.state.db_order.length){
-                var top_data = this.orderHistory_top(i);
+            Object.keys(this.state.db_order).map(id => {
+                var top_data = this.orderHistory_top(id);
                 list.push(
                     <View
-                key={i+"_history"}>
+                key={id+"_history"}>
                     <View
                     style={{position: 'absolute', height: hp('21%'), width: '100%', zIndex: -1}}>
                         <TwoColorBlock
@@ -252,21 +247,19 @@ class NowOrder extends Component {
                                 bottomHeight={1}
                                 type={0}
                                 top={top_data[0]}
-                                bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}
+                                bottom={this.orderHistory_bottom(id, top_data[1], top_data[2])}
                                 shadow={false}/>
                     </TouchableOpacity>
                 </View>
                 );
-                i = i + 1;
-            }
+            });
         } else {
-            var i = 0;
-            while(i < this.state.db_order.length){
-                if(this.state.db_order[i].store_name.indexOf(this.state.search) !== -1){
-                    var top_data = this.orderHistory_top(i);
+            Object.keys(this.state.db_order).map(id => {
+                if(this.state.db_order[id].store_name.indexOf(this.state.search) !== -1){
+                    var top_data = this.orderHistory_top(id);
                     list.push(
                         <View
-                key={i+"_history"}>
+                key={id+"_history"}>
                     <View
                     style={{position: 'absolute', height: hp('21%'), width: '100%', zIndex: -1}}>
                         <TwoColorBlock
@@ -283,18 +276,16 @@ class NowOrder extends Component {
                                 bottomHeight={1}
                                 type={0}
                                 top={top_data[0]}
-                                bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}
+                                bottom={this.orderHistory_bottom(id, top_data[1], top_data[2])}
                                 shadow={false}/>
                     </TouchableOpacity>
                 </View>
                     );
                 }
-                i = i + 1;
-            }
+            });
         }
         return list;
     }
-
     
     /**
      * @method "search mode on/off"

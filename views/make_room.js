@@ -4,7 +4,7 @@
  * state :
  *  - seleted_mode: 현재 선택된 모드
  *  - db_user: 현재 유저의 id
- *  - order_list: 주문 제목, 주문 리스트
+ *  - db_order: 주문 제목, 주문 리스트
  *  - room_info: 방의 정보: 모집 인원, 모인 인원, 모인 금액에 대한 정보
  * 
  * function :
@@ -29,14 +29,15 @@ import InfoBox from '../components/infoBox';
 import returnProps from '../components/return_props';
 const ICON_COLOR = '#40E0D0';
 var first = true;
+const databaseURL = "https://cnu-eat-value.firebaseio.com/";
 
 class MakeRoom extends Component {
     constructor(props) {
         super(props);
         this.state = {
             db_user: this.props.db_user,
-            //order_list 사용
-            order_list: [
+            //db_order 사용
+            db_order: [
                 {
                     store_name: "신당동 떡볶이 충남대점",
                     date: "2020-07-18-00-00",
@@ -56,8 +57,45 @@ class MakeRoom extends Component {
                 }
             ],
             totalPrize: 0, //사용
-            alone: true //혼자 먹을래요면 true, 함께면 false
+            alone: 1 //혼자 먹을래요면 true, 함께면 false
         }
+    }
+    /**
+     * @author MINIBEEF
+     * @name _post
+     * @method "_post insert to data with rest API"
+     */
+    _post(jsondata) {
+        return fetch(`${databaseURL}/db_order.json`, { // TODO : set table json name
+          method: 'POST',
+          body: JSON.stringify(jsondata)
+        }).then(res => {
+          if(res.status != 200) {
+            throw new Error(res.statusText); // throw exception
+          }
+          return res.json();
+        });
+    }
+
+    /**
+     * @author MINIBEEF
+     * @name _add_order_to_database
+     * @method "_add_order_to_database arrange data and then, push to firebase DB"
+     */
+    _add_order_to_database() {
+        // 수정 필요
+        const jsondata = {
+            date : "2020-08-15-00-00",
+            store_image : "../images/test_image.jpg",
+            store_name : "데이터베이스 테스트",
+            current_order : this.state.room_info[0].current_order,
+            limit_order : this.state.room_info[0].limit_order,
+            location : "데이터베이스 테스트 지도",
+            store_num : 1, // 수정 필요
+            order_detail : this.state.db_order[0].order_detail,
+            alone : this.state.alone
+        }
+        this._post(jsondata);
     }
 
     //주문 완료시 DB 처리를 위한 function
@@ -70,21 +108,11 @@ class MakeRoom extends Component {
            limit_order(모집하고 싶은 사람 수), current_order(현재 모집 인원은 0명을 넘어감), exist_prize(방 만드는 주문자 금액만 더해서 넘기기)
          * total prize: 총 모집을 원하는 금액
          * db_user: 사용자 정보
-         * order_list: 주문한 음식에 대한 정보 (메뉴, 가격, 양 등의 정보),
+         * db_order: 주문한 음식에 대한 정보 (메뉴, 가격, 양 등의 정보),
          * alone: 혼자 먹을래요, 같이 먹을래요에 관한 선택 여부
          * 
          */
-        var alertText = 
-        "모집 인원: " + this.state.room_info[0].limit_order + " \n" +
-        "현재 모집 인원: " + this.state.room_info[0].current_order + " \n"  +
-        "총 모집 희망금액: " + this.state.totalPrize + " \n" +
-        "방 만든 사람이 주문한 금액: " + this.state.room_info[0].exist_prize + " \n" +
-        "혼자 먹을래요: " + this.state.alone + " \n" +
-        "주문한 list 길이: " + this.state.order_list[0].order_detail.length + " \n" 
-        ;
-
-        //DB 연동시 모아둘 것 확인 차 해놓음, 연동 끝나면 없앨 것
-        alert(alertText) 
+        this._add_order_to_database();
         {{this.props.changeMode("complete-order")}} //화면 전환
     }
 
@@ -117,7 +145,7 @@ class MakeRoom extends Component {
      //주문하기 밑에 주문 정보 탭
      order_info() {
         var list_info = [] //return 정보를 담을 곳
-        var order_details = this.state.order_list[0].order_detail;
+        var order_details = this.state.db_order[0].order_detail;
         for (let i = 0; i < order_details.length; i++) {
             var this_total_prize = order_details[i].price * order_details[i].amount;
             //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
@@ -183,14 +211,14 @@ class MakeRoom extends Component {
 
                  {/*모집 조건 선택, 총 모집 인원 및 모집금액 설정*/}
                  <InfoBox 
-                    title = {this.state.order_list[0].store_name}
+                    title = {this.state.db_order[0].store_name}
                     func = {this.select_info()}
                 ></InfoBox>
                    {this.check_input()}
 
                 {/*주문하는 리스트 안의 내용*/}
                 <OrderBox 
-                    title = {this.state.order_list[0].store_name}
+                    title = {this.state.db_order[0].store_name}
                     func = {this.order_info()}
                 ></OrderBox>
 
