@@ -190,7 +190,7 @@ class MakeRoom extends Component {
                 <CompleteBtn 
                     text = '주문하고 모집 시작하기' 
                     iconName="rightcircleo"
-                    clickFunc = {this.completeOrder}
+                    clickFunc = {function(){this.props.changeMode("complete-order")}.bind(this)}
                     >
                 </CompleteBtn>
                 

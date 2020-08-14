@@ -76,14 +76,10 @@ class locationBox extends Component {
     //혼자 먹기 같이 먹기 선택하기 버튼
     select_btn() {
         var btn_1 = 
-        <View>
-            <Btn key={"btn1"} text="혼자 먹을래요" clicks={this._clickBtn1} pushBtn={this.state.btn1_check}></Btn>
-        </View>;
+            <Btn key={"btn1"} text="혼자 먹을래요" clicks={this._clickBtn1} pushBtn={this.state.btn1_check}></Btn>;
 
         var btn_2 =
-        <View>
-            <Btn key={"btn2"} text="같이 먹을래요" clicks={this._clickBtn2} pushBtn={this.state.btn2_check}></Btn>
-        </View>;
+            <Btn key={"btn2"} text="같이 먹을래요" clicks={this._clickBtn2} pushBtn={this.state.btn2_check}></Btn>;
 
         return [btn_1, btn_2];
     }

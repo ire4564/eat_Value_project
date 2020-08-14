@@ -157,7 +157,11 @@ class CheckOrder extends Component {
 
                
                 {/*주문 완료 버튼*/}
-                <CompleteBtn text = {this.state.totalPrize +' 원  주문 완료하기'} iconName="rightcircleo"></CompleteBtn>
+                <CompleteBtn 
+                    text = {this.state.totalPrize +' 원  주문 완료하기'} 
+                    iconName="rightcircleo"
+                    clickFunc = {function(){this.props.changeMode("complete-order")}.bind(this)}
+                ></CompleteBtn>
                 
             </View>
         );

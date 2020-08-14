@@ -14,8 +14,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import moment from 'moment';
+import { AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import posed from 'react-native-pose';
 import 'moment/locale/ko';
 
@@ -53,9 +53,20 @@ class CompleteOrder extends Component {
         return(
             <Page style={this.props.style} pose={this.state.event}>
                 <View style={styles.main_container}>
-                    <TouchableOpacity style={styles.button_container}>
-                    <MaterialCommunityIcons name="message-plus" size={hp('3%')} color="#fff" />
-                        <Text style={styles.button_text}> 메세지 보내기</Text>
+                    
+                    <View style={styles.iconView}>
+                        <AntDesign name="checkcircleo" size={30} color="#6BECE4" style={styles.icon}/>
+                        <Entypo name="bowl" size={100} color="#6BECE4" style={styles.icon} /> 
+
+                        <Text style={styles.orderText}>  주문이 접수되었습니다.</Text>
+                        <Text style={styles.orderText_s}>  ※ 결제 진행 시 알림을 보내드리겠습니다.</Text>
+                    </View>
+                   
+                   
+                    <TouchableOpacity style={styles.button_container}
+                    onPress={function(){this.props.changeMode("home")}.bind(this)}>
+                    <Entypo name="log-out" size={20} color="#ffffff" />
+                        <Text style={styles.button_text}>  HOME 으로 돌아가기</Text>
                     </TouchableOpacity>
                 </View>
             </Page>
@@ -75,67 +86,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
       },
 
-    //톡방 스크롤 style
-    talk_scroll: {
-        alignSelf: 'center',
-        width: '100%',
-        height: '90%',
-        //paddingVertical: hp('3%'),
-        backgroundColor: '#fff',
-    },
-
-    //헤더 컨테이너 style
-    header_container: {
-        flexDirection: 'row',
-        height: '5%',
-        
-    },
-
-    //헤더 부분 text style
-    header_text: {
-        fontSize: hp('2%'),
-    },
-
-    //채팅 컨테이너 style
-    talk_container: {
-        width: '100%',
-        borderColor: '#999',
-        borderBottomWidth: 2,
-        paddingVertical: wp('1%'),
-        flexDirection: 'row',
-        alignContent: 'center',
-        justifyContent: 'center',
-    },
-
-    //채팅 프로필 image style
-    profile_img: {
-        width: wp('12%'),
-        height: wp('12%'),
-        borderRadius: 13,
-    },
-    
-    //채팅 최근내용 및 상대방이름 컨테이너 style
-    talk_text_container: {
-        width: wp('54%'),
-        height: wp('12%'),
-        marginHorizontal: wp('2%'),
-        alignContent: 'center',
-        justifyContent: 'space-evenly',
-    },
-
-    //채팅 최근내용및 상대방이름 text style
-    talk_text: {
-        fontSize: wp('3.8%'),
-    },
-
-    //채팅 최근날짜 text style
-    talk_date: {
-        textAlignVertical: 'center',
-        width: wp('20%'),
-        height: wp('12%'),
-        fontSize: wp('3%'),
-    },
-
     //버튼 컨테이너 style
     button_container: {
         backgroundColor: '#40E0D0',
@@ -143,7 +93,10 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent: 'center',
         paddingVertical: hp('1%'),
+        height: hp('5%'),
+        width: wp('55%'),
         borderRadius: 10,
+        alignSelf: 'center'
     },
     
     //버튼 내부 text style
@@ -151,6 +104,29 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: hp('2.1%'),
     },
+    icon: {
+        alignSelf: 'center',
+        marginBottom: 5,
+
+    },
+    iconView: {
+        marginTop: hp("18%"),
+        marginBottom: wp("10%"),
+    },
+    orderText: {
+        color: "#777B7B",
+        alignSelf: 'center',
+        marginTop: 10,
+        fontWeight: "bold",
+        fontSize: 18,
+    },
+    orderText_s: {
+        color: "#777B7B",
+        alignSelf: 'center',
+        marginTop: 3,
+        fontWeight: "bold",
+        fontSize: 15,
+    }
   });
 
 export default CompleteOrder;
