@@ -204,6 +204,9 @@ class NowOrder extends Component {
      * @method "order list loading"
      */
     orderHistoryList(){
+        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+            return null;
+        }
         var list = [];
         Object.keys(this.state.db_order).map(id => {
             var top_data = this.orderHistory_top(id);
@@ -239,7 +242,7 @@ class NowOrder extends Component {
      * @method "search-bar result loading"
      */   
     searchResult() {
-        if(this.state.db_order.length == 0){
+        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
             return null;
         }
 
@@ -261,6 +264,10 @@ class NowOrder extends Component {
                     </View>
                     <TouchableOpacity
                         style={styles.order_history_container}
+                        onPress={function(){
+                            this.props.sendData(this.state.db_order[id].order_num+"");
+                            this.props.changeMode("detail-order");
+                        }.bind(this)}
                         >
                             <TwoColorBlock
                                 topHeight={2}
@@ -290,6 +297,10 @@ class NowOrder extends Component {
                     </View>
                     <TouchableOpacity
                         style={styles.order_history_container}
+                        onPress={function(){
+                            this.props.sendData(this.state.db_order[id].order_num+"");
+                            this.props.changeMode("detail-order");
+                        }.bind(this)}
                         >
                             <TwoColorBlock
                                 topHeight={2}
