@@ -96,7 +96,7 @@ class DetailOrder extends Component {
             user : this.props.db_user,
             order: {
                 date : "2020-08-01-00-00",
-                order_number: 1,
+                order_number: -1,
                 store_image : "../images/test_image.jpg",
                 store_name : "unknown",
                 current_order : 0,
@@ -149,7 +149,11 @@ class DetailOrder extends Component {
         this.computeMember();
     }
     static getDerivedStateFromProps(nextProps, nextState) {
-        if(nextState.db_store.length == 0 || nextState.db_order.length == 0){
+        if(nextState.db_store.length == 0 || nextState.db_order.length == 0 ){
+            return null;
+        }
+        
+        if(nextState.db_order.length<=nextState.data){
             return null;
         }
 
@@ -168,7 +172,7 @@ class DetailOrder extends Component {
             if(i>=this.props.db_order.length) break;
         }
         if(i<this.props.db_order.length){
-            this.setState({ data: num});
+            this.setState({ data: num });
         }
     }
     computeTotalPrice(){
