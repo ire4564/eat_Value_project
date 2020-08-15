@@ -30,7 +30,7 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import moment from 'moment'; 
 import posed from 'react-native-pose';
@@ -39,6 +39,7 @@ import TwoColorBlock from '../components/twoColorBlock';
 
 const TEST_IMG = '../images/detail_order_sample.png';
 const COLOR_SET = ['#00CED1','#8BAAF0', '#7AD3FA', '#40e0d0'];
+const databaseURL = "https://cnu-eat-value.firebaseio.com/";
 const Page = posed.View({
     open: {
         y: 0,
@@ -94,35 +95,72 @@ class DetailOrder extends Component {
             member: [],
             user : this.props.db_user,
             order: {
-                index: 123456,
-                name: '신당동 엽기 떡볶이',
-                location: '대전광역시 유성구 궁동 99 조각공원',
-                current_order: 1,
-                limit_order: 4,
-                alone: 0,
-                order_detail: [
-                    {menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "other2"},
-                    {menu: '모둠 튀김', amount: 1, price: 3000, user_id: "other2"},
-                    {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other1"},  
-                ],
+                date : "2020-08-01-00-00",
+                order_number: 1,
+                store_image : "../images/test_image.jpg",
+                store_name : "unknown",
+                current_order : 0,
+                limit_order : 100,
+                location : "undefined",
+                store_num : 1,
+                order_detail : {},
+                alone : 1
             },
             store: {
-                category: '떡볶이',
-                min_order: 15000,
-                name: '신당동 엽기 떡볶이',
-                location: '대전광역시 유성구 봉명동',
+                category: 'undefined',
+                min_order: 9999999,
+                name: 'unknown',
+                location: 'undefined',
             },
             event: 'closed',
         }
     }
+    /**
+     * @method "load data and then store to the state"
+     */
+    _get() {
+        fetch(`${databaseURL}/db_store.json`).then(res => {
+        if(res.status != 200) {
+            throw new Error(res.statusText);
+        }
+        return res.json();
+        }).then(db_store => this.setState({db_store: db_store}));
+
+        fetch(`${databaseURL}/db_order.json`).then(res => {
+            if(res.status != 200) {
+                throw new Error(res.statusText);
+            }
+            return res.json();
+        }).then(db_order => this.setState({db_order: db_order}));
+
+    }
+
+    /**
+     * @method "IsChange?"
+     */
+    shouldComponentUpdate(nextProps, nextState) {
+        return (nextState.db_store != this.state.db_store) || (nextState.db_order != this.state.db_order);
+    }
     componentDidMount() {
+        this._get();
         this.setState({event: 'open'});
         this.computeTotalPrice();
         this.computeMember();
     }
+    static getDerivedStateFromProps(nextProps, nextState) {
+        if(nextState.db_store.length == 0 || nextState.db_order.length == 0){
+            return null;
+        }
+
+        return {order: nextState.db_order[0],
+                store: nextState.db_store[nextState.db_order[0].store_num]};
+    }
 
     //데이터 연산 관련 함수들
     computeTotalPrice(){
+        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+            return null;
+        }
         var total = 0;
         for(let i=0; i<this.state.order.order_detail.length; i++){
             let temp_order = this.state.order.order_detail[i];
@@ -134,6 +172,9 @@ class DetailOrder extends Component {
         return total;
     }
     computeMember(){
+        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+            return null;
+        }
         var list = [];
         for(let i=0; i<this.state.order.order_detail.length; i++){
             let temp_id = this.state.order.order_detail[i].user_id;
@@ -146,6 +187,9 @@ class DetailOrder extends Component {
         })
     }
     computeGauge(){
+        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+            return "0%";
+        }
         var i = this.state.total_price/this.state.store.min_order;
         i = i * 100;
         if(i>= 100){
@@ -156,6 +200,9 @@ class DetailOrder extends Component {
 
     //컴포넌트 출력 관련 함수들
     printOrderDetail(){
+        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+            return null;
+        }
         var list = [];
         //안전을 위해 주문에 참가한 경우에만 다른 맴버에 대한 아이디가 출력됨
         for(let i=0; i<this.state.member.length; i++){
@@ -193,6 +240,9 @@ class DetailOrder extends Component {
         return list;
     }
     printCloseButton(){
+        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+            return null;
+        }
         if(this.state.member.includes(this.state.user.id)){
             if(this.state.total_price<this.state.store.min_order){
                 return (<TouchableOpacity style={[styles.close_button, {backgroundColor: '#999'}]} disabled={true}>
@@ -201,22 +251,53 @@ class DetailOrder extends Component {
                                 ※ 최소 결제 금액 이상 달성 시에만 마감이 가능합니다.</Text>
                 </TouchableOpacity>);
             }
-            return (<TouchableOpacity style={styles.close_button}>
+            return (<TouchableOpacity style={styles.close_button} onPress={this.clickCloseOrderButton.bind(this)}>
                         <Text style={styles.button_text}>참여 마감하기 (<Text>2</Text>/<Text>4</Text>)</Text>
                         <Text style={{color: '#fff', fontSize: wp('3%'), textAlign: 'center'}}>
                                     ※ 최대 인원이 모이면 자동 마감됩니다.</Text>
                     </TouchableOpacity>);
         }
-        return (<TouchableOpacity style={styles.join_button}>
+        return (<TouchableOpacity style={styles.join_button} onPress={this.clickJoinButton.bind(this)}>
                     <Text style={styles.button_text}>참여하기 (<Text>2</Text>/<Text>4</Text>)</Text>
                 </TouchableOpacity>);
     }
     printDeleteButton(){
+        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+            return null;
+        }
         if(this.state.member.includes(this.state.user.id)){
-            return (<TouchableOpacity style={styles.delete_button}>
+            return (<TouchableOpacity style={styles.delete_button} onPress={this.clickDeleteOrderButton.bind(this)}>
                         <Text style={styles.button_text}>참여 취소하기</Text>
                     </TouchableOpacity>);
         }
+    }
+
+    //버튼 이벤트 관련 함수들
+    clickEatWithInfo(){
+        if(this.state.order.alone == 0){
+            Alert.alert(
+                '"혼자 먹어요"란?',
+                '비슷한 위치로 함께 묶음 주문을 하되, 자신이 원하는 위치에서 따로 먹을 수 있어요.',
+                [{
+                    text: "이해했어요",
+                }]);
+        }else{
+            Alert.alert(
+                '"같이 먹어요"란?',
+                '지정된 위치에서 주문에 참여한 사람들과 먹을 수 있어요. 소분이 힘든 음식도 주문이 가능하고, 배달료가 저렴해요!',
+                [{
+                    text: "이해했어요",
+                }]);
+        }
+    }
+    clickJoinButton(){
+        alert("Enter!");
+    }
+    clickDeleteOrderButton(){
+        alert("deleted!");
+    }
+    clickCloseOrderButton(){
+        alert("closed order!");
     }
 
     render(){
@@ -230,14 +311,14 @@ class DetailOrder extends Component {
                     <View style={styles.main_container}>
 
                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Text style={styles.order_number}>주문 번호 : {this.state.order.index}</Text>
-                            <Text style={styles.order_number}>{moment().format('YYYY-MM-DD HH:mm:ss')}</Text>
+                            <Text style={styles.order_number}>주문 번호 : {this.state.order.order_num}</Text>
+                            <Text style={styles.order_number}>{moment(this.state.order.date,'YYYY-MM-DD-HH-mm', true).format('YYYY-MM-DD HH:mm')}</Text>
                         </View>
 
                         <View>
                             <Text style={styles.store_name}>{this.state.store.name}</Text>
                             <Text style={styles.store_info}>{this.state.store.location}</Text>
-                            <TouchableOpacity style={styles.eat_with_box}>
+                            <TouchableOpacity style={styles.eat_with_box} onPress={this.clickEatWithInfo.bind(this)}>
                                 <Text style={styles.button_text}>{this.state.order.alone==1?"혼자 먹어요":"같이 먹어요"} </Text>
                                 <AntDesign name="questioncircleo" style={{textAlignVertical: 'center'}} size={wp('3.5%')} color="#000" />
                             </TouchableOpacity>
