@@ -14,7 +14,6 @@ import { StyleSheet, Text, View} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { EvilIcons } from '@expo/vector-icons';
 import  Btn  from '../components/BasicBtn';
-import ReturnProps from '../components/return_props';
 import MapView from 'react-native-maps';
 const ICON_COLOR = '#40E0D0';
 var b1 = false;
@@ -26,9 +25,10 @@ class locationBox extends Component {
         this.state = {
             btn1_check: false,
             btn2_check: false,
-            final_check: 1 //default
+            final_check: 0 //default
         };
     }
+
     //눌렀을 때 (btn1: 혼자 먹어요)
     _clickBtn1 = () => {
         if(this.state.btn2_check == true){
@@ -51,8 +51,10 @@ class locationBox extends Component {
         }
         //혼자 먹을래요 버튼 눌림
         this.setState({
-            final_check: 1
+            final_check: true
         });
+
+        this.props.sendData(this.state.final_check);
         return 1;
     }
 
@@ -80,8 +82,10 @@ class locationBox extends Component {
         }
         //같이 먹을래요 버튼 눌림
         this.setState({
-            final_check: 2
+            final_check: false
         });
+        
+        this.props.sendData(this.state.final_check);
         return 2;
     }
 
@@ -150,7 +154,6 @@ class locationBox extends Component {
         return(
             <View>
               {this.putBox()}
-              <ReturnProps chooseBtn={this.state.final_check}></ReturnProps>
             </View>
         );
     }

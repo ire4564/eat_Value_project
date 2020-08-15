@@ -99,7 +99,12 @@ class CheckOrder extends Component {
         alert(alertText) 
         {{this.props.changeMode("complete-order")}} //화면 전환
     }
-
+    //alone 정보를 받아오기 위해서 
+    sendData(_data){
+        this.setState({
+          alone: _data,
+        });
+    }
     //총액 주문
     calTotal() {
         var details = this.state.order_list[0].order_detail;
@@ -196,6 +201,7 @@ class CheckOrder extends Component {
                 {/*위치 안내 패널*/}
                 <LocationBox
                     mylocation={this.state.location.name}
+                    sendData={this.sendData.bind(this)}
                 ></LocationBox>
 
                

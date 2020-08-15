@@ -57,7 +57,7 @@ class MakeRoom extends Component {
                 }
             ],
             location: {
-                name: "대전광역시 유성구 궁동 25번길 대전광역시 유성구 궁동 25번길",//this.props.name,
+                name: "대전광역시 유성구 궁동 25번길",//this.props.name,
                 latitude: this.props.latitude,
                 longitude: this.props.longitude,
                 latitudeDelta: this.props.latitudeDelta,
@@ -71,7 +71,7 @@ class MakeRoom extends Component {
                 rating: this.props.rating
             },
             totalPrize: 0, //사용
-            alone: 1 //혼자 먹을래요면 true, 함께면 false
+            alone: false //혼자 먹을래요면 true, 함께면 false
         }
     }
     /**
@@ -141,16 +141,6 @@ class MakeRoom extends Component {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    /*
-    //주문하기에 입력된 값 체크, 한도 300,000이상 입력 불가 방지
-    check_input() {
-        if(this.state.totalPrize > 300000) {
-            alert("입력 금액 한도를 초과하였습니다! \n원하시는 금액을 정확히 입력해주세요.");
-            this.setState({totalPrize: ''});
-        }
-    }
-    */
-
     // 콤마 추가를 했다가, DB에는 빼고 숫자로 저장하는 용도
     replaceComma(x){
         if(x.indexOf(",") != -1) {
@@ -201,16 +191,6 @@ class MakeRoom extends Component {
             {/*이 부분 input 받는 곳으로, 키보드 입력 받는 곳으로 수정*/}
                    
             <View style={styles.togetPrize}>
-            {/*
-              <TextInput
-                    style={styles.search}
-                    keyboardType = 'numeric'
-                    placeholder="총 모집 금액 입력"
-                    onChangeText={(text)=>this.setState({totalPrize: this.replaceComma(text)})}
-                    value={this.addComma(this.state.totalPrize)}/>
-                <Text style={styles.won}> 원</Text>
-            
-            총 모집 금액 DB 최소 금액으로 수정(고정 텍스트)*/}
             <Text style={styles.search}>
                 {this.addComma(this.state.db_store.min_order)} 원
             </Text>
@@ -220,6 +200,12 @@ class MakeRoom extends Component {
        
         ;
         return info;
+    }
+    //alone 정보를 받아오기 위해서 
+    sendData(_data){
+        this.setState({
+          alone: _data,
+        });
     }
     render(){
         return(
@@ -253,6 +239,7 @@ class MakeRoom extends Component {
                 {/*위치 안내 패널*/}
                 <LocationBox
                     mylocation={this.state.location.name}
+                    sendData={this.sendData.bind(this)}
                 ></LocationBox>
 
                
