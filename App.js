@@ -27,6 +27,7 @@ import CheckOrder from './views/check_order';
 import Notice from './views/notice';
 import DetailOrder from './views/detail_order';
 import CompleteOrder from './views/complete_order';
+import ChooseMenu from './views/choose_menu';
 
 class App extends Component {
 
@@ -127,6 +128,14 @@ class App extends Component {
         data={this.state.change_mode_data}
         sendData={this.sendData.bind(this)}
         />;
+        case 'choose-menu':
+          return <ChooseMenu
+          style={styles.page_component}
+          db_user={this.state.db_user}
+          changeMode={this.changeMode.bind(this)}
+          data={this.state.change_mode_data}
+          sendData={this.sendData.bind(this)}
+          />;
     }
   }
   changeMode(_mode){

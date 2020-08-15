@@ -76,6 +76,11 @@ class Navigation extends Component {
                   style={styles.text}>
                     주문 완료
                   </Text>;
+        case 'choose-menu':
+          return <Text
+                  style={styles.text}>
+                    메뉴 선택
+                  </Text>;
       }
       return <Text
       style={styles.text}>
