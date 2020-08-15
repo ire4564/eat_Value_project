@@ -121,21 +121,24 @@ class NowOrder extends Component {
         
     }
 
-    orderHistory_top(_num){
-        var date = this.state.db_order[_num].date.split('-');
+    orderHistory_top(_num) {
+        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+            return null;
+        }
+        var store_num = this.state.db_order[_num].store_num;
+        const db_store_this = this.state.db_store[store_num];
+
         var order_detail = this.state.db_order[_num].order_detail;
         var store_image = this.state.db_order[_num].store_image;
         var user_menu = [];
         var user_menu_amount = 0;
-        var store_num = this.state.db_order[_num].store_num
-        var store_category = store_num;
-        //order_detail 연산 겸 price 연산도 함께 진행
+        
+        var store_category = db_store_this.category;
         var total_price = 0;    
         var user_price = 0;
         var current = this.state.db_order[_num].current_order;
         var limit = this.state.db_order[_num].limit_order;
         var location = this.state.db_order[_num].location;
-
         //해당 순서 데이터의 order_detail을 받아와 컴포넌트 생성
         for(let i=0; i<order_detail.length; i++){
             user_price = user_price + order_detail[i].price*order_detail[i].amount;
