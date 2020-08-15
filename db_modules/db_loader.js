@@ -48,8 +48,8 @@ export default class DB_Loader extends React.Component {
    * @method "insert data to firebase DB"
    */
   _post(jsondata) {
-    return fetch(`${databaseURL}/db_user.json`, { // TODO : set table json name
-      method: 'POST',
+    return fetch(`${databaseURL}/db_user/0.json`, { // TODO : set table json name
+      method: 'PUT',
       body: JSON.stringify(jsondata)
     }).then(res => {
       if(res.status != 200) {
@@ -76,10 +76,7 @@ export default class DB_Loader extends React.Component {
   
   _add_user() {
     const jsondata = {
-      coupon_num: 123,
-      id: "123123test",
-      name: "insert",
-      order_num: 1
+      coupon_num: 123
     }
     this._post(jsondata);
   }
@@ -90,7 +87,7 @@ export default class DB_Loader extends React.Component {
     return (
         <View style={styles.container}>
           <StatusBar style="auto" />
-          <MapView style={{ flex: 1 }} initialRegion={{ latitude: 37.78825, longitude: -122.4324, latitudeDelta: 0.0922, longitudeDelta: 0.0421, }} />
+          <Button title="add user" onPress={this._add_user.bind(this)}/>
         </View>
     );
   }

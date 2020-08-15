@@ -160,16 +160,12 @@ class NowOrder extends Component {
             
             total_price = total_price + order_detail[i].price*order_detail[i].amount;
         }
-        //MAX_MENU_NUM 이상의 메뉴가 있을 경우 추가로 출력
-        if(user_menu_amount>MAX_MENU_NUM){
-            user_menu.push(<Text key="more_user_menu" style={styles.user_menu_text}>그 외 {user_menu_amount-MAX_MENU_NUM}개의 메뉴</Text>);
-        }
 
         //실질적인 top 블록에 추가할 컴포넌트
         var alone_txt = ""
         let cond_alone = this.state.db_order[_num].alone;
         if(cond_alone == 0) {
-            alone_txt = "같이 먹어요!"
+            alone_txt = "같이 먹어요!";
         } else if(cond_alone == 1) {
             alone_txt = "혼자 먹어요";
         } else {
