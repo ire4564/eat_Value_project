@@ -138,7 +138,7 @@ class NowOrder extends Component {
         var user_price = 0;
         var current = this.state.db_order[_num].current_order;
         var limit = this.state.db_order[_num].limit_order;
-        var location = this.state.db_order[_num].location;
+        var location = this.state.db_order[_num].location.name;
         //해당 순서 데이터의 order_detail을 받아와 컴포넌트 생성
         for(let i=0; i<order_detail.length; i++){
             user_price = user_price + order_detail[i].price*order_detail[i].amount;
