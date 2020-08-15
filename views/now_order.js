@@ -79,6 +79,7 @@ class NowOrder extends Component {
             search: '',
             search_bar: 'closed',
             search_mode : 0,
+            notice: 0,
             db_user: this.props.db_user,
             //아래는 추후 db연동을 위해 수정해야함!!!!
             db_order: [],
@@ -268,9 +269,19 @@ class NowOrder extends Component {
         if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
             return null;
         }
+        
+        let nextState = this.state.db_order;
 
+        [].slice.call(nextState).sort(function(a, b){
+            var temp_a = a.current_order / a.limit_order;
+            var temp_b = b.current_order / b.limit_order;
+            return temp_a > temp_b ? -1 : temp_a < temp_b ? 1 : 0;
+        });
+
+        this.setState({db_order : nextState});
         var list = [];
         var search_condition = this.state.btn_flag;
+        
         if(this.state.search === ''){
             Object.keys(this.state.db_order).map(id => {
                 let cond_store_num = this.state.db_order[id].store_num;
@@ -359,13 +370,14 @@ class NowOrder extends Component {
      */
     onSortBtnPress(id) {
         var btn_on_off = this.state.btn_flag;
-        if(id == 3 && btn_on_off[id] == false) {
+        if(id == 3 && btn_on_off[id] == false && this.state.notice == 0) {
             Alert.alert(
                 '"#너만 오면 주문" 이란?',
                 '모집이 임박한 주문들만 보여줘요! 어서 빨리 주변 친구들과 맛있는 식사를 하러 가봅시다!',
                 [{
                     text: "알겠습니다",
                 }]);
+                this.setState({notice : 1}); // 알림은 한번만!
         }
         if(btn_on_off[id] == false) {
             btn_on_off[id] = true;
