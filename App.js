@@ -34,7 +34,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-        seleted_mode: 'home',
+        seleted_mode: 'choose-menu',
         change_mode_data: '',
         db_user: {
           coupon_num: 0,
@@ -128,14 +128,14 @@ class App extends Component {
         data={this.state.change_mode_data}
         sendData={this.sendData.bind(this)}
         />;
-        case 'choose-menu':
-          return <ChooseMenu
-          style={styles.page_component}
-          db_user={this.state.db_user}
-          changeMode={this.changeMode.bind(this)}
-          data={this.state.change_mode_data}
-          sendData={this.sendData.bind(this)}
-          />;
+      case 'choose-menu':
+        return <ChooseMenu
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
+        />;
     }
   }
   changeMode(_mode){
