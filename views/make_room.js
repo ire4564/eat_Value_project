@@ -35,7 +35,7 @@ class MakeRoom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            db_user: this.props.db_user,
+            db_user: "testID", //this.props.db_user //(원래 이거 사용 테스트를 위해서 임시로 넣어둠)
             //db_order 사용
             db_order: [
                 {
@@ -56,6 +56,13 @@ class MakeRoom extends Component {
                     exist_prize: 25000 //현재 모인 돈
                 }
             ],
+            location: {
+                name: this.props.name,
+                latitude: this.props.latitude,
+                longitude: this.props.longitude,
+                latitudeDelta: this.props.latitudeDelta,
+                longitudeDelta: this.props.longitudeDelta
+            },
             totalPrize: 0, //사용
             alone: 1 //혼자 먹을래요면 true, 함께면 false
         }
@@ -147,17 +154,20 @@ class MakeRoom extends Component {
         var list_info = [] //return 정보를 담을 곳
         var order_details = this.state.db_order[0].order_detail;
         for (let i = 0; i < order_details.length; i++) {
-            var this_total_prize = order_details[i].price * order_details[i].amount;
-            //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
-            list_info.push(
-                <View key={i}>
-                    <Text style={styles.detail_title}>{order_details[i].menu}</Text>
-                    <Text style={styles.detail_prize}>● 기본: {this.addComma(order_details[i].price)} 원</Text>
-                    <Text style={styles.detail_prize}> {this.addComma(this_total_prize)} 원</Text>
-                    <OrderItem num={order_details[i].amount}/>
-                    <Divider style={styles.separator} />
-                </View>
-            )
+            if(order_details[i].user_id == this.state.db_user){
+                //주문 중에서 현재 주문자의 리스트만 출력
+                var this_total_prize = order_details[i].price * order_details[i].amount;
+                //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
+                list_info.push(
+                    <View key={i}>
+                        <Text style={styles.detail_title}>{order_details[i].menu}</Text>
+                        <Text style={styles.detail_prize}>● 기본: {this.addComma(order_details[i].price)} 원</Text>
+                        <Text style={styles.detail_prize}> {this.addComma(this_total_prize)} 원</Text>
+                        <OrderItem num={order_details[i].amount}/>
+                        <Divider style={styles.separator} />
+                    </View>
+                )
+            }
         }
         return [list_info];
     }

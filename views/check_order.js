@@ -59,6 +59,13 @@ class CheckOrder extends Component {
                     exist_prize: 25000 //현재 모인 돈
                 }
             ],
+            location: {
+                name: this.props.name,
+                latitude: this.props.latitude,
+                longitude: this.props.longitude,
+                latitudeDelta: this.props.latitudeDelta,
+                longitudeDelta: this.props.longitudeDelta
+            },
             totalPrize: 8000,
             alone: false
         }
