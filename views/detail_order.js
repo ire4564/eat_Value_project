@@ -144,6 +144,7 @@ class DetailOrder extends Component {
     componentDidMount() {
         this._get();
         this.setState({event: 'open'});
+        this.setOrder();
         this.computeTotalPrice();
         this.computeMember();
     }
@@ -152,11 +153,24 @@ class DetailOrder extends Component {
             return null;
         }
 
-        return {order: nextState.db_order[0],
-                store: nextState.db_store[nextState.db_order[0].store_num]};
+        return {order: nextState.db_order[nextState.data],
+                store: nextState.db_store[nextState.db_order[nextState.data].store_num]};
     }
-
     //데이터 연산 관련 함수들
+    setOrder(){
+        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+            return null;
+        }
+        var num = Number(this.state.data);
+        var i = 0;
+        while(num!==this.props.db_order[i].order_num){
+            i = i + 1;
+            if(i>=this.props.db_order.length) break;
+        }
+        if(i<this.props.db_order.length){
+            this.setState({ data: num});
+        }
+    }
     computeTotalPrice(){
         if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
             return null;
