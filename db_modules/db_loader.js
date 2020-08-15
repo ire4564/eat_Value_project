@@ -6,6 +6,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import MapView from 'react-native-maps';
 
 const databaseURL = "https://cnu-eat-value.firebaseio.com/";
 
@@ -89,20 +90,7 @@ export default class DB_Loader extends React.Component {
     return (
         <View style={styles.container}>
           <StatusBar style="auto" />
-          <View>
-            <Text>== store list ==</Text>
-            {Object.keys(this.state.db_store).map(id => {
-              const store = this.state.db_store[id];
-              return(<Text key={id}>{store.name} {store.category} {store.min_order} </Text>);
-            })}
-
-            <Text>== user list ==</Text>
-            {Object.keys(this.state.db_user).map(id => {
-              const user = this.state.db_user[id];
-              return(<Text key={id}>{user.id} {user.name} {user.coupon_num} {user.order_num}</Text>);
-            })}
-          <Button title="add user" onPress={this._add_user.bind(this)}/>
-          </View>
+          <MapView style={{ flex: 1 }} initialRegion={{ latitude: 37.78825, longitude: -122.4324, latitudeDelta: 0.0922, longitudeDelta: 0.0421, }} />
         </View>
     );
   }
