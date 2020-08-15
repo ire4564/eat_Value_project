@@ -98,13 +98,26 @@ class MakeRoom extends Component {
      */
     _add_order_to_database() {
         // 수정 필요
+        const date = new Date();
+        var YYYY = date.getFullYear();
+        var MM = date.getMonth() + 1;
+        var DD = date.getDate();
+        var HH = date.getHours();
+        var MIN = date.getMinutes();
+
         const jsondata = {
-            date : "2020-08-15-00-00",
+            date : `${YYYY}-${MM}-${DD}-${HH}-${MIN}`,
             store_image : "../images/test_image.jpg",
             store_name : "데이터베이스 테스트",
             current_order : this.state.room_info[0].current_order,
             limit_order : this.state.room_info[0].limit_order,
-            location : "데이터베이스 테스트 지도",
+            location : {
+                name : "데이터베이스 테스트 지도",
+                "latitude":37.78825,
+                "latitudeDelta":0.0922,
+                "longitude":-122.4324,
+                "longitudeDelta":0.0421,
+            },
             store_num : 1, // 수정 필요
             order_detail : this.state.db_order[0].order_detail,
             alone : this.state.alone
