@@ -504,7 +504,10 @@ class NowOrder extends Component {
                 <SearchPage style={styles.main_container} pose={this.state.search_bar}>
                     <View style={{ marginTop:'22%', marginBottom: '2%',
                      flexDirection: 'row', width: '90%', alignSelf: 'center'}}>
-                        <AntDesign name="checkcircle" size={hp('2%')} color="#40e0d0" />
+                        <AntDesign
+                            name="checksquare"
+                            size={20}
+                            color="#40e0d0" />
                         <Text style={{fontSize:hp('2%'), fontWeight: 'bold', marginLeft: '2%'}}>NOW 주문</Text>
                     </View>
                     <ScrollView style={styles.main_scroll}>
