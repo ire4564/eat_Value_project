@@ -16,7 +16,7 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
 import TwoColorBlock from '../components/twoColorBlock';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { MaterialCommunityIcons, AntDesign, Entypo } from '@expo/vector-icons';
@@ -165,16 +165,27 @@ class NowOrder extends Component {
         }
 
         //실질적인 top 블록에 추가할 컴포넌트
+        var alone_txt = ""
+        let cond_alone = this.state.db_order[_num].alone;
+        if(cond_alone == 0) {
+            alone_txt = "같이 먹어요!"
+        } else if(cond_alone == 1) {
+            alone_txt = "혼자 먹어요";
+        } else {
+            alone_txt = "error";
+        }
+
         var top = <View style={styles.top_order_history}>
             <Image
             style={styles.store_image}
             source={require('../images/test_image.jpg')}/>
             <View style={styles.top_text_container}>
                 <View style={{flexDirection: 'row', marginTop: 6}}>
-                    <Text style={{fontWeight: 'bold'}}>{store_category}</Text><Text style={{color : "#848484"}}> 같이 먹어요!</Text>
+                    <Text style={{fontWeight: 'bold'}}>{store_category}</Text>
+                    <Text style={{color : "#848484"}}> {alone_txt}</Text>
                 </View>
                 <View style={{flexDirection: 'row', marginTop: 10}}>
-    <Entypo name="location" size={hp('2%')} color="#40e0d0" /><Text style={{marginLeft : 5, marginTop : 1, color: "#848484"}}>{location}</Text>
+                    <Entypo name="location" size={hp('2%')} color="#40e0d0" /><Text style={{marginLeft : 5, marginTop : 1, color: "#848484"}}>{location}</Text>
                 </View>
                 <View style={{flexDirection: 'row', marginTop: 10}}>
                     <Text style={{color : "#848484"}}>모집인원</Text><Text style={{marginLeft:20, color:"#40e0d0", fontWeight: "bold"}}>{current}명</Text><Text style={{color: "#848484"}}> / {limit}명</Text>
@@ -245,14 +256,36 @@ class NowOrder extends Component {
      * @method "search-bar result loading"
      */   
     searchResult() {
+        /**
+         * btn_flag
+         * 0 가격 순 정렬
+         * 1 별점 순 정렬
+         * 2 최소 금액 없음
+         * 3 너만 오면 주문
+         * 4 혼자 먹어요
+         * 5 같이 먹어요
+         */
         if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
             return null;
         }
 
         var list = [];
+        var search_condition = this.state.btn_flag;
         if(this.state.search === ''){
-            
             Object.keys(this.state.db_order).map(id => {
+                let cond_store_num = this.state.db_order[id].store_num;
+                let cond_min_order = this.state.db_store[cond_store_num].min_order;
+                let cond_alone = this.state.db_order[id].alone;
+                let cond_current = this.state.db_order[id].current_order;
+                let cond_limit = this.state.db_order[id].limit_order;
+                let cond_finish_order = cond_limit - cond_current;
+
+                /* 다중 선택 조건 처리 */
+                if(search_condition[2] && cond_min_order != 0)  return; // 배달 팁 없음
+                if(search_condition[3] && cond_finish_order != 1) return; // 너만 오면 주문~!
+                if(search_condition[4] && cond_alone != 1)   return; // 혼자 먹어요
+                if(search_condition[5] && cond_alone != 0)   return; //같이 먹어요
+
                 var top_data = this.orderHistory_top(id);
                 list.push(
                     <View
@@ -281,7 +314,7 @@ class NowOrder extends Component {
                                 shadow={false}/>
                     </TouchableOpacity>
                 </View>
-                );
+                );                   
             });
         } else {
             Object.keys(this.state.db_order).map(id => {
@@ -326,6 +359,14 @@ class NowOrder extends Component {
      */
     onSortBtnPress(id) {
         var btn_on_off = this.state.btn_flag;
+        if(id == 3 && btn_on_off[id] == false) {
+            Alert.alert(
+                '"#너만 오면 주문" 이란?',
+                '모집이 임박한 주문들만 보여줘요! 어서 빨리 주변 친구들과 맛있는 식사를 하러 가봅시다!',
+                [{
+                    text: "알겠습니다",
+                }]);
+        }
         if(btn_on_off[id] == false) {
             btn_on_off[id] = true;
             // 별점순 정렬과 가격 순 정렬 동시 x
@@ -381,7 +422,7 @@ class NowOrder extends Component {
          * @condition "is search mode on?"
          */
         } else if(this.state.search_mode == 1) {
-            var btn_txt = ["#가격 순 정렬", "#별점 순 정렬", "#배달 팁 없음", "#가까운 곳", "#혼자먹어요", "#같이먹어요"];
+            var btn_txt = ["#가격 순 정렬", "#별점 순 정렬", "#최소 금액 없음", "#너만 오면 주문", "#혼자먹어요", "#같이먹어요"];
             
             var btn_list_1 = []; // 1열 : 가격, 별점, 배달팁
             var btn_list_2 = []; // 2열 : 가까운, 혼자, 같이
