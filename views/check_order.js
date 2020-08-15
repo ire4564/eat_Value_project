@@ -123,19 +123,22 @@ class CheckOrder extends Component {
     //주문하기 밑에 주문 정보 탭
     order_info() {
         var list_info = [] //return 정보를 담을 곳
-        var order_details = this.state.order_list[0].order_detail;
+        var order_details = this.state.db_order[0].order_detail;
         for (let i = 0; i < order_details.length; i++) {
-            var this_total_prize = order_details[i].price * order_details[i].amount;
-            //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
-            list_info.push(
-                <View key={i}>
-                    <Text style={styles.detail_title}>{order_details[i].menu}</Text>
-                    <Text style={styles.detail_prize}>● 기본: {order_details[i].price} 원</Text>
-                    <Text style={styles.detail_prize}> {this_total_prize} 원</Text>
-                    <OrderItem num={order_details[i].amount}/>
-                    <Divider style={styles.separator} />
-                </View>
-            )
+            if(order_details[i].user_id == this.state.db_user){
+                //주문 중에서 현재 주문자의 리스트만 출력
+                var this_total_prize = order_details[i].price * order_details[i].amount;
+                //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
+                list_info.push(
+                    <View key={i}>
+                        <Text style={styles.detail_title}>{order_details[i].menu}</Text>
+                        <Text style={styles.detail_prize}>● 기본: {this.addComma(order_details[i].price)} 원</Text>
+                        <Text style={styles.detail_prize}> {this.addComma(this_total_prize)} 원</Text>
+                        <OrderItem num={order_details[i].amount}/>
+                        <Divider style={styles.separator} />
+                    </View>
+                )
+            }
         }
         return [list_info];
     }

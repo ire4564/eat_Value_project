@@ -63,6 +63,13 @@ class MakeRoom extends Component {
                 latitudeDelta: this.props.latitudeDelta,
                 longitudeDelta: this.props.longitudeDelta
             },
+            //가게 정보 DB 포함
+            db_store: {
+                category: this.props.category,
+                min_order: 18000,
+                name: this.props.name,
+                rating: this.props.rating
+            },
             totalPrize: 0, //사용
             alone: 1 //혼자 먹을래요면 true, 함께면 false
         }
@@ -125,13 +132,16 @@ class MakeRoom extends Component {
 
     //숫자 입력 값에 표기하기
     addComma(x) {
+        /*
         if(first == true){
             first = false;
             return '';
         }
+        */
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
+    /*
     //주문하기에 입력된 값 체크, 한도 300,000이상 입력 불가 방지
     check_input() {
         if(this.state.totalPrize > 300000) {
@@ -139,6 +149,7 @@ class MakeRoom extends Component {
             this.setState({totalPrize: ''});
         }
     }
+    */
 
     // 콤마 추가를 했다가, DB에는 빼고 숫자로 저장하는 용도
     replaceComma(x){
@@ -190,6 +201,7 @@ class MakeRoom extends Component {
             {/*이 부분 input 받는 곳으로, 키보드 입력 받는 곳으로 수정*/}
                    
             <View style={styles.togetPrize}>
+            {/*
               <TextInput
                     style={styles.search}
                     keyboardType = 'numeric'
@@ -197,7 +209,13 @@ class MakeRoom extends Component {
                     onChangeText={(text)=>this.setState({totalPrize: this.replaceComma(text)})}
                     value={this.addComma(this.state.totalPrize)}/>
                 <Text style={styles.won}> 원</Text>
+            
+            총 모집 금액 DB 최소 금액으로 수정(고정 텍스트)*/}
+            <Text style={styles.search}>
+                {this.addComma(this.state.db_store.min_order)} 원
+            </Text>
             </View>
+
         </View>
        
         ;
@@ -224,7 +242,6 @@ class MakeRoom extends Component {
                     title = {this.state.db_order[0].store_name}
                     func = {this.select_info()}
                 ></InfoBox>
-                   {this.check_input()}
 
                 {/*주문하는 리스트 안의 내용*/}
                 <OrderBox 
@@ -335,12 +352,12 @@ const styles = StyleSheet.create({
         marginTop: 15
     },
     search: {
-        fontSize: 13,
-        marginLeft: 20,
-        marginTop: 2,
+        fontSize: 15,
+        marginRight: 20,
+        marginTop: 6,
         color: ICON_COLOR,
         fontWeight: "bold",
-        justifyContent: 'flex-end',
+        alignSelf: 'flex-end',
     }, 
     won: {
         fontSize: 14,
