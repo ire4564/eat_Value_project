@@ -57,7 +57,7 @@ class MakeRoom extends Component {
                 }
             ],
             location: {
-                name: "대전광역시 유성구 궁동 25번길",//this.props.name,
+                name: "대전광역시 유성구 궁동 25번길 대전광역시 유성구 궁동 25번길",//this.props.name,
                 latitude: this.props.latitude,
                 longitude: this.props.longitude,
                 latitudeDelta: this.props.latitudeDelta,

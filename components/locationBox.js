@@ -134,7 +134,9 @@ class locationBox extends Component {
                                 size={25}
                                 color={ICON_COLOR}
                                 style={styles.icon} />
-                            <Text style={styles.locationFont}>{this.props.mylocation}</Text>
+                            <View style={styles.addressBox}>
+                                <Text style={styles.locationFont}>{this.props.mylocation}</Text>
+                            </View>
                         </View>
                     
                     {/*혼자 먹기, 같이 먹기 선택하기 버튼*/}
@@ -170,10 +172,6 @@ const styles = StyleSheet.create({
     locationFont: {
         fontWeight: "normal",
         fontSize: 15,
-        alignSelf: 'flex-end',
-        marginRight: 12,
-        marginTop: -22,
-        marginBottom: 5,
     },
     //위치 창
     checkLocation: {
@@ -220,6 +218,14 @@ const styles = StyleSheet.create({
         elevation: 2,
         borderRadius: 10
     },
+    //주소 글자수 넘어갈 경우 처리
+    addressBox: {
+        width: 200,
+        alignSelf: "flex-end",
+        marginRight: -35,
+        marginTop: -22,
+        marginBottom: 5
+    }
   });
 
 export default locationBox;
