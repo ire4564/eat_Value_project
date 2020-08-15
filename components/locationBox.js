@@ -15,6 +15,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { EvilIcons } from '@expo/vector-icons';
 import  Btn  from '../components/BasicBtn';
 import ReturnProps from '../components/return_props';
+import MapView from 'react-native-maps';
 const ICON_COLOR = '#40E0D0';
 var b1 = false;
 var b2 = false;
@@ -107,6 +108,21 @@ class locationBox extends Component {
                        
                     {/*지도 넣기*/}
                     <View style={styles.mapSection}>
+                        <MapView style={{ flex: 1 }} 
+                        initialRegion={{ 
+                            latitude: 37.78825, 
+                            longitude: -122.4324, 
+                            latitudeDelta: 0.0922, 
+                            longitudeDelta: 0.0421 
+                            }} 
+                            > 
+                            <MapView.Marker 
+                                coordinate={{ 
+                                    latitude: 37.78825, 
+                                    longitude: -122.4324, 
+                                    }} 
+                                    /> 
+                        </MapView>
                     </View>
 
                     {/*위치 안내, 버튼 넣기*/}

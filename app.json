@@ -21,6 +21,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "android": { 
+      "package": "com.eat.together", 
+      "config": { 
+        "googleMaps": { "apiKey": "AIzaSyBtomq35CC2R5l8utKPkNB_9GlGgiLkqRY" } 
+      } 
     }
   }
 }
