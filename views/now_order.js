@@ -19,7 +19,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native';
 import TwoColorBlock from '../components/twoColorBlock';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons, AntDesign, Entypo } from '@expo/vector-icons';
 import LocationBar from '../components/locationBar';
 import posed from 'react-native-pose';
 
@@ -70,6 +70,7 @@ const SearchPage = posed.View({
 class NowOrder extends Component {
     constructor(props){
         super(props);
+        this.orderHistory_top = this.orderHistory_top.bind(this);
         this.state = {
             event: 'closed',
             search: '',
@@ -78,6 +79,7 @@ class NowOrder extends Component {
             db_user: this.props.db_user,
             //아래는 추후 db연동을 위해 수정해야함!!!!
             db_order: [],
+            db_store: []
         }   
     }
     
@@ -85,19 +87,25 @@ class NowOrder extends Component {
      * @method "load data and then store to the state"
      */
     _get() {
+        fetch(`${databaseURL}/db_store.json`).then(res => {
+            if(res.status != 200) {
+                throw new Error(res.statusText);
+            }
+            return res.json();
+            }).then(db_store => this.setState({db_store: db_store}));
         fetch(`${databaseURL}/db_order.json`).then(res => {
-        if(res.status != 200) {
-            throw new Error(res.statusText);
-        }
-        return res.json();
-        }).then(db_order => this.setState({db_order: db_order}));
+            if(res.status != 200) {
+                throw new Error(res.statusText);
+            }
+            return res.json();
+            }).then(db_order => this.setState({db_order: db_order}));
     }
 
     /**
      * @method "IsChange?"
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return (nextState.db_order != this.state.db_order) || (nextState.search != this.state.search) || (nextState.search_mode != this.state.search_mode);
+        return (nextState.db_order != this.state.db_order) || (nextState.db_store != this.state.db_store) || (nextState.search != this.state.search) || (nextState.search_mode != this.state.search_mode) ;
     }
 
     componentDidMount() {
@@ -119,11 +127,14 @@ class NowOrder extends Component {
         var store_image = this.state.db_order[_num].store_image;
         var user_menu = [];
         var user_menu_amount = 0;
-
+        var store_num = this.state.db_order[_num].store_num
+        var store_category = store_num;
         //order_detail 연산 겸 price 연산도 함께 진행
         var total_price = 0;    
         var user_price = 0;
-        
+        var current = this.state.db_order[_num].current_order;
+        var limit = this.state.db_order[_num].limit_order;
+        var location = this.state.db_order[_num].location;
 
         //해당 순서 데이터의 order_detail을 받아와 컴포넌트 생성
         for(let i=0; i<order_detail.length; i++){
@@ -153,10 +164,16 @@ class NowOrder extends Component {
             style={styles.store_image}
             source={require('../images/test_image.jpg')}/>
             <View style={styles.top_text_container}>
-                <Text style={styles.date_text}>
-                    주문 일시  {Number(date[0])}년 {Number(date[1])}월 {Number(date[2])}일 {date[3]}:{date[4]}
-                </Text>
-                <View style={styles.user_menu}>{user_menu}</View>
+                <View style={{flexDirection: 'row', marginTop: 6}}>
+                    <Text style={{fontWeight: 'bold'}}>{store_category}</Text><Text style={{color : "#848484"}}> 같이 먹어요!</Text>
+                </View>
+                <View style={{flexDirection: 'row', marginTop: 10}}>
+    <Entypo name="location" size={hp('2%')} color="#40e0d0" /><Text style={{marginLeft : 5, marginTop : 1, color: "#848484"}}>{location}</Text>
+                </View>
+                <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <Text style={{color : "#848484"}}>모집인원</Text><Text style={{marginLeft:20, color:"#40e0d0", fontWeight: "bold"}}>{current}명</Text><Text style={{color: "#848484"}}> / {limit}명</Text>
+                </View>
+                
             </View>
         </View>;
         return [top, user_price, total_price];
