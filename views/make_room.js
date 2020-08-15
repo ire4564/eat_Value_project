@@ -57,7 +57,7 @@ class MakeRoom extends Component {
                 }
             ],
             location: {
-                name: this.props.name,
+                name: "대전광역시 유성구 궁동 25번길",//this.props.name,
                 latitude: this.props.latitude,
                 longitude: this.props.longitude,
                 latitudeDelta: this.props.latitudeDelta,
@@ -251,7 +251,9 @@ class MakeRoom extends Component {
 
     
                 {/*위치 안내 패널*/}
-                <LocationBox></LocationBox>
+                <LocationBox
+                    mylocation={this.state.location.name}
+                ></LocationBox>
 
                
                 {/*주문 완료 버튼*/}

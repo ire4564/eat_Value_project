@@ -194,7 +194,9 @@ class CheckOrder extends Component {
                 </View>
 
                 {/*위치 안내 패널*/}
-                <LocationBox></LocationBox>
+                <LocationBox
+                    mylocation={this.state.location.name}
+                ></LocationBox>
 
                
                 {/*주문 완료 버튼*/}

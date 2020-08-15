@@ -134,7 +134,7 @@ class locationBox extends Component {
                                 size={25}
                                 color={ICON_COLOR}
                                 style={styles.icon} />
-                            <Text style={styles.locationFont}>대전광역시 유성구 온천2동{"\n"}궁동로 18번길 24</Text>
+                            <Text style={styles.locationFont}>{this.props.mylocation}</Text>
                         </View>
                     
                     {/*혼자 먹기, 같이 먹기 선택하기 버튼*/}
@@ -171,9 +171,9 @@ const styles = StyleSheet.create({
         fontWeight: "normal",
         fontSize: 15,
         alignSelf: 'flex-end',
-        marginRight: 30,
-        marginTop: -25,
-        marginBottom: 5
+        marginRight: 12,
+        marginTop: -22,
+        marginBottom: 5,
     },
     //위치 창
     checkLocation: {
