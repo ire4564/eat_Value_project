@@ -101,7 +101,7 @@ class DetailOrder extends Component {
                 store_name : "unknown",
                 current_order : 0,
                 limit_order : 100,
-                location : "undefined",
+                location : {name: "undefined"},
                 store_num : 1,
                 order_detail : {},
                 alone : 1
@@ -347,7 +347,7 @@ class DetailOrder extends Component {
                                 <View style={styles.mini_map}/>
                                 <View style={{width: wp('48%')}}>
                                     <Text style={styles.order_header1}>배달 위치</Text>
-                                    <Text style={styles.order_location}>{this.state.order.location}</Text>
+                                    <Text style={styles.order_location}>{this.state.order.location.name}</Text>
                                     <Text style={{color: '#aaa', fontSize: wp('3%')}}>
                                     ※ '혼자 먹어요'의 경우 해당 위치는 전체 배달의 기준점이 되는 위치를 의미합니다.</Text>
                                 </View>
