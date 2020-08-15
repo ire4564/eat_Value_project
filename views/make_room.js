@@ -29,13 +29,14 @@ import InfoBox from '../components/infoBox';
 import returnProps from '../components/return_props';
 const ICON_COLOR = '#40E0D0';
 var first = true;
+var count = 0; //해당되는 리스트 길이 세기
 const databaseURL = "https://cnu-eat-value.firebaseio.com/";
 
 class MakeRoom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            db_user: "testID", //this.props.db_user //(원래 이거 사용 테스트를 위해서 임시로 넣어둠)
+            db_user: "users", //this.props.db_user //(원래 이거 사용 테스트를 위해서 임시로 넣어둠)
             //db_order 사용
             db_order: [
                 {
@@ -149,6 +150,16 @@ class MakeRoom extends Component {
         }
         return x;
     }
+    //리스트가 아무것도 없으면(일치하는 주문이 없으면)
+    list_none() {
+        var noneView = <View>
+
+        </View>;
+
+        if(count == 0){
+            return noneView;
+        }
+    }
 
      //주문하기 밑에 주문 정보 탭
      order_info() {
@@ -160,7 +171,7 @@ class MakeRoom extends Component {
                 var this_total_prize = order_details[i].price * order_details[i].amount;
                 //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
                 list_info.push(
-                    <View key={i}>
+                    <View key={"info"+i}>
                         <Text style={styles.detail_title}>{order_details[i].menu}</Text>
                         <Text style={styles.detail_prize}>● 기본: {this.addComma(order_details[i].price)} 원</Text>
                         <Text style={styles.detail_prize}> {this.addComma(this_total_prize)} 원</Text>
@@ -168,7 +179,8 @@ class MakeRoom extends Component {
                         <Divider style={styles.separator} />
                     </View>
                 )
-            }
+                count++;
+            } 
         }
         return [list_info];
     }
@@ -342,8 +354,8 @@ const styles = StyleSheet.create({
     },
     search: {
         fontSize: 15,
-        marginRight: 20,
-        marginTop: 6,
+        marginRight: wp('5%'),
+        marginTop: wp('1.5%'),
         color: ICON_COLOR,
         fontWeight: "bold",
         alignSelf: 'flex-end',

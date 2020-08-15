@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         color: GRAY,
         alignSelf: "center",
         fontSize: 15,
-        marginTop: 5
+        marginTop: hp('0.8%'),
     },
     //회색 버튼 디자인
     grayBtn: {

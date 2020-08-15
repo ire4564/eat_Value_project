@@ -223,11 +223,11 @@ const styles = StyleSheet.create({
     },
     //주소 글자수 넘어갈 경우 처리
     addressBox: {
-        width: 200,
+        width: wp('50%'),
         alignSelf: "flex-end",
-        marginRight: -35,
-        marginTop: -22,
-        marginBottom: 5
+        marginRight: wp('-10%'),
+        marginTop: hp('-2.6%'),
+        marginBottom: hp('1%'),
     }
   });
 
