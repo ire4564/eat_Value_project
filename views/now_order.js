@@ -71,7 +71,10 @@ class NowOrder extends Component {
     constructor(props){
         super(props);
         this.orderHistory_top = this.orderHistory_top.bind(this);
+        this.IsSearchMode = this.IsSearchMode.bind(this);
+        this.onSortBtnPress = this.onSortBtnPress.bind(this);
         this.state = {
+            btn_flag: [false, false, false, false, false, false],
             event: 'closed',
             search: '',
             search_bar: 'closed',
@@ -105,7 +108,7 @@ class NowOrder extends Component {
      * @method "IsChange?"
      */
     shouldComponentUpdate(nextProps, nextState) {
-        return (nextState.db_order != this.state.db_order) || (nextState.db_store != this.state.db_store) || (nextState.search != this.state.search) || (nextState.search_mode != this.state.search_mode) ;
+        return (nextState.db_order != this.state.db_order) || (nextState.db_store != this.state.db_store) || (nextState.search != this.state.search) || (nextState.search_mode != this.state.search_mode) || (nextState.btn_flag != this.state.btn_flag);
     }
 
     componentDidMount() {
@@ -317,13 +320,44 @@ class NowOrder extends Component {
         }
         return list;
     }
-    
+    /**
+     * @method "when sort btn pressed"
+     * @param "state btn_flag id"
+     */
+    onSortBtnPress(id) {
+        var btn_on_off = this.state.btn_flag;
+        if(btn_on_off[id] == false) {
+            btn_on_off[id] = true;
+            // 별점순 정렬과 가격 순 정렬 동시 x
+            if(id == 0 && (btn_on_off[1] == true)) {
+                btn_on_off[1] = false;
+            } else if(id == 1 && (btn_on_off[0] == true)) {
+                btn_on_off[0] = false;
+            }
+
+            // 혼자 먹어요랑 같이 먹어요는 동시 x
+            if(id == 4 && (btn_on_off[5] == true)) {
+                btn_on_off[5] = false;
+            } else if(id == 5 && (btn_on_off[4] == true)) {
+                btn_on_off[4] = false;
+            }
+            
+            this.setState({btn_flag : btn_on_off});
+        } else if(btn_on_off[id] == true) {
+            btn_on_off[id] = false;
+            this.setState({btn_flag : btn_on_off});
+        } else {
+            alert('sort btn state error! call your admin');
+        }
+        this.forceUpdate();
+    }
+
     /**
      * @method "search mode on/off"
      */
     IsSearchMode() {
         var unpressed = {color: "#FFF", fontWeight: "bold"};
-
+        var pressed = {color: "#585858", fontWeight: "bold"};
         /**
          * @condition "is search mode off?"
          */
@@ -353,19 +387,37 @@ class NowOrder extends Component {
             var btn_list_2 = []; // 2열 : 가까운, 혼자, 같이
 
             for(let i = 0; i < 3; i++) {
-                btn_list_1.push(
-                <View key={i + "_search_btn"} style={styles.search_btn}>
-                    <Text style={unpressed}>{btn_txt[i]}</Text>
-                </View>
-                );
+                if(this.state.btn_flag[i] == false) { // 안눌림
+                    btn_list_1.push(
+                        <TouchableOpacity key={i + "_sort_btn"} style={styles.sort_btn_unpressed} 
+                            onPress={function() { this.onSortBtnPress(i) }.bind(this)}>
+                            <Text style={unpressed}>{btn_txt[i]}</Text>
+                        </TouchableOpacity>
+                        );
+                } else if(this.state.btn_flag[i] == true) { // 눌림
+                    btn_list_1.push(
+                        <TouchableOpacity key={i + "_sort_btn"} style={styles.sort_btn_pressed} onPress={function() { this.onSortBtnPress(i) }.bind(this)}>
+                            <Text style={pressed}>{btn_txt[i]}</Text>
+                        </TouchableOpacity>
+                        );
+                }
+
             }
 
             for(let i = 3; i < 6; i++) {
-                btn_list_2.push(
-                <View key={i + "_search_btn"} style={styles.search_btn}>
-                    <Text style={unpressed}>{btn_txt[i]}</Text>
-                </View>
-                );
+                if(this.state.btn_flag[i] == false) { // 안눌림
+                    btn_list_2.push(
+                        <TouchableOpacity key={i + "_sort_btn"} style={styles.sort_btn_unpressed} onPress={function() { this.onSortBtnPress(i) }.bind(this)}>
+                            <Text style={unpressed}>{btn_txt[i]}</Text>
+                        </TouchableOpacity>
+                        );
+                } else if(this.state.btn_flag[i] == true) { // 눌림
+                    btn_list_2.push(
+                        <TouchableOpacity key={i + "_sort_btn"} style={styles.sort_btn_pressed} onPress={function() { this.onSortBtnPress(i) }.bind(this)}>
+                            <Text style={pressed}>{btn_txt[i]}</Text>
+                        </TouchableOpacity>
+                        );
+                }
             }
 
             return(
@@ -595,8 +647,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
 
-    // 검색 버튼
-    search_btn: {
+    // 정렬 버튼
+    sort_btn_unpressed: {
         backgroundColor:'#999',
         borderRadius: 10,
         alignItems: 'center',
@@ -607,14 +659,17 @@ const styles = StyleSheet.create({
         marginTop: 6
     },
 
-    // 검색 버튼 눌림
-    search_btn_pressed: {
+    sort_btn_pressed: {
         backgroundColor:'#FFF',
         borderRadius: 10,
         alignItems: 'center',
         paddingHorizontal: 17,
         paddingVertical: 5,
+        marginRight: 7,
+        marginBottom: 6,
+        marginTop: 6
     },
+
     //검색창 style
     search: {
         width: wp('80%'),
