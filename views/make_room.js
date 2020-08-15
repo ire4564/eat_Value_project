@@ -16,7 +16,7 @@
 
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View , TextInput} from 'react-native';
+import { StyleSheet, Text, View , TouchableOpacity} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Divider } from 'react-native-elements';
 import LocationBar from '../components/locationBar';
@@ -26,7 +26,6 @@ import CompleteBtn from '../components/complete_IconBtn';
 import OrderBox from '../components/basicBox';
 import LocationBox from '../components/locationBox';
 import InfoBox from '../components/infoBox';
-import returnProps from '../components/return_props';
 const ICON_COLOR = '#40E0D0';
 var first = true;
 var count = 0; //해당되는 리스트 길이 세기
@@ -150,17 +149,6 @@ class MakeRoom extends Component {
         }
         return x;
     }
-    //리스트가 아무것도 없으면(일치하는 주문이 없으면)
-    list_none() {
-        var noneView = <View>
-
-        </View>;
-
-        if(count == 0){
-            return noneView;
-        }
-    }
-
      //주문하기 밑에 주문 정보 탭
      order_info() {
         var list_info = [] //return 정보를 담을 곳
@@ -182,7 +170,24 @@ class MakeRoom extends Component {
                 count++;
             } 
         }
-        return [list_info];
+        //리스트에 아무것도 없으면 주문 선택 화면으로 가기
+        if(count == 0){
+            list_info.push(
+                <View>
+                    <Text style={styles.gotoOrder_detail}>
+                            NONE ORDER
+                    </Text>
+                    <TouchableOpacity 
+                        style={styles.gotoOrder} 
+                        onPress={function(){this.props.changeMode("now-order")}.bind(this)}>
+                        <Text style={styles.gotoOrder_font}>
+                            원하는 가게 선택하러 가기 !
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
+        return list_info;
     }
 
     //모집 조건 선택 
@@ -199,9 +204,7 @@ class MakeRoom extends Component {
             <Divider style={styles.separator} />
             <Text style = {styles.detail_title}>
                 총 모집 금액
-            </Text>
-            {/*이 부분 input 받는 곳으로, 키보드 입력 받는 곳으로 수정*/}
-                   
+            </Text>           
             <View style={styles.togetPrize}>
             <Text style={styles.search}>
                 {this.addComma(this.state.db_store.min_order)} 원
@@ -269,6 +272,33 @@ class MakeRoom extends Component {
 }
 
 const styles = StyleSheet.create({
+     //목록 안에 주문 이동 버튼
+    gotoOrder: {
+        borderColor: ICON_COLOR,
+        borderWidth: 2,
+        width: wp('50%'),
+        height: wp('9%'),
+        borderRadius: 25,
+        alignSelf: 'center',
+        marginRight: wp('-1%'),
+        marginTop: hp('2%'),
+        color: "#fff"
+    },
+    gotoOrder_font: {
+        fontSize: 15,
+        marginTop: wp('1.5%'),
+        color: ICON_COLOR,
+        fontWeight: "normal",
+        alignSelf: 'center',
+    },
+    //위에 설명 글씨
+    gotoOrder_detail: {
+        fontSize: 20,
+        marginTop: wp('5%'),
+        color: ICON_COLOR,
+        fontWeight: "bold",
+        alignSelf: 'center',
+    },
      //모인 금액 창
      togetPrize: {
         borderColor: '#BDBDBD',
