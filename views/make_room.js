@@ -35,7 +35,7 @@ class MakeRoom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            db_user: "users", //this.props.db_user //(원래 이거 사용 테스트를 위해서 임시로 넣어둠)
+            db_user: "testID", //this.props.db_user //(원래 이거 사용 테스트를 위해서 임시로 넣어둠)
             //db_order 사용
             db_order: [
                 {
@@ -149,6 +149,12 @@ class MakeRoom extends Component {
         }
         return x;
     }
+
+    //counter 값에 따라서 총 금액 달리하기
+    renew_prize() {
+      // alert("hello")
+    }
+
      //주문하기 밑에 주문 정보 탭
      order_info() {
         var list_info = [] //return 정보를 담을 곳
@@ -163,7 +169,9 @@ class MakeRoom extends Component {
                         <Text style={styles.detail_title}>{order_details[i].menu}</Text>
                         <Text style={styles.detail_prize}>● 기본: {this.addComma(order_details[i].price)} 원</Text>
                         <Text style={styles.detail_prize}> {this.addComma(this_total_prize)} 원</Text>
-                        <OrderItem num={order_details[i].amount}/>
+                        <OrderItem  
+                         //그 카운터의 수를 세기
+                            num={order_details[i].amount}/>
                         <Divider style={styles.separator} />
                     </View>
                 )
@@ -200,7 +208,8 @@ class MakeRoom extends Component {
             <Text style = {styles.detail_title}>
                 총 모집 인원
             </Text>
-            <OrderItem num={this.state.room_info[0].limit_order}/>
+            <OrderItem 
+                num={this.state.room_info[0].limit_order}/>
             <Divider style={styles.separator} />
             <Text style = {styles.detail_title}>
                 총 모집 금액
@@ -222,10 +231,18 @@ class MakeRoom extends Component {
           alone: _data,
         });
     }
+    //counter 정보를 받아오기 위해서 
+    passData(_data){
+        this.setState({
+          
+        });
+    }
     render(){
         return(
             <View style={[this.props.style, styles.container]}>
                
+                {this.renew_prize()}
+
                 {/*위치 표시 바*/}
                 <LocationBar db_user={this.state.db_user} />
                 
