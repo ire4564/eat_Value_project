@@ -108,9 +108,13 @@ class CheckOrder extends Component {
         "혼자 먹을래요: " + this.state.alone + " \n" +
         "주문한 list 길이: " + this.state.db_order[0].order_detail.length + " \n" 
         ;
+       //총 주문 금액 state 설정
+        this.setState ({
+            totalPrize: this.renew_prize()
+        })
 
         //DB 연동시 모아둘 것 확인 차 해놓음, 연동 끝나면 없앨 것
-        alert(alertText) 
+       // alert(alertText) 
         {{this.props.changeMode("complete-order")}} //화면 전환
     }
  

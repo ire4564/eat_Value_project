@@ -147,7 +147,12 @@ class MakeRoom extends Component {
          * alone: 혼자 먹을래요, 같이 먹을래요에 관한 선택 여부
          * 
          */
+        //총 주문 금액 state 설정
+        this.setState ({
+            totalPrize: this.renew_prize()
+        })
         this._add_order_to_database();
+        
         {{this.props.changeMode("complete-order")}} //화면 전환
     }
 
