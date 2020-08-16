@@ -8,7 +8,17 @@ class OrderItem extends Component {
     constructor(props){
         super(props);
         this.state = {
-            count: 0
+            count: 0,
+        }
+    }
+
+    //counter에서 orderItem 값 가져오기
+    sendData(_data) {
+        if(this.props.countPrize == true){
+            this.setState({
+                count: _data
+            });
+            this.props.sendCounter(_data);
         }
     }
     
@@ -17,6 +27,7 @@ class OrderItem extends Component {
             <View>
                 <View style={[styles.counter_container, this.props.style]}>
                 <Counter
+                    sendData={this.sendData.bind(this)}
                     start={this.props.num}
                     buttonStyle={{
                         borderWidth: 0

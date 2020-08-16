@@ -188,7 +188,10 @@ class MakeRoom extends Component {
                         <Text style={styles.detail_prize}> {this.addComma(this_total_prize)} 원</Text>
                         <OrderItem  
                          //그 카운터의 수를 세기
-                            num={order_details[i].amount}/>
+                            num={order_details[i].amount}
+                            sendCounter={this.sendCounter.bind(this)}
+                            countPrize={true}
+                            />
                         <Divider style={styles.separator} />
                     </View>
                 )
@@ -204,7 +207,7 @@ class MakeRoom extends Component {
                     </Text>
                     <TouchableOpacity 
                         style={styles.gotoOrder} 
-                        onPress={function(){this.props.changeMode("now-order")}.bind(this)}>
+                        onPress={function(){this.props.changeMode("choose-menu")}.bind(this)}>
                         <Text style={styles.gotoOrder_font}>
                             원하는 가게 선택하러 가기 !
                         </Text>
@@ -226,7 +229,10 @@ class MakeRoom extends Component {
                 총 모집 인원
             </Text>
             <OrderItem 
-                num={this.state.room_info[0].limit_order}/>
+                num={this.state.room_info[0].limit_order}
+                sendCounter={this.sendCounter.bind(this)}
+                countPrize={false}
+                />
             <Divider style={styles.separator} />
             <Text style = {styles.detail_title}>
                 총 모집 금액
@@ -247,6 +253,10 @@ class MakeRoom extends Component {
         this.setState({
           alone: _data,
         });
+    }
+    //Counter 값을 가져오기 위해서
+    sendCounter(_data) {
+        alert(_data);
     }
     //counter 정보를 받아오기 위해서 
     passData(_data){
