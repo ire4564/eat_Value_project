@@ -36,8 +36,10 @@ import moment from 'moment';
 import posed from 'react-native-pose';
 import { AntDesign } from '@expo/vector-icons'; 
 import TwoColorBlock from '../components/twoColorBlock';
+import LocationBox from '../components/locationBox_detail';
+const ICON_COLOR = '#40E0D0';
 
-const TEST_IMG = '../images/detail_order_sample.png';
+const TEST_IMG = '../images/test_store.png';
 const COLOR_SET = ['#00CED1','#8BAAF0', '#7AD3FA', '#40e0d0'];
 const databaseURL = "https://cnu-eat-value.firebaseio.com/";
 const Page = posed.View({
@@ -103,7 +105,11 @@ class DetailOrder extends Component {
                 limit_order : 100,
                 location : {name: "undefined"},
                 store_num : 1,
-                order_detail : {},
+                order_detail :  [{ menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "testID" },
+                    { menu: '떡볶이(중간맛)', amount: 3, price: 4000, user_id: "other1" },
+                    { menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2" },
+                    { menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID" },
+                    ],
                 alone : 1
             },
             store: {
@@ -113,6 +119,13 @@ class DetailOrder extends Component {
                 location: 'undefined',
             },
             event: 'closed',
+            location: {
+                name: "대전광역시 유성구 궁동 25번길",//this.props.name,
+                latitude: this.props.latitude,
+                longitude: this.props.longitude,
+                latitudeDelta: this.props.latitudeDelta,
+                longitudeDelta: this.props.longitudeDelta
+            },
         }
     }
     /**
@@ -140,6 +153,13 @@ class DetailOrder extends Component {
      */
     shouldComponentUpdate(nextProps, nextState) {
         return (nextState.db_store != this.state.db_store) || (nextState.db_order != this.state.db_order);
+    }
+
+    //alone 정보를 받아오기 위해서 
+    sendData(_data){
+        this.setState({
+          alone: _data,
+        });
     }
     componentDidMount() {
         this._get();
@@ -335,38 +355,48 @@ class DetailOrder extends Component {
 
                         <View>
                             <Text style={styles.store_name}>{this.state.store.name}</Text>
-                            <Text style={styles.store_info}>{this.state.store.location}</Text>
+                            <Text style={styles.store_info}>{this.state.store.location}점</Text>
                             <TouchableOpacity style={styles.eat_with_box} onPress={this.clickEatWithInfo.bind(this)}>
                                 <Text style={styles.button_text}>{this.state.order.alone==1?"혼자 먹어요":"같이 먹어요"} </Text>
-                                <AntDesign name="questioncircleo" style={{textAlignVertical: 'center'}} size={wp('3.5%')} color="#000" />
+                                <AntDesign name="questioncircleo" style={{textAlignVertical: 'center'}} size={wp('3.5%')} color="#fff" />
                             </TouchableOpacity>
                         </View>
                         
                         <View style={styles.order_container}>
                             <View style={styles.map_container}>
-                                <View style={styles.mini_map}/>
                                 <View style={{width: wp('48%')}}>
-                                    <Text style={styles.order_header1}>배달 위치</Text>
-                                    <Text style={styles.order_location}>{this.state.order.location.name}</Text>
-                                    <Text style={{color: '#aaa', fontSize: wp('3%')}}>
-                                    ※ '혼자 먹어요'의 경우 해당 위치는 전체 배달의 기준점이 되는 위치를 의미합니다.</Text>
+                                      {/*위치 안내 패널*/}
+                                    <LocationBox
+                                        sendData={this.sendData.bind(this)}
+                                        locationName = {this.state.order.location.name}
+                                    ></LocationBox>
                                 </View>
                             </View>
-                            <Text style={styles.order_header1}>주문 현황</Text>
-                            <Text style={styles.order_header2}>- 최소 결제 금액 달성도</Text>
+                            <Text style={styles.headline}>
+                           
+                            <AntDesign
+                                name="checksquare"
+                                size={20}
+                                color={ICON_COLOR}
+                                style={styles.icon} />
+                            <Text style={styles.orderFont}>  NOW ORDER</Text>
+                            </Text>
+
+                            <Text style={styles.order_header2}>▶  최소 결제 금액 달성도</Text>
                             <View style={styles.gaugeBar}>
                                 <View style={[styles.gauge, {width: this.computeGauge()}]}/>
                                 <Text style={styles.gauge_text}>
-                                    <Text>{this.state.total_price}원 </Text>
+                                    <Text style={styles.existPrize_font}>{this.state.total_price}원 </Text>
                                     /
                                     <Text> {this.state.store.min_order}원</Text>
                                 </Text>
                             </View>
-                            <Text style={{textAlign: 'center', fontSize: wp('3.5%'), marginBottom: wp('2%')}}>
+                            <Text style={{textAlign: 'center', fontSize: wp('3.5%'), marginBottom: wp('2%'), 
+                            color: ICON_COLOR, fontWeight: "bold",}}>
                                 {this.state.total_price>=this.state.store.min_order?
                                 "최소 금액 달성 완료! 참여 마감 시 바로 주문완료가 가능해요!":
-                                "앞으로 "+(this.state.store.min_order-this.state.total_price)+"원 더 모이면 주문완료가 가능해요!"}</Text>
-                            <Text style={styles.order_header2}>- 상세 주문 내역</Text>
+                                "앞으로 "+(this.state.store.min_order-this.state.total_price)+" 원 더 모이면 주문완료가 가능해요!"}</Text>
+                            <Text style={styles.order_header2}>▶  상세 주문 내역</Text>
                             {this.printOrderDetail()}
                         </View>
                           
@@ -382,6 +412,10 @@ class DetailOrder extends Component {
 }
 
 const styles = StyleSheet.create({
+    existPrize_font: {
+        color: ICON_COLOR,
+        fontWeight: "bold",
+    },
     //메인 컨테이너 style
     scroll_container: {
         position: 'absolute',
@@ -409,7 +443,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: wp('5%'),
         paddingHorizontal: wp('5%'),
         paddingVertical: wp('5%'),
-        borderWidth: wp('0.5%'),
+        borderWidth: wp('0.2%'),
         borderBottomWidth: 0,
         borderColor: '#eeeeee',
         paddingBottom: hp('15%'),
@@ -418,19 +452,21 @@ const styles = StyleSheet.create({
 
       //주문 대기 번호 및 시간 text style
       order_number: {
-        fontSize: wp('3.2%'),
+        fontSize: wp('3.5%'),
+        marginTop: hp('-1%')
       },
 
       //가게명 text style
       store_name: {
-        marginTop: hp('1%'),
+        marginTop: hp('0.5%'),
+        marginLeft: wp('-1%'),
         fontWeight: 'bold',
-        fontSize: wp('6.5%'),
+        fontSize: wp('6%'),
       },
 
       //같이/혼자 먹어요 버튼 style
       eat_with_box: {
-        marginTop: hp('1%'),
+        marginTop: hp('0.8%'),
         position: 'absolute',
         alignSelf: 'flex-end',
         flexDirection: 'row',
@@ -445,18 +481,21 @@ const styles = StyleSheet.create({
         fontSize: wp('4%'),
         fontWeight: 'bold',
         textAlign: 'center',
+        color: "#fff"
       },
 
       //가게 정보 text style
       store_info: {
-          fontSize: wp('3.6%'),
+          fontSize: wp('4%'),
+          marginTop: hp('-2.7%'),
+          marginLeft: wp('28%'),
       },
 
       //주문 관련 text container style
       order_container:{
           marginVertical: hp('2.5%'),
           paddingTop: hp('2%'),
-          borderTopWidth: 2,
+          borderTopWidth: 1,
           borderColor: '#ddd',
       },
 
@@ -491,9 +530,9 @@ const styles = StyleSheet.create({
       //주문 내역 내용 중 각 헤더2 text
       order_header2: {
         fontWeight: 'bold',
-        fontSize: wp('4.7%'),
+        fontSize: wp('4%'),
         marginBottom: wp('1%'),
-        paddingLeft: wp('2%'),
+        color: "#585858",
         marginTop: wp('2%'),
         marginBottom: wp('2%'),
       },
@@ -505,7 +544,7 @@ const styles = StyleSheet.create({
           top: hp('72.5%'),
           width: wp('90%'),
           height: hp('7%'),
-          backgroundColor: COLOR_SET[2],
+          backgroundColor: COLOR_SET[0],
           alignContent: 'center',
           justifyContent: 'center',
           borderRadius: wp('2.5%'),
@@ -539,9 +578,11 @@ const styles = StyleSheet.create({
 
       //게이지바 style
     gaugeBar: {
-        width: wp('80%'),
+        width: wp('90%'),
         height: hp('4.5%'),
-        borderColor: '#aaa',
+        marginTop: hp('1%'),
+        marginBottom: hp('1%'),
+        borderColor: ICON_COLOR,
         borderWidth: hp('0.2%'),
         borderRadius: wp('3%'),
         alignContent: 'center',
@@ -601,6 +642,13 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    //주문 목록 폰트
+        orderFont: {
+        fontWeight: "bold",
+        fontSize: 18,
+        marginLeft: 10,
+        color: ICON_COLOR
     },
   });
 
