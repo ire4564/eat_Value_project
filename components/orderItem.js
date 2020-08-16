@@ -14,13 +14,20 @@ class OrderItem extends Component {
     }
 
     //counter에서 orderItem 값 가져오기
-    sendData(_data) {
+    sendData(_data, type) {
+        //countPrize가 true이면 order 목록의 카운터라는 뜻
+        //btnNum: DB 연동을 위해 몇 번째 목록에서 만들어진 버튼인지 (index 표시)
+        //type: +인지 -인지 알 수 있도록 추가
+        var resultType = true;
         if(this.props.countPrize == true){
             btnNum = this.props.btnNum;
             this.setState({
                 count: _data
             });
-            this.props.sendCounter(_data, btnNum);
+            if(type == '-') {
+                resultType = false;
+            }
+            this.props.sendCounter(_data, btnNum, resultType);
         }
     }
     

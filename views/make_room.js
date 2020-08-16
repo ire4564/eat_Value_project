@@ -16,7 +16,7 @@
 
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View , TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View , TouchableOpacity, AppRegistry} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Divider } from 'react-native-elements';
 import LocationBar from '../components/locationBar';
@@ -76,7 +76,8 @@ class MakeRoom extends Component {
                 "longitude" : -122.4324
             },
             totalPrize: 0, //사용
-            alone: false //혼자 먹을래요면 true, 함께면 false
+            alone: false ,//혼자 먹을래요면 true, 함께면 false,
+            clickType: true //counter 버튼이 어떤게 눌렸는지 (true: +, false: -)
         }
     }
     /**
@@ -252,13 +253,13 @@ class MakeRoom extends Component {
         });
     }
     //Counter 값을 가져오기 위해서
-    sendCounter(_data, index) {
+    sendCounter(_data, index, type) {
         var detail = this.state.db_order
         detail[0].order_detail[index].amount = _data
         this.setState({
-            db_order : detail
+            db_order : detail,
+            clickType: type
         });
-      //  alert(detail[0].order_detail[index].amount + "  index : " + index);
     }
  
     render(){

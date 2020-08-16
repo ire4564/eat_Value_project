@@ -27,6 +27,8 @@ import OrderBox from '../components/basicBox';
 import LocationBox from '../components/locationBox';
 const ICON_COLOR = '#40E0D0';
 var count = 0;
+var resultPrize = 0;
+var BtnIndex = 0;
 // npm install react-native-elements
 
 class CheckOrder extends Component {
@@ -78,8 +80,9 @@ class CheckOrder extends Component {
                 "latitude" : 37.78825,
                 "longitude" : -122.4324
             },
-            totalPrize: 0, //사용
-            alone: false //혼자 먹을래요면 true, 함께면 false
+            totalPrize: resultPrize, //사용
+            alone: true, //혼자 먹을래요면 true, 함께면 false
+            clickType: -1 //counter 버튼이 어떤게 눌렸는지 (true: +, false: -)
         }
     }
     
@@ -110,7 +113,7 @@ class CheckOrder extends Component {
         alert(alertText) 
         {{this.props.changeMode("complete-order")}} //화면 전환
     }
-
+ 
      //숫자 입력 값에 표기하기
      addComma(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -126,13 +129,15 @@ class CheckOrder extends Component {
     }
 
     //Counter 값을 가져오기 위해서
-    sendCounter(_data, index) {
+    sendCounter(_data, index, type) {
         var detail = this.state.db_order
         detail[0].order_detail[index].amount = _data
         this.setState({
-            db_order : detail
+            db_order : detail,
+            clickType: type
         });
-      //  alert(detail[0].order_detail[index].amount + "  index : " + index);
+        BtnIndex = index;
+        //alert(type)
     }
 
     //alone 정보를 받아오기 위해서 
@@ -141,25 +146,12 @@ class CheckOrder extends Component {
           alone: _data,
         });
     }
-    //총액 주문
-    calTotal() {
-        var details = this.state.db_order[0].order_detail;
-        var thisTotal = 0;
-        for(let i=0; i<details.length; i++){
-            thisTotal += details[i].amount * details[i].price;
-        }
-        this.setState({
-            totalPrize: thisTotal,
-        });
+    
+    //counter 값에 따라서 총 금액 달리하기
+    renew_prize() {
+        return resultPrize;
     }
 
-    //개별 주문에 대한 연산 갱신
-    calPersonal() {
-        //눌린 컴포넌트가 몇 번째 요소인지 받아오기
-        //counter의 수량과 현재 음식의 가격을 곱한 값을 계산
-        //그 값을 수량에 표시해주기
-        //그런데 counter 버튼 눌린 것을 어떻게 표시하지?
-    }
      //주문하기 밑에 주문 정보 탭
      order_info() {
         var list_info = [] //return 정보를 담을 곳
@@ -168,6 +160,16 @@ class CheckOrder extends Component {
             if(order_details[i].user_id == this.state.db_user){
                 //주문 중에서 현재 주문자의 리스트만 출력
                 var this_total_prize = order_details[i].price * order_details[i].amount;
+                if(this.state.clickType == -1) {
+                    //처음 총액 계산
+                    resultPrize += this_total_prize;
+                }
+                else if(this.state.clickType == true){
+                    //+를 눌렀을 경우
+                    resultPrize += order_details[BtnIndex].price/2;
+                } else {
+                    resultPrize -= order_details[BtnIndex].price/2;
+                }
                 //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
                 list_info.push(
                     <View key={"info"+i}>
@@ -222,7 +224,7 @@ class CheckOrder extends Component {
                 </Text>
                 <View style={styles.togetPrize}>
                     <Text style={styles.togetFont}>모인 금액  <Text style={{ color: '#40E0D0' }}> 
-                        {this.state.room_info[0].exist_prize} 원</Text>
+                        {this.addComma(this.state.room_info[0].exist_prize)} 원</Text>
                     </Text>
                 </View>
             </View>;
@@ -235,7 +237,6 @@ class CheckOrder extends Component {
             <View style={[this.props.style, styles.container]}>
                 {/*위치 표시 바*/}
                 <LocationBar db_user={this.state.db_user} />
-
                 <Text style={styles.headline}>
                     <AntDesign
                         name="checksquare"
@@ -266,7 +267,7 @@ class CheckOrder extends Component {
                
                 {/*주문 완료 버튼*/}
                 <CompleteBtn 
-                    text = {this.state.totalPrize +' 원  주문 완료하기'} 
+                    text = {this.addComma(this.renew_prize()) +' 원  주문 완료하기'} 
                     iconName="rightcircleo"
                     clickFunc = {this.completeOrder}
                 ></CompleteBtn>
