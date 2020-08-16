@@ -210,9 +210,11 @@ class DetailOrder extends Component {
         return total;
     }
     computeMember(){
+        //상세 주문 내역을 보고 싶으면 이 부분 수정하기*/
         if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
             return null;
         }
+        //여기까지 주석처리
         var list = [];
         for(let i=0; i<this.state.order.order_detail.length; i++){
             let temp_id = this.state.order.order_detail[i].user_id;
@@ -260,7 +262,7 @@ class DetailOrder extends Component {
                 temp_price = temp_price + temp_order.price* temp_order.amount;
                 }    
             }
-            list.push(<View key={i+"_user"} style={{width:wp('80%'), alignSelf:'center', marginBottom: wp('2%')}}>
+            list.push(<View key={i+"_user"} style={{width:wp('90%'), alignSelf:'center', marginBottom: wp('2%'), marginTop: hp('1%')}}>
                 <TwoColorBlock
                 top={<View style={styles.detail_order_container}>
                         <Text style={styles.detail_order_text}>{this.state.member.includes(this.state.user.id)?this.state.member[i]:"맴버_" + i}</Text>
@@ -295,7 +297,7 @@ class DetailOrder extends Component {
                                     ※ 최대 인원이 모이면 자동 마감됩니다.</Text>
                     </TouchableOpacity>);
         }
-        return (<TouchableOpacity style={styles.join_button} onPress={this.clickJoinButton.bind(this)}>
+        return (<TouchableOpacity style={styles.join_button} onPress={function(){this.props.changeMode("check-order")}.bind(this)}>
                     <Text style={styles.button_text}>참여하기 (<Text>2</Text>/<Text>4</Text>)</Text>
                 </TouchableOpacity>);
     }
@@ -354,8 +356,9 @@ class DetailOrder extends Component {
                         </View>
 
                         <View>
-                            <Text style={styles.store_name}>{this.state.store.name}</Text>
-                            <Text style={styles.store_info}>{this.state.store.location}점</Text>
+                            <Text style={styles.store_name}>{this.state.store.name}
+                            <Text style={styles.store_info}>  {this.state.store.location}점</Text>
+                            </Text>
                             <TouchableOpacity style={styles.eat_with_box} onPress={this.clickEatWithInfo.bind(this)}>
                                 <Text style={styles.button_text}>{this.state.order.alone==1?"혼자 먹어요":"같이 먹어요"} </Text>
                                 <AntDesign name="questioncircleo" style={{textAlignVertical: 'center'}} size={wp('3.5%')} color="#fff" />
@@ -487,8 +490,7 @@ const styles = StyleSheet.create({
       //가게 정보 text style
       store_info: {
           fontSize: wp('4%'),
-          marginTop: hp('-2.7%'),
-          marginLeft: wp('28%'),
+     
       },
 
       //주문 관련 text container style
