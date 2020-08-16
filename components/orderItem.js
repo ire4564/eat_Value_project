@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Button } from 'react-native';
 import Counter from 'react-native-counters';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+var btnNum = -1;
 
 class OrderItem extends Component {
     constructor(props){
@@ -15,10 +16,11 @@ class OrderItem extends Component {
     //counter에서 orderItem 값 가져오기
     sendData(_data) {
         if(this.props.countPrize == true){
+            btnNum = this.props.btnNum;
             this.setState({
                 count: _data
             });
-            this.props.sendCounter(_data);
+            this.props.sendCounter(_data, btnNum);
         }
     }
     

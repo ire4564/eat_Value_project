@@ -42,9 +42,10 @@ class MakeRoom extends Component {
                     store_name: "신당동 떡볶이 충남대점",
                     date: "2020-07-18-00-00",
                     order_detail: [{ menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "testID" },
-                    { menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID" },
                     { menu: '떡볶이(중간맛)', amount: 3, price: 4000, user_id: "other1" },
-                    { menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2" },],
+                    { menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2" },
+                    { menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID" },
+                    ],
                 },
                 //리스트가 더 있어도 상관없음, 테스트를 위해 하나만 함 (메뉴는 여러 개)
             ],
@@ -149,12 +150,6 @@ class MakeRoom extends Component {
 
     //숫자 입력 값에 표기하기
     addComma(x) {
-        /*
-        if(first == true){
-            first = false;
-            return '';
-        }
-        */
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
@@ -188,6 +183,7 @@ class MakeRoom extends Component {
                         <Text style={styles.detail_prize}> {this.addComma(this_total_prize)} 원</Text>
                         <OrderItem  
                          //그 카운터의 수를 세기
+                            btnNum = {i}
                             num={order_details[i].amount}
                             sendCounter={this.sendCounter.bind(this)}
                             countPrize={true}
@@ -232,6 +228,7 @@ class MakeRoom extends Component {
                 num={this.state.room_info[0].limit_order}
                 sendCounter={this.sendCounter.bind(this)}
                 countPrize={false}
+                btnNum = {-1}
                 />
             <Divider style={styles.separator} />
             <Text style = {styles.detail_title}>
@@ -255,15 +252,15 @@ class MakeRoom extends Component {
         });
     }
     //Counter 값을 가져오기 위해서
-    sendCounter(_data) {
-        alert(_data);
-    }
-    //counter 정보를 받아오기 위해서 
-    passData(_data){
+    sendCounter(_data, index) {
+        var detail = this.state.db_order
+        detail[0].order_detail[index].amount = _data
         this.setState({
-          
+            db_order : detail
         });
+      //  alert(detail[0].order_detail[index].amount + "  index : " + index);
     }
+ 
     render(){
         return(
             <View style={[this.props.style, styles.container]}>

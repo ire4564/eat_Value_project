@@ -26,6 +26,7 @@ import CompleteBtn from '../components/complete_IconBtn';
 import OrderBox from '../components/basicBox';
 import LocationBox from '../components/locationBox';
 const ICON_COLOR = '#40E0D0';
+var count = 0;
 // npm install react-native-elements
 
 class CheckOrder extends Component {
@@ -37,17 +38,17 @@ class CheckOrder extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            db_user: this.props.db_user,
-            //아래는 추후 db연동을 위해 수정해야함!!!!
-            order_list: [
+            db_user: "testID", //this.props.db_user //(원래 이거 사용 테스트를 위해서 임시로 넣어둠)
+            //db_order 사용
+            db_order: [
                 {
                     store_name: "신당동 떡볶이 충남대점",
-                    store_num: '1234', //가게 고유 넘버
                     date: "2020-07-18-00-00",
                     order_detail: [{ menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "testID" },
-                    { menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID" },
                     { menu: '떡볶이(중간맛)', amount: 3, price: 4000, user_id: "other1" },
-                    { menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2" },],
+                    { menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2" },
+                    { menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID" },
+                    ],
                 },
                 //리스트가 더 있어도 상관없음, 테스트를 위해 하나만 함 (메뉴는 여러 개)
             ],
@@ -60,17 +61,27 @@ class CheckOrder extends Component {
                 }
             ],
             location: {
-                name: this.props.name,
+                name: "대전광역시 유성구 궁동 25번길",//this.props.name,
                 latitude: this.props.latitude,
                 longitude: this.props.longitude,
                 latitudeDelta: this.props.latitudeDelta,
                 longitudeDelta: this.props.longitudeDelta
             },
-            totalPrize: 8000,
-            alone: false
+            //가게 정보 DB 포함
+            db_store: {
+                category: this.props.category,
+                min_order: 18000,
+                name: this.props.name,
+                rating: this.props.rating
+            },
+            test_location: {
+                "latitude" : 37.78825,
+                "longitude" : -122.4324
+            },
+            totalPrize: 0, //사용
+            alone: false //혼자 먹을래요면 true, 함께면 false
         }
     }
-
     
     //주문 완료시 DB 처리를 위한 function
     completeOrder = () => {
@@ -82,7 +93,7 @@ class CheckOrder extends Component {
            limit_order(모집하고 싶은 사람 수), current_order(현재 모집 인원은 0명을 넘어감), exist_prize(방 만드는 주문자 금액만 더해서 넘기기)
          * total prize: 총 모집을 원하는 금액
          * db_user: 사용자 정보
-         * order_list: 주문한 음식에 대한 정보 (메뉴, 가격, 양 등의 정보),
+         * db_order: 주문한 음식에 대한 정보 (메뉴, 가격, 양 등의 정보),
          * alone: 혼자 먹을래요, 같이 먹을래요에 관한 선택 여부
          * 
          */
@@ -92,13 +103,38 @@ class CheckOrder extends Component {
         "총 모집 희망금액: " + this.state.totalPrize + " \n" +
         "방 만든 사람이 주문한 금액: " + this.state.room_info[0].exist_prize + " \n" +
         "혼자 먹을래요: " + this.state.alone + " \n" +
-        "주문한 list 길이: " + this.state.order_list[0].order_detail.length + " \n" 
+        "주문한 list 길이: " + this.state.db_order[0].order_detail.length + " \n" 
         ;
 
         //DB 연동시 모아둘 것 확인 차 해놓음, 연동 끝나면 없앨 것
         alert(alertText) 
         {{this.props.changeMode("complete-order")}} //화면 전환
     }
+
+     //숫자 입력 값에 표기하기
+     addComma(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // 콤마 추가를 했다가, DB에는 빼고 숫자로 저장하는 용도
+    replaceComma(x){
+        if(x.indexOf(",") != -1) {
+            //콤마가 있으면 replace
+            x = x.replace(/,/gi, '');
+        }
+        return x;
+    }
+
+    //Counter 값을 가져오기 위해서
+    sendCounter(_data, index) {
+        var detail = this.state.db_order
+        detail[0].order_detail[index].amount = _data
+        this.setState({
+            db_order : detail
+        });
+      //  alert(detail[0].order_detail[index].amount + "  index : " + index);
+    }
+
     //alone 정보를 받아오기 위해서 
     sendData(_data){
         this.setState({
@@ -107,7 +143,7 @@ class CheckOrder extends Component {
     }
     //총액 주문
     calTotal() {
-        var details = this.state.order_list[0].order_detail;
+        var details = this.state.db_order[0].order_detail;
         var thisTotal = 0;
         for(let i=0; i<details.length; i++){
             thisTotal += details[i].amount * details[i].price;
@@ -124,9 +160,8 @@ class CheckOrder extends Component {
         //그 값을 수량에 표시해주기
         //그런데 counter 버튼 눌린 것을 어떻게 표시하지?
     }
-
-    //주문하기 밑에 주문 정보 탭
-    order_info() {
+     //주문하기 밑에 주문 정보 탭
+     order_info() {
         var list_info = [] //return 정보를 담을 곳
         var order_details = this.state.db_order[0].order_detail;
         for (let i = 0; i < order_details.length; i++) {
@@ -135,17 +170,41 @@ class CheckOrder extends Component {
                 var this_total_prize = order_details[i].price * order_details[i].amount;
                 //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
                 list_info.push(
-                    <View key={i}>
+                    <View key={"info"+i}>
                         <Text style={styles.detail_title}>{order_details[i].menu}</Text>
                         <Text style={styles.detail_prize}>● 기본: {this.addComma(order_details[i].price)} 원</Text>
                         <Text style={styles.detail_prize}> {this.addComma(this_total_prize)} 원</Text>
-                        <OrderItem num={order_details[i].amount}/>
+                        <OrderItem  
+                         //그 카운터의 수를 세기
+                            btnNum = {i}
+                            num={order_details[i].amount}
+                            sendCounter={this.sendCounter.bind(this)}
+                            countPrize={true}
+                            />
                         <Divider style={styles.separator} />
                     </View>
                 )
-            }
+                count++;
+            } 
         }
-        return [list_info];
+        //리스트에 아무것도 없으면 주문 선택 화면으로 가기
+        if(count == 0){
+            list_info.push(
+                <View>
+                    <Text style={styles.gotoOrder_detail}>
+                            NONE ORDER
+                    </Text>
+                    <TouchableOpacity 
+                        style={styles.gotoOrder} 
+                        onPress={function(){this.props.changeMode("choose-menu")}.bind(this)}>
+                        <Text style={styles.gotoOrder_font}>
+                            원하는 가게 선택하러 가기 !
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
+        return list_info;
     }
 
     //현재 인원, 남은 인원 계산 및 총 모인 금액 보여주기 탭
@@ -188,7 +247,7 @@ class CheckOrder extends Component {
                
                 {/*주문하는 리스트 안의 내용*/}
                 <OrderBox 
-                    title = {this.state.order_list[0].store_name}
+                    title = {this.state.db_order[0].store_name}
                     func = {this.order_info()}
                 ></OrderBox>
 
