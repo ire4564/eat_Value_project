@@ -30,6 +30,7 @@ const ICON_COLOR = '#40E0D0';
 var first = true;
 var count = 0; //해당되는 리스트 길이 세기
 const databaseURL = "https://cnu-eat-value.firebaseio.com/";
+var resultPrize = 0;
 
 class MakeRoom extends Component {
     constructor(props) {
@@ -77,7 +78,8 @@ class MakeRoom extends Component {
             },
             totalPrize: 0, //사용
             alone: false ,//혼자 먹을래요면 true, 함께면 false,
-            clickType: true //counter 버튼이 어떤게 눌렸는지 (true: +, false: -)
+            clickType: -1, //counter 버튼이 어떤게 눌렸는지 (true: +, false: -)
+            BtnIndex: 0
         }
     }
     /**
@@ -165,56 +167,66 @@ class MakeRoom extends Component {
 
     //counter 값에 따라서 총 금액 달리하기
     renew_prize() {
-      // alert("hello")
+        return resultPrize;
     }
-
-     //주문하기 밑에 주문 정보 탭
-     order_info() {
-        var list_info = [] //return 정보를 담을 곳
-        var order_details = this.state.db_order[0].order_detail;
-        for (let i = 0; i < order_details.length; i++) {
-            if(order_details[i].user_id == this.state.db_user){
-                //주문 중에서 현재 주문자의 리스트만 출력
-                var this_total_prize = order_details[i].price * order_details[i].amount;
-                //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
-                list_info.push(
-                    <View key={"info"+i}>
-                        <Text style={styles.detail_title}>{order_details[i].menu}</Text>
-                        <Text style={styles.detail_prize}>● 기본: {this.addComma(order_details[i].price)} 원</Text>
-                        <Text style={styles.detail_prize}> {this.addComma(this_total_prize)} 원</Text>
-                        <OrderItem  
-                         //그 카운터의 수를 세기
-                            btnNum = {i}
-                            num={order_details[i].amount}
-                            sendCounter={this.sendCounter.bind(this)}
-                            countPrize={true}
-                            />
-                        <Divider style={styles.separator} />
-                    </View>
-                )
-                count++;
-            } 
-        }
-        //리스트에 아무것도 없으면 주문 선택 화면으로 가기
-        if(count == 0){
+    //주문하기 밑에 주문 정보 탭
+    order_info() {
+    var list_info = [] //return 정보를 담을 곳
+    var order_details = this.state.db_order[0].order_detail;
+    for (let i = 0; i < order_details.length; i++) {
+        if(order_details[i].user_id == this.state.db_user){
+            //주문 중에서 현재 주문자의 리스트만 출력
+            var this_total_prize = order_details[i].price * order_details[i].amount;
+            if(this.state.clickType == -1) {
+                //처음 총액 계산
+                resultPrize += this_total_prize;
+            }
+            else if(this.state.clickType == true){
+                //+를 눌렀을 경우
+                resultPrize += order_details[this.state.BtnIndex].price/2;
+                alert(this.state.BtnIndex)
+            } else {
+                resultPrize -= order_details[this.state.BtnIndex].price/2;
+                alert(this.state.BtnIndex)
+            }
+            //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
             list_info.push(
-                <View>
-                    <Text style={styles.gotoOrder_detail}>
-                            NONE ORDER
-                    </Text>
-                    <TouchableOpacity 
-                        style={styles.gotoOrder} 
-                        onPress={function(){this.props.changeMode("choose-menu")}.bind(this)}>
-                        <Text style={styles.gotoOrder_font}>
-                            원하는 가게 선택하러 가기 !
-                        </Text>
-                    </TouchableOpacity>
+                <View key={"info"+i}>
+                    <Text style={styles.detail_title}>{order_details[i].menu}</Text>
+                    <Text style={styles.detail_prize}>● 기본: {this.addComma(order_details[i].price)} 원</Text>
+                    <Text style={styles.detail_prize}> {this.addComma(this_total_prize)} 원</Text>
+                    <OrderItem  
+                     //그 카운터의 수를 세기
+                        btnNum = {i}
+                        num={order_details[i].amount}
+                        sendCounter={this.sendCounter.bind(this)}
+                        countPrize={true}
+                        />
+                    <Divider style={styles.separator} />
                 </View>
-            );
-        }
-        return list_info;
+            )
+            count++;
+        } 
     }
-
+    //리스트에 아무것도 없으면 주문 선택 화면으로 가기
+    if(count == 0){
+        list_info.push(
+            <View>
+                <Text style={styles.gotoOrder_detail}>
+                        NONE ORDER
+                </Text>
+                <TouchableOpacity 
+                    style={styles.gotoOrder} 
+                    onPress={function(){this.props.changeMode("choose-menu")}.bind(this)}>
+                    <Text style={styles.gotoOrder_font}>
+                        원하는 가게 선택하러 가기 !
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
+    return list_info;
+}
     //모집 조건 선택 
     select_info() {
         var info = 
@@ -258,15 +270,14 @@ class MakeRoom extends Component {
         detail[0].order_detail[index].amount = _data
         this.setState({
             db_order : detail,
-            clickType: type
+            clickType: type,
+            BtnIndex: index
         });
     }
  
     render(){
         return(
             <View style={[this.props.style, styles.container]}>
-               
-                {this.renew_prize()}
 
                 {/*위치 표시 바*/}
                 <LocationBar db_user={this.state.db_user} />
@@ -299,14 +310,12 @@ class MakeRoom extends Component {
                     sendData={this.sendData.bind(this)}
                 ></LocationBox>
 
-               
-                {/*주문 완료 버튼*/}
-                <CompleteBtn 
-                    text = '주문하고 모집 시작하기' 
+               {/*주문 완료 버튼*/}
+               <CompleteBtn 
+                    text = {this.addComma(this.renew_prize()) +' 원  주문 완료하기'} 
                     iconName="rightcircleo"
                     clickFunc = {this.completeOrder}
-                    >
-                </CompleteBtn>
+                ></CompleteBtn>
                 
             </View>
         );

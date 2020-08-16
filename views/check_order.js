@@ -28,7 +28,6 @@ import LocationBox from '../components/locationBox';
 const ICON_COLOR = '#40E0D0';
 var count = 0;
 var resultPrize = 0;
-var BtnIndex = 0;
 // npm install react-native-elements
 
 class CheckOrder extends Component {
@@ -82,7 +81,8 @@ class CheckOrder extends Component {
             },
             totalPrize: resultPrize, //사용
             alone: true, //혼자 먹을래요면 true, 함께면 false
-            clickType: -1 //counter 버튼이 어떤게 눌렸는지 (true: +, false: -)
+            clickType: -1, //counter 버튼이 어떤게 눌렸는지 (true: +, false: -)
+            BtnIndex: 0 //총액 계산시 버튼 눌린 것 판단
         }
     }
     
@@ -128,16 +128,15 @@ class CheckOrder extends Component {
         return x;
     }
 
-    //Counter 값을 가져오기 위해서
-    sendCounter(_data, index, type) {
+      //Counter 값을 가져오기 위해서
+      sendCounter(_data, index, type) {
         var detail = this.state.db_order
         detail[0].order_detail[index].amount = _data
         this.setState({
             db_order : detail,
-            clickType: type
+            clickType: type,
+            BtnIndex: index
         });
-        BtnIndex = index;
-        //alert(type)
     }
 
     //alone 정보를 받아오기 위해서 
@@ -152,8 +151,8 @@ class CheckOrder extends Component {
         return resultPrize;
     }
 
-     //주문하기 밑에 주문 정보 탭
-     order_info() {
+    //주문하기 밑에 주문 정보 탭
+    order_info() {
         var list_info = [] //return 정보를 담을 곳
         var order_details = this.state.db_order[0].order_detail;
         for (let i = 0; i < order_details.length; i++) {
@@ -166,9 +165,9 @@ class CheckOrder extends Component {
                 }
                 else if(this.state.clickType == true){
                     //+를 눌렀을 경우
-                    resultPrize += order_details[BtnIndex].price/2;
+                    resultPrize += order_details[this.state.BtnIndex].price/2;
                 } else {
-                    resultPrize -= order_details[BtnIndex].price/2;
+                    resultPrize -= order_details[this.state.BtnIndex].price/2;
                 }
                 //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
                 list_info.push(
