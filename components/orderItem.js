@@ -15,7 +15,7 @@ class OrderItem extends Component {
     render(){
         return(
             <View>
-                <View style={styles.counter_container}>
+                <View style={[styles.counter_container, this.props.style]}>
                 <Counter
                     start={this.props.num}
                     buttonStyle={{
