@@ -70,6 +70,10 @@ class MakeRoom extends Component {
                 name: this.props.name,
                 rating: this.props.rating
             },
+            test_location: {
+                "latitude" : 37.78825,
+                "longitude" : -122.4324
+            },
             totalPrize: 0, //사용
             alone: false //혼자 먹을래요면 true, 함께면 false
         }
@@ -113,10 +117,10 @@ class MakeRoom extends Component {
             limit_order : this.state.room_info[0].limit_order,
             location : {
                 name : "데이터베이스 테스트 지도",
-                "latitude":37.78825,
-                "latitudeDelta":0.0922,
-                "longitude":-122.4324,
-                "longitudeDelta":0.0421,
+                "latitude" : 37.78825,
+                "latitudeDelta" : 0.0922,
+                "longitude" : -122.4324,
+                "longitudeDelta" : 0.0421,
             },
             store_num : 1, // 수정 필요
             order_detail : this.state.db_order[0].order_detail,
