@@ -13,9 +13,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { AntDesign } from '@expo/vector-icons';
-import { Divider } from 'react-native-elements';
 import TwoColorBlock from '../components/twoColorBlock';
 import OrderItem from '../components/orderItem';
+import Menu from '../components/one_menu';
 
 
 const RANK_IMG = "../images/rank.png";
@@ -40,9 +40,7 @@ class ChooseMenu extends Component {
                 {name: "test2", price: 15000},
                 {name: "test3", price: 5000},
             ],
-            amount: [
-                1,2,3
-            ],
+            amount: [],
             temp : {
                 time: [30, 40],
                 tip: 2000,
@@ -53,7 +51,16 @@ class ChooseMenu extends Component {
             db_order_key: "",
             db_store: [],
             db_store_menu: [],
+            total_price : 0,
         }
+    }
+    static getDerivedStateFromProps(nextProps, nextState) {
+        //메뉴량 초기화
+        if(nextState.amount.length==0){
+            var _amount = Array.from({length: nextState.store_menu.length}, () => 0);
+            return {amount : _amount};
+        }
+        return null;
     }
 
     computeGauge(){
@@ -67,6 +74,24 @@ class ChooseMenu extends Component {
             i = 20;
         }
         return wp(i+"%");
+    }
+    setAmount(_num, _amount){
+        var temp = this.state.amount.concat();
+        temp[_num] = _amount;
+        this.setState({
+            amount: temp
+        });
+        this.computePrice(temp);
+    }
+    computePrice(temp){
+        var total = 0;
+        for(let i=0; i<this.state.store_menu.length; i++){
+            if(temp[i]==0) continue;
+            total = total + temp[i]*this.state.store_menu[i].price;
+        }
+        this.setState({
+            total_price: total
+        });
     }
 
     printStoreTop(){
@@ -122,36 +147,34 @@ class ChooseMenu extends Component {
     printMenu(){
         var list = [];
         var i = 0;
+        
 
         list.push(
-        <TouchableOpacity style={[styles.row_container]} key={i+"_menu"}>
-            <Text>{this.state.store_menu[i].name}</Text>
-            <Text>{this.state.store_menu[i].price.toLocaleString()}원</Text>
-            <OrderItem 
-                num={this.state.amount[i]}/>
-            <Divider style={styles.separator} />
-        </TouchableOpacity>);
+            <Menu
+            num={i}
+            key={i+"_menu"}
+            store_menu={this.state.store_menu[i]}
+            setAmount={this.setAmount.bind(this)}
+            />);
         for(i=1; i<this.state.store_menu.length-1; i++){
             list.push(
-                <TouchableOpacity style={[styles.row_container]} key={i+"_menu"}>
-                    <Text>{this.state.store_menu[i].name}</Text>
-                    <Text>{this.state.store_menu[i].price.toLocaleString()}원</Text>
-                    <OrderItem 
-                    num={this.state.amount[i]}/>
-                    <Divider style={styles.separator} />
-                </TouchableOpacity>);
+                <Menu
+                key={i+"_menu"}
+                num={i}
+                store_menu={this.state.store_menu[i]}
+                setAmount={this.setAmount.bind(this)}
+                />);
         }
         list.push(
-            <TouchableOpacity style={[styles.row_container]} key={i+"_menu"}>
-                <Text>{this.state.store_menu[i].name}</Text>
-                <Text>{this.state.store_menu[i].price.toLocaleString()}원</Text>
-                <OrderItem 
-                    num={this.state.amount[i]}/>
-                <Divider style={styles.separator} />
-            </TouchableOpacity>);
+            <Menu
+            key={i+"_menu"}
+            num={i}
+            store_menu={this.state.store_menu[i]}
+            setAmount={this.setAmount.bind(this)}
+            />);
 
         return (
-            <View>
+            <View style={styles.menu_list_container}>
                 {list}
             </View>
         );
@@ -179,7 +202,7 @@ class ChooseMenu extends Component {
                     style={styles.order_button}
                     onPress={function(){this.props.changeMode("complete-order")}.bind(this)}>
                         <Text style={{color:'#fff', fontSize: hp('2.5%'), fontWeight: 'bold'}}>
-                            {this.state.user_order.length}개 주문
+                             총 {this.state.total_price}원 주문
                             <Text style={{fontWeight:'normal'}}> 진행하기</Text></Text>
                     </TouchableOpacity>
             </View>
@@ -188,38 +211,46 @@ class ChooseMenu extends Component {
 }
 
 const styles = StyleSheet.create({
+    //가로 정렬 컴포넌트
     row_container: {
         flexDirection: 'row',
         marginBottom: wp('0.3%'),
         alignContent: 'center',
     },
+    //가운데 정렬 컴포넌트
     center_container: {
         alignSelf: 'center',
     },
+    //별점 이미지
     rating_image: {
         width: wp('20%'),
         height: wp('5%'),
         marginRight: wp('3%'),
     },
+    //별점 이미지의 게이지 부분(뒤의 색상)
     rating_image_background: {
         position: 'absolute',
         backgroundColor: RATING_COLOR,
         width: wp('20%'),
         height: wp('5%'),
     },
+    //가게 정보 패널 부분의 위아래 컴포넌트
     container: {
         marginHorizontal: wp('8%'),
         marginVertical: wp('4%'),
     },
+    //가게 정보 패널 상단 컴포넌트 내 글씨
     top_text: {
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: wp('3.8%'),
     },
+    //가게명
     top_topic_text: {
         fontWeight: 'bold',
         fontSize: wp('5.8%'),
     },
+    //가게 정보 패널 부분의 버튼
     top_button: {
         marginHorizontal: wp('1.5%'),
         marginTop: wp('3%'),
@@ -229,25 +260,39 @@ const styles = StyleSheet.create({
         borderColor: '#888',
         borderRadius: wp('1.5%'),
     },
+    //가게 정보 패널 하단 부분의 글씨
     bottom_text: {
         fontSize: hp('4%'),
     },
+    //가게 정보 패널 하단 부분의 글씨(강조)
     bottom_title_text: {
         fontWeight: 'bold',
         marginRight: wp('5%'),
     },
+    //메뉴 컴포넌트
     menu_container: {
         alignSelf: 'center',
         width: '90%',
         marginBottom: hp('9%'),
-        backgroundColor: 'red',
     },
+    //메뉴 리스트 컴포넌트
     menu_list_container: {
-
+        width: '100%',
+        marginTop: wp('4%'),
+        top: -2,
+        paddingVertical: wp('3%'),
+        paddingHorizontal: wp('1.5%'),
+        borderRadius: 18,
+        borderColor: '#F2F2F2',
+        borderWidth: 1,
+        backgroundColor: '#fff',
+        shadowColor: "#000000",
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 2, height: 4 },
+        elevation: 2,
+        
     },
-    one_menu_container: {
-
-    },
+    //주문하기 버튼
     order_button: {
         position: 'absolute',
         marginTop: hp('74%'),
