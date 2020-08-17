@@ -67,6 +67,7 @@ class ChooseMenu extends Component {
             like: false,
             user_order: [],
             db_order_key: "",
+            db_order: [],
             db_store: [],
             db_store_menu: [],
             total_price : 0,
@@ -86,24 +87,38 @@ class ChooseMenu extends Component {
             }
             return res.json();
         }).then(db_order => this.setState({db_order: db_order}));
+
+        fetch(`${databaseURL}/db_store_menu.json`).then(res => {
+            if(res.status != 200) {
+                throw new Error(res.statusText);
+            }
+            return res.json();
+        }).then(db_store_menu => this.setState({db_store_menu: db_store_menu}));
         
     }
     static getDerivedStateFromProps(nextProps, nextState) {
-        if(nextState.db_store.length == 0 || nextState.db_order.length == 0 ){
+        if(nextState.db_store.length == 0 || nextState.db_order.length == 0 || nextState.db_store_menu.length == 0 ){
             if(nextState.amount.length==0){
                 var _amount = Array.from({length: nextState.store_menu.length}, () => 0);
                 return {amount : _amount};
             }
             return null;
         }
-        //메뉴량 초기화
         if(nextState.amount.length!=nextState.store_menu.length){
             var _amount = Array.from({length: nextState.store_menu.length}, () => 0);
+            if(nextState.db_store[nextState.db_order[nextState.data].store_num]==undefined){
+                return {amount : _amount};
+            }
             return {
                 store: nextState.db_store[nextState.db_order[nextState.data].store_num],
+                store_menu: nextState.db_store_menu[nextState.db_order[nextState.data].store_num],
                 amount : _amount};
         }
-        return {store: nextState.db_store[nextState.db_order[nextState.data].store_num]};
+        if(nextState.db_store[nextState.db_order[nextState.data].store_num]==undefined){
+            return {amount : _amount};
+        }
+        return {store: nextState.db_store[nextState.db_order[nextState.data].store_num],
+            store_menu: nextState.db_store_menu[nextState.db_order[nextState.data].store_num],};
     }
     componentDidMount() {
         this._get();
@@ -192,6 +207,9 @@ class ChooseMenu extends Component {
         </View>);
     }
     printMenu(){
+        if(this.state.db_store.length==0||this.state.db_order.length==0 || this.state.db_store_menu.length==0){
+            return null;
+        }
         var list = [];
         var i = 0;
         
