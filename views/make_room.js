@@ -131,17 +131,17 @@ class MakeRoom extends Component {
         const jsondata = {
             date : `${YYYY}-${MM}-${DD}-${HH}-${MIN}`,
             store_image : "../images/test_image.jpg",
-            store_name : "데이터베이스 테스트",
+            store_name : this.state.db_store.name,
             current_order : this.state.room_info[0].current_order,
             limit_order : this.state.room_info[0].limit_order,
             location : {
-                name : "데이터베이스 테스트 지도",
+                name : this.state.db_store.location,
                 "latitude" : 36.363225,
                 "latitudeDelta" : 0.0922,
                 "longitude" : 127.344945,
                 "longitudeDelta" : 0.0421,
             },
-            store_num : 1, // 수정 필요
+            store_num : 0, // 수정 필요
             order_detail : this.state.db_order[0].order_detail,
             alone : this.state.alone
         }
