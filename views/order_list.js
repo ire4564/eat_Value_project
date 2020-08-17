@@ -21,7 +21,7 @@ import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'rea
 import TwoColorBlock from '../components/twoColorBlock';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import posed from 'react-native-pose';
-
+const databaseURL = "https://cnu-eat-value.firebaseio.com/";
 const MAX_MENU_NUM = 2;
 const Page = posed.View({
     open: {
@@ -68,7 +68,22 @@ class OrderList extends Component {
             ],
         }   
     }
+
+    _get() {
+        fetch(`${databaseURL}/order_list.json`).then(res => {
+          if(res.status != 200) {
+            throw new Error(res.statusText);
+          }
+          return res.json();
+        }).then(order_list => this.setState({order_list: order_list}));
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return (nextState.order_list != this.state.order_list);
+    }
+
     componentDidMount() {
+        this._get();
         this.setState({event: 'open'});
     }
 
@@ -84,23 +99,23 @@ class OrderList extends Component {
         
 
         //해당 순서 데이터의 order_detail을 받아와 컴포넌트 생성
-        for(let i=0; i<order_detail.length; i++){
-            if(order_detail[i].user_id===this.state.db_user.id){
-                user_price = user_price + order_detail[i].price*order_detail[i].amount;
+
+        Object.keys(order_detail).map(id => {
+            if(order_detail[id].user_id === this.state.db_user.id){
+                user_price = user_price + order_detail[id].price * order_detail[id].amount;
                 user_menu_amount = user_menu_amount + 1;
-                if(user_menu.length<MAX_MENU_NUM){
+                if(user_menu.length < MAX_MENU_NUM){
                     user_menu.push(
-                        <View key={i+"_user_menu"} style={styles.row_container}>
+                        <View key={id+"_user_menu"} style={styles.row_container}>
                         <Text style={styles.user_menu_text}>
-                            {order_detail[i].menu}
-                            {' *'+order_detail[i].amount}
+                            {order_detail[id].menu}
                         </Text>
-                        <Text style={styles.user_menu_text}>{(order_detail[i].price*order_detail[i].amount).toLocaleString()}원</Text>
                     </View>);
                 }
             }
-            total_price = total_price + order_detail[i].price*order_detail[i].amount;
-        }
+            total_price = total_price + order_detail[id].price * order_detail[id].amount;
+        });
+       
         //MAX_MENU_NUM 이상의 메뉴가 있을 경우 추가로 출력
         if(user_menu_amount>MAX_MENU_NUM){
             user_menu.push(<Text key="more_user_menu" style={styles.user_menu_text}>그 외 {user_menu_amount-MAX_MENU_NUM}개의 메뉴</Text>);
@@ -142,12 +157,11 @@ class OrderList extends Component {
     orderHistoryList(){
         var list = [];
         var i = 0;
-        
-        while(i<this.state.order_list.length){
-            var top_data = this.orderHistory_top(i);
+        Object.keys(this.state.order_list).map(id => {
+            var top_data = this.orderHistory_top(id);
             list.push(
                 <View
-                key={i+"_history"}>
+                key={id + "_history"}>
                     <View
                     style={{position: 'absolute', height: hp('21%'), width: '100%', zIndex: -1}}>
                         <TwoColorBlock
@@ -164,13 +178,12 @@ class OrderList extends Component {
                                 bottomHeight={1}
                                 type={0}
                                 top={top_data[0]}
-                                bottom={this.orderHistory_bottom(i, top_data[1], top_data[2])}
+                                bottom={this.orderHistory_bottom(id, top_data[1], top_data[2])}
                                 shadow={false}/>
                     </TouchableOpacity>
                 </View>
             );
-            i = i + 1;
-        }
+        });
         return list;
     }
 
