@@ -77,7 +77,7 @@ class MakeRoom extends Component {
                 "longitude" : -122.4324
             },
             totalPrize: 0, //사용
-            alone: false ,//혼자 먹을래요면 true, 함께면 false,
+            alone: 0 ,//혼자 먹을래요면 true, 함께면 false,
             clickType: -1, //counter 버튼이 어떤게 눌렸는지 (true: +, false: -)
             BtnIndex: 0
         }
@@ -189,10 +189,8 @@ class MakeRoom extends Component {
             else if(this.state.clickType == true){
                 //+를 눌렀을 경우
                 resultPrize += order_details[this.state.BtnIndex].price/2;
-                alert(this.state.BtnIndex)
             } else {
                 resultPrize -= order_details[this.state.BtnIndex].price/2;
-                alert(this.state.BtnIndex)
             }
             //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
             list_info.push(
@@ -250,7 +248,7 @@ class MakeRoom extends Component {
                 />
             <Divider style={styles.separator} />
             <Text style = {styles.detail_title}>
-                총 모집 금액
+                최소 주문 금액
             </Text>           
             <View style={styles.togetPrize}>
             <Text style={styles.search}>

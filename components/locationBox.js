@@ -23,35 +23,35 @@ class locationBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            btn1_check: false,
-            btn2_check: false,
+            btn1_check: 0,
+            btn2_check: 0,
             final_check: 0 //default
         };
     }
 
     //눌렀을 때 (btn1: 혼자 먹어요)
     _clickBtn1 = () => {
-        if(this.state.btn2_check == true){
+        if(this.state.btn2_check == 1){
             //이미 버튼 2가 눌려있을 때
             this.setState({
-                btn1_check: true,
-                btn2_check: false
+                btn1_check: 1,
+                btn2_check: 0
             });
         } 
-        else if(this.state.btn1_check == false){
+        else if(this.state.btn1_check == 0){
             //버튼이 눌려있지 않을 때
             this.setState({
-                btn1_check: true,
+                btn1_check: 1,
             });
         } else { 
             //버튼이 눌려있을 때
             this.setState({
-                btn1_check: false,
+                btn1_check: 0,
             });
         }
         //혼자 먹을래요 버튼 눌림
         this.setState({
-            final_check: true
+            final_check: 1
         });
 
         this.props.sendData(this.state.final_check);
@@ -60,29 +60,29 @@ class locationBox extends Component {
 
     //눌렀을 때 (btn2: 같이 먹어요)
     _clickBtn2 = () => {
-        if(this.state.btn1_check == true){
+        if(this.state.btn1_check == 1){
             //이미 버튼 1가 눌려있을 때
             this.setState({
-                btn1_check: false,
-                btn2_check: true
+                btn1_check: 0,
+                btn2_check: 1
             });
         }
-        else if(this.state.btn2_check == false){
+        else if(this.state.btn2_check == 0){
             //버튼이 눌려있지 않을 때
             this.setState({
-                btn1_check: false,
-                btn2_check: true,
+                btn1_check: 0,
+                btn2_check: 1,
             });
 
         } else {
             //버튼이 눌려있을 때
             this.setState({
-                btn2_check: false,
+                btn2_check: 0,
             });
         }
         //같이 먹을래요 버튼 눌림
         this.setState({
-            final_check: false
+            final_check: 0
         });
         
         this.props.sendData(this.state.final_check);
