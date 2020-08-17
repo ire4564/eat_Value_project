@@ -29,9 +29,20 @@ class Menu extends Component {
     }
     printCounter(){
         if(this.state.amount!=0){
-            return (<OrderItem num={this.state.amount} style={{marginTop: 0, backgroundColor: '#fff'}}/>);
+            return (<OrderItem
+                num={this.state.amount}
+                style={{marginTop: 0, backgroundColor: '#fff'}}
+                sendCounter={this.sendCounter.bind(this)}
+                btnNum={this.props.num}
+                countPrize={true}/>);
         }
         return null;
+    }
+    sendCounter(data, num, bool){
+        this.setState({
+            amount: data
+        });
+        this.props.setAmount(num, data);
     }
     render(){
         return (

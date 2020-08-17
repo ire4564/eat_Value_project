@@ -37,6 +37,7 @@ class OrderItem extends Component {
                 <View style={[styles.counter_container, this.props.style]}>
                 <Counter
                     sendData={this.sendData.bind(this)}
+                    onChange={this.sendData.bind(this)}
                     start={this.props.num}
                     buttonStyle={{
                         borderWidth: 0
