@@ -96,6 +96,20 @@ class ChooseMenu extends Component {
         }).then(db_store_menu => this.setState({db_store_menu: db_store_menu}));
         
     }
+
+    _post(jsondata) {
+        var order_number = this.state.data;
+        return fetch(`${databaseURL}/db_order/${order_number}/order_detail.json`, { // TODO : set table json name
+          method: 'POST',
+          body: JSON.stringify(jsondata)
+        }).then(res => {
+          if(res.status != 200) {
+            throw new Error(res.statusText); // throw exception
+          }
+          return res.json();
+        });
+    }
+
     static getDerivedStateFromProps(nextProps, nextState) {
         if(nextState.db_store.length == 0 || nextState.db_order.length == 0 || nextState.db_store_menu.length == 0 ){
             if(nextState.amount.length==0){
@@ -257,6 +271,7 @@ class ChooseMenu extends Component {
         //db에 쏠 detail_order 만들기
         var list = [];
         for(let i=0; i<this.state.amount.length; i++){
+            if(this.state.amount[i] == 0)   continue;
             list.push({amount: this.state.amount[i],
                         menu: this.state.store_menu[i].name,
                         price: this.state.store_menu[i].price,
@@ -282,6 +297,11 @@ class ChooseMenu extends Component {
         }
         //case 2. 마지막 인원으로 들어왔을 때
         else if(this.state.db_order[this.state.data].limit_order-1==this.state.db_order[this.state.data].current_order){
+            let tmp_order = this.state.db_order[this.state.data].order_detail
+            for(let i = 0; i < list.length; i++) {
+                this._post(list[i]);
+            }
+            
             Alert.alert(
                 '주문 마감',
                 '주문에 성공하였습니다!',
@@ -291,6 +311,10 @@ class ChooseMenu extends Component {
                 this.props.changeMode("home");
         }
         else{
+            let tmp_order = this.state.db_order[this.state.data].order_detail
+            for(let i = 0; i < list.length; i++) {
+                this._post(list[i]);
+            }
             this.props.changeMode("complete-order");
         }
     }

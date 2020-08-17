@@ -26,6 +26,7 @@ import CompleteBtn from '../components/complete_IconBtn';
 import OrderBox from '../components/basicBox';
 import LocationBox from '../components/locationBox';
 import InfoBox from '../components/infoBox';
+
 const ICON_COLOR = '#40E0D0';
 var first = true;
 var count = 0; //해당되는 리스트 길이 세기
@@ -138,7 +139,6 @@ class MakeRoom extends Component {
      * @method "_add_order_to_database arrange data and then, push to firebase DB"
      */
     _add_order_to_database() {
-        // 수정 필요
         const date = new Date();
         var YYYY = date.getFullYear();
         var MM = date.getMonth() + 1;

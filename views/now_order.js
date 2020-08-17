@@ -144,22 +144,22 @@ class NowOrder extends Component {
         var limit = this.state.db_order[_num].limit_order;
         var location = this.state.db_order[_num].location.name;
         //해당 순서 데이터의 order_detail을 받아와 컴포넌트 생성
-        for(let i=0; i<order_detail.length; i++){
-            user_price = user_price + order_detail[i].price*order_detail[i].amount;
+        Object.keys(order_detail).map(id => {
+            user_price = user_price + order_detail[id].price*order_detail[id].amount;
             user_menu_amount = user_menu_amount + 1;
             if(user_menu.length<MAX_MENU_NUM){
                 user_menu.push(
-                    <View key={i+"_user_menu"} style={styles.row_container}>
+                    <View key={id+"_user_menu"} style={styles.row_container}>
                     <Text style={styles.user_menu_text}>
-                        {order_detail[i].menu}
-                        {' * '+order_detail[i].amount}
+                        {order_detail[id].menu}
+                        {' * '+order_detail[id].amount}
                     </Text>
-                    <Text style={styles.user_menu_text}>{(order_detail[i].price*order_detail[i].amount).toLocaleString()}원</Text>
+                    <Text style={styles.user_menu_text}>{(order_detail[id].price*order_detail[id].amount).toLocaleString()}원</Text>
                 </View>);
             }
             
-            total_price = total_price + order_detail[i].price*order_detail[i].amount;
-        }
+            total_price = total_price + order_detail[id].price*order_detail[id].amount;
+        });
 
         //실질적인 top 블록에 추가할 컴포넌트
         var alone_txt = ""
