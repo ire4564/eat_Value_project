@@ -74,6 +74,8 @@ class ChooseMenu extends Component {
         }
     }
 
+
+
     _delete() {
         var order_number = this.state.data;
         return fetch(`${databaseURL}/db_order/${order_number}.json`, { // TODO : set table json name
@@ -108,6 +110,21 @@ class ChooseMenu extends Component {
             return res.json();
         }).then(db_store_menu => this.setState({db_store_menu: db_store_menu}));
         
+    }
+
+    _move_to_order_history() {
+        var order_number = this.state.data;
+        var senddata = this.state.db_order[order_number];
+
+        return fetch(`${databaseURL}/order_list.json`, { // TODO : set table json name
+            method: 'POST',
+            body: JSON.stringify(senddata)
+          }).then(res => {
+            if(res.status != 200) {
+              throw new Error(res.statusText); // throw exception
+            }
+            return res.json();
+          });
     }
 
     _post(jsondata) {
@@ -329,10 +346,11 @@ class ChooseMenu extends Component {
             
             Alert.alert(
                 '주문 마감',
-                '이제, 모든 인원이 모집 되었습니다!',
+                '이제, 모든 인원이 모집 되었습니다. 주문 내역 탭에서 주문을 확인해보세요.',
                 [{
                     text: "네",
                 }]);
+                this._move_to_order_history();
                 this._delete();
                 this.props.changeMode("home");
         }
@@ -342,6 +360,14 @@ class ChooseMenu extends Component {
                 this._post(list[i]);
             }
             this._post_current_order(current);
+            this._move_to_order_history();
+            Alert.alert(
+                '주문 완료',
+                '주문이 접수되었습니다.',
+                [{
+                    text: "확인",
+                }]);
+
             this.props.changeMode("complete-order");
         }
     }
