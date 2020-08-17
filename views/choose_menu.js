@@ -10,7 +10,7 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { AntDesign } from '@expo/vector-icons';
 import TwoColorBlock from '../components/twoColorBlock';
@@ -244,6 +244,56 @@ class ChooseMenu extends Component {
             </View>
         );
     }
+    pressButton(){
+        if(this.state.total_price==0){
+            Alert.alert(
+                '주문 실패',
+                '메뉴를 결정해주세요!',
+                [{
+                    text: "네",
+                }]);
+                return null;
+        }
+        //db에 쏠 detail_order 만들기
+        var list = [];
+        for(let i=0; i<this.state.amount.length; i++){
+            list.push({amount: this.state.amount[i],
+                        menu: this.state.store_menu[i].name,
+                        price: this.state.store_menu[i].price,
+                        user_id: this.state.user.name});
+        }
+        //혹시 이미 업데이트한 사람이 있을 수 있으니 재확인
+        fetch(`${databaseURL}/db_order.json`).then(res => {
+            if(res.status != 200) {
+                throw new Error(res.statusText);
+            }
+            return res.json();
+        }).then(db_order => this.setState({db_order: db_order}));
+        
+        //case 1. 이미 정원 상태일 때
+        if(this.state.db_order[this.state.data].limit_order==this.state.db_order[this.state.data].current_order){
+            Alert.alert(
+                '주문 실패',
+                '이미 인원이 가득찬 주문입니다. 다른 방에 참여해주세요!',
+                [{
+                    text: "네",
+                }]);
+                this.props.changeMode("home");
+        }
+        //case 2. 마지막 인원으로 들어왔을 때
+        else if(this.state.db_order[this.state.data].limit_order-1==this.state.db_order[this.state.data].current_order){
+            Alert.alert(
+                '주문 마감',
+                '주문에 성공하였습니다!',
+                [{
+                    text: "네",
+                }]);
+                this.props.changeMode("home");
+        }
+        else{
+            this.props.changeMode("complete-order");
+        }
+    }
 
     render(){
         return(
@@ -269,7 +319,7 @@ class ChooseMenu extends Component {
 
                 <TouchableOpacity
                     style={styles.order_button}
-                    onPress={function(){this.props.changeMode("complete-order")}.bind(this)}>
+                    onPress={this.pressButton.bind(this)}>
                         <Text style={{color:'#fff', fontSize: hp('2.5%'), fontWeight: 'bold'}}>
                              총 {this.state.total_price}원 주문
                             <Text style={{fontWeight:'normal'}}> 진행하기</Text></Text>
