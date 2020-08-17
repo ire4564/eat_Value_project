@@ -244,6 +244,7 @@ class ChooseMenu extends Component {
             </View>
         );
     }
+
     render(){
         return(
             <Page style={[this.props.style, ]} pose={this.state.event}>
@@ -251,6 +252,9 @@ class ChooseMenu extends Component {
                     <TwoColorBlock
                     top={this.printStoreTop()}
                     bottom={this.printStoreBottom()}
+                    height ={wp("60%")}
+                    topHeight={1}
+                    bottomHeight={1}
                     shadow={true}
                     />
                 </View>
