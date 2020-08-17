@@ -286,19 +286,19 @@ class DetailOrder extends Component {
         if(this.state.member.includes(this.state.user.id)){
             if(this.state.total_price<this.state.store.min_order){
                 return (<TouchableOpacity style={[styles.close_button, {backgroundColor: '#999'}]} disabled={true}>
-                    <Text style={styles.button_text}>참여 마감하기 (<Text>2</Text>/<Text>4</Text>)</Text>
+                    <Text style={styles.button_text}>참여 마감하기 <Text>{this.state.order.current_order}</Text>/<Text>{this.state.order.limit_order}</Text>)</Text>
                     <Text style={{color: '#fff', fontSize: wp('3%'), textAlign: 'center'}}>
                                 ※ 최소 결제 금액 이상 달성 시에만 마감이 가능합니다.</Text>
                 </TouchableOpacity>);
             }
             return (<TouchableOpacity style={styles.close_button} onPress={this.clickCloseOrderButton.bind(this)}>
-                        <Text style={styles.button_text}>참여 마감하기 (<Text>2</Text>/<Text>4</Text>)</Text>
+                        <Text style={styles.button_text}>참여 마감하기 <Text>{this.state.order.current_order}</Text>/<Text>{this.state.order.limit_order}</Text>)</Text>
                         <Text style={{color: '#fff', fontSize: wp('3%'), textAlign: 'center'}}>
                                     ※ 최대 인원이 모이면 자동 마감됩니다.</Text>
                     </TouchableOpacity>);
         }
         return (<TouchableOpacity style={styles.join_button} onPress={this.clickJoinButton.bind(this)}>
-                    <Text style={styles.button_text}>참여하기 (<Text>2</Text>/<Text>4</Text>)</Text>
+                    <Text style={styles.button_text}>참여하기 (<Text>{this.state.order.current_order}</Text>/<Text>{this.state.order.limit_order}</Text>)</Text>
                 </TouchableOpacity>);
     }
     printDeleteButton(){
