@@ -14,7 +14,6 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'rea
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { AntDesign } from '@expo/vector-icons';
 import TwoColorBlock from '../components/twoColorBlock';
-import OrderItem from '../components/orderItem';
 import Menu from '../components/one_menu';
 
 
