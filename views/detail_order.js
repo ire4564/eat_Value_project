@@ -150,9 +150,9 @@ class DetailOrder extends Component {
 
     /**
      * @method "IsChange?"
-     */
+    */
     shouldComponentUpdate(nextProps, nextState) {
-        return (nextState.db_store != this.state.db_store) || (nextState.db_order != this.state.db_order);
+        return (nextState.db_store != this.state.db_store) || (nextState.db_order != this.state.db_order) || (nextState.order != this.state.order);
     }
 
     //alone 정보를 받아오기 위해서 
@@ -164,46 +164,34 @@ class DetailOrder extends Component {
     componentDidMount() {
         this._get();
         this.setState({event: 'open'});
-        this.setOrder();
-        this.computeTotalPrice();
         this.computeMember();
+        this.computeTotalPrice();
+
+        
     }
     static getDerivedStateFromProps(nextProps, nextState) {
         if(nextState.db_store.length == 0 || nextState.db_order.length == 0 ){
             return null;
         }
-        
-        if(nextState.db_order.length<=nextState.data){
-            return null;
-        }
-
-        return {order: nextState.db_order[nextState.data],
-                store: nextState.db_store[nextState.db_order[nextState.data].store_num]};
+        return {order: nextState.db_order[nextProps.data],
+                store: nextState.db_store[nextState.db_order[nextProps.data].store_num],};
     }
     //데이터 연산 관련 함수들
-    setOrder(){
-        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
-            return null;
-        }
-        var num = Number(this.state.data);
-        var i = 0;
-        while(num!==this.props.db_order[i].order_num){
-            i = i + 1;
-            if(i>=this.props.db_order.length) break;
-        }
-        if(i<this.props.db_order.length){
-            this.setState({ data: num });
-        }
-    }
     computeTotalPrice(){
-        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+        if(this.state.order.store_num != -1){
             return null;
         }
+        alert("test");
         var total = 0;
+        /*
         for(let i=0; i<this.state.order.order_detail.length; i++){
             let temp_order = this.state.order.order_detail[i];
             total = total + temp_order.amount*temp_order.price;
-        }
+        }*/
+        Object.keys(this.state.order.order_detail).map(id => {
+            let temp_order = this.state.order.order_detail[id];
+            total = total + temp_order.amount*temp_order.price;
+        });
         this.setState({
             total_price: total
         })
@@ -211,17 +199,17 @@ class DetailOrder extends Component {
     }
     computeMember(){
         //상세 주문 내역을 보고 싶으면 이 부분 수정하기*/
-        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+        if(this.state.order.store_num != -1){
             return null;
         }
         //여기까지 주석처리
         var list = [];
-        for(let i=0; i<this.state.order.order_detail.length; i++){
-            let temp_id = this.state.order.order_detail[i].user_id;
+        Object.keys(this.state.order.order_detail).map(id => {
+            let temp_id = this.state.order.order_detail[id].user_id;
             if(!list.includes(temp_id)){
                 list.push(temp_id);
             }
-        }
+        });
         this.setState({
             member: list
         })
@@ -248,7 +236,7 @@ class DetailOrder extends Component {
         for(let i=0; i<this.state.member.length; i++){
             let temp = [];
             let temp_price = 0;
-            for(let j=0; j<this.state.order.order_detail.length; j++){
+            Object.keys(this.state.order.order_detail).map(j => {
                 let temp_order = this.state.order.order_detail[j];
                 //현재 탐색하고자 하는 유저의 주문들 저장
                 if(this.state.member[i]==temp_order.user_id){
@@ -261,7 +249,7 @@ class DetailOrder extends Component {
                 </View>);
                 temp_price = temp_price + temp_order.price* temp_order.amount;
                 }    
-            }
+            });
             list.push(<View key={i+"_user"} style={{width:wp('90%'), alignSelf:'center', marginBottom: wp('2%'), marginTop: hp('1%')}}>
                 <TwoColorBlock
                 top={<View style={styles.detail_order_container}>
@@ -286,13 +274,13 @@ class DetailOrder extends Component {
         if(this.state.member.includes(this.state.user.id)){
             if(this.state.total_price<this.state.store.min_order){
                 return (<TouchableOpacity style={[styles.close_button, {backgroundColor: '#999'}]} disabled={true}>
-                    <Text style={styles.button_text}>참여 마감하기 <Text>{this.state.order.current_order}</Text>/<Text>{this.state.order.limit_order}</Text>)</Text>
+                    <Text style={styles.button_text}>참여 마감하기 (<Text>{this.state.order.current_order}</Text>/<Text>{this.state.order.limit_order}</Text>)</Text>
                     <Text style={{color: '#fff', fontSize: wp('3%'), textAlign: 'center'}}>
                                 ※ 최소 결제 금액 이상 달성 시에만 마감이 가능합니다.</Text>
                 </TouchableOpacity>);
             }
             return (<TouchableOpacity style={styles.close_button} onPress={this.clickCloseOrderButton.bind(this)}>
-                        <Text style={styles.button_text}>참여 마감하기 <Text>{this.state.order.current_order}</Text>/<Text>{this.state.order.limit_order}</Text>)</Text>
+                        <Text style={styles.button_text}>참여 마감하기 (<Text>{this.state.order.current_order}</Text>/<Text>{this.state.order.limit_order}</Text>)</Text>
                         <Text style={{color: '#fff', fontSize: wp('3%'), textAlign: 'center'}}>
                                     ※ 최대 인원이 모이면 자동 마감됩니다.</Text>
                     </TouchableOpacity>);
@@ -337,12 +325,12 @@ class DetailOrder extends Component {
     clickDeleteOrderButton(){
         var list = [];
         //order.order_detail 일부 삭제
-        for(let i=0; i<this.state.order.order_detail.length; i++){
+        Object.keys(this.state.order.order_detail).map(i => {
             var temp = this.state.order.order_detail[i];
             if(temp.user_id===this.state.user.name){
                 list.push(temp);
             }
-        }
+        });
         return alert(temp);
     }
     clickCloseOrderButton(){
