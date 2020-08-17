@@ -114,16 +114,16 @@ class locationBox extends Component {
                     <View style={styles.mapSection}>
                         <MapView style={{ flex: 1 }} 
                         initialRegion={{ 
-                            latitude: 37.78825, 
-                            longitude: -122.4324, 
-                            latitudeDelta: 0.0922, 
-                            longitudeDelta: 0.0421 
+                            latitude : 36.363225,
+                            latitudeDelta : 0.0922,
+                            longitude : 127.344945,
+                            longitudeDelta : 0.0421,
                             }} 
                             > 
                             <MapView.Marker 
                                 coordinate={{ 
-                                    latitude: 37.78825, 
-                                    longitude: -122.4324, 
+                                    latitude: 36.363225, 
+                                    longitude: 127.344945,
                                     }} 
                                     /> 
                         </MapView>

@@ -42,10 +42,10 @@ class MakeRoom extends Component {
                 {
                     store_name: "신당동 떡볶이 충남대점",
                     date: "2020-07-18-00-00",
-                    order_detail: [{ menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "testID" },
-                    { menu: '떡볶이(중간맛)', amount: 3, price: 4000, user_id: "other1" },
-                    { menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2" },
-                    { menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID" },
+                    order_detail: [{ menu: '떡볶이(중간맛)', amount: 0, price: 4000, user_id: "testID" },
+                    { menu: '떡볶이(중간맛)', amount: 0, price: 4000, user_id: "other1" },
+                    { menu: '떡볶이(중간맛)', amount: 0, price: 4000, user_id: "other2" },
+                    { menu: '모둠 튀김', amount: 0, price: 3000, user_id: "testID" },
                     ],
                 },
                 //리스트가 더 있어도 상관없음, 테스트를 위해 하나만 함 (메뉴는 여러 개)
@@ -92,9 +92,6 @@ class MakeRoom extends Component {
     }).then(db_store => this.setState({db_store: db_store}));
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return (nextState.db_store != this.state.db_store);
-  }
 
   componentDidMount() {
     this._get();
@@ -134,17 +131,17 @@ class MakeRoom extends Component {
         const jsondata = {
             date : `${YYYY}-${MM}-${DD}-${HH}-${MIN}`,
             store_image : "../images/test_image.jpg",
-            store_name : "데이터베이스 테스트",
+            store_name : this.state.db_store.name,
             current_order : this.state.room_info[0].current_order,
             limit_order : this.state.room_info[0].limit_order,
             location : {
-                name : "데이터베이스 테스트 지도",
-                "latitude" : 37.78825,
+                name : this.state.db_store.location,
+                "latitude" : 36.363225,
                 "latitudeDelta" : 0.0922,
-                "longitude" : -122.4324,
+                "longitude" : 127.344945,
                 "longitudeDelta" : 0.0421,
             },
-            store_num : 1, // 수정 필요
+            store_num : 0, // 수정 필요
             order_detail : this.state.db_order[0].order_detail,
             alone : this.state.alone
         }
