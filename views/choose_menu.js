@@ -15,16 +15,35 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { AntDesign } from '@expo/vector-icons';
 import TwoColorBlock from '../components/twoColorBlock';
 import Menu from '../components/one_menu';
-
+import posed from 'react-native-pose';
 
 const RANK_IMG = "../images/rank.png";
 const RATING_COLOR = '#fa4';
 const COLOR_SET = ['#00CED1','#8BAAF0', '#7AD3FA', '#40e0d0'];
+const databaseURL = "https://cnu-eat-value.firebaseio.com/";
+const Page = posed.View({
+    open: {
+        y: 0,
+        opacity: 1,
+        transition: {
+          y: { 
+              type: 'spring', 
+              stiffness: 500, 
+              damping: 100
+            },
+        }
+    },
+    closed: {
+        y: hp('5%'), 
+        opacity: 0
+    },
+});
 
 class ChooseMenu extends Component {
     constructor(props){
         super(props);
         this.state = {
+            event: 'closed',
             data: this.props.data,
             user : this.props.db_user,
             store: {
@@ -53,13 +72,42 @@ class ChooseMenu extends Component {
             total_price : 0,
         }
     }
-    static getDerivedStateFromProps(nextProps, nextState) {
-        //메뉴량 초기화
-        if(nextState.amount.length==0){
-            var _amount = Array.from({length: nextState.store_menu.length}, () => 0);
-            return {amount : _amount};
+    _get() {
+        fetch(`${databaseURL}/db_store.json`).then(res => {
+        if(res.status != 200) {
+            throw new Error(res.statusText);
         }
-        return null;
+        return res.json();
+        }).then(db_store => this.setState({db_store: db_store}));
+
+        fetch(`${databaseURL}/db_order.json`).then(res => {
+            if(res.status != 200) {
+                throw new Error(res.statusText);
+            }
+            return res.json();
+        }).then(db_order => this.setState({db_order: db_order}));
+        
+    }
+    static getDerivedStateFromProps(nextProps, nextState) {
+        if(nextState.db_store.length == 0 || nextState.db_order.length == 0 ){
+            if(nextState.amount.length==0){
+                var _amount = Array.from({length: nextState.store_menu.length}, () => 0);
+                return {amount : _amount};
+            }
+            return null;
+        }
+        //메뉴량 초기화
+        if(nextState.amount.length!=nextState.store_menu.length){
+            var _amount = Array.from({length: nextState.store_menu.length}, () => 0);
+            return {
+                store: nextState.db_store[nextState.db_order[nextState.data].store_num],
+                amount : _amount};
+        }
+        return {store: nextState.db_store[nextState.db_order[nextState.data].store_num]};
+    }
+    componentDidMount() {
+        this._get();
+        this.setState({event: 'open'});
     }
 
     computeGauge(){
@@ -180,7 +228,7 @@ class ChooseMenu extends Component {
     }
     render(){
         return(
-            <View style={[this.props.style, ]}>
+            <Page style={[this.props.style, ]} pose={this.state.event}>
                 <View style={{top: hp('-3%'),}}>
                     <TwoColorBlock
                     top={this.printStoreTop()}
@@ -204,7 +252,7 @@ class ChooseMenu extends Component {
                              총 {this.state.total_price}원 주문
                             <Text style={{fontWeight:'normal'}}> 진행하기</Text></Text>
                     </TouchableOpacity>
-            </View>
+            </Page>
         );
     }
 }
