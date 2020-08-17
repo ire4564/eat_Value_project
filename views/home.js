@@ -207,7 +207,7 @@ class Home extends Component {
                     order={this.state.db_order[id]}
                     store={this.state.db_store[this.state.db_order[id].store_num]}
                     event={function(){
-                        this.props.sendData(this.state.db_order[id].order_num+"");
+                        this.props.sendData(id);
                         this.props.changeMode("detail-order");
                     }.bind(this)}
                     sendData={this.props.sendData.bind(this)}

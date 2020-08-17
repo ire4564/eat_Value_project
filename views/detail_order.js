@@ -34,7 +34,7 @@ import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Alert } fr
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import moment from 'moment'; 
 import posed from 'react-native-pose';
-import { AntDesign } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons';
 import TwoColorBlock from '../components/twoColorBlock';
 import LocationBox from '../components/locationBox_detail';
 const ICON_COLOR = '#40E0D0';
@@ -105,10 +105,10 @@ class DetailOrder extends Component {
                 limit_order : 100,
                 location : {name: "undefined"},
                 store_num : 1,
-                order_detail :  [{ menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "testID" },
-                    { menu: '떡볶이(중간맛)', amount: 3, price: 4000, user_id: "other1" },
-                    { menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2" },
-                    { menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID" },
+                order_detail :  [{ menu: 'test', amount: 2, price: 4000, user_id: "testID" },
+                    { menu: 'test2', amount: 3, price: 4000, user_id: "other1" },
+                    { menu: 'test4', amount: 1, price: 4000, user_id: "other2" },
+                    { menu: 'test', amount: 1, price: 3000, user_id: "testID" },
                     ],
                 alone : 1
             },
@@ -297,7 +297,7 @@ class DetailOrder extends Component {
                                     ※ 최대 인원이 모이면 자동 마감됩니다.</Text>
                     </TouchableOpacity>);
         }
-        return (<TouchableOpacity style={styles.join_button} onPress={function(){this.props.changeMode("check-order")}.bind(this)}>
+        return (<TouchableOpacity style={styles.join_button} onPress={this.clickJoinButton.bind(this)}>
                     <Text style={styles.button_text}>참여하기 (<Text>2</Text>/<Text>4</Text>)</Text>
                 </TouchableOpacity>);
     }
@@ -331,7 +331,8 @@ class DetailOrder extends Component {
         }
     }
     clickJoinButton(){
-        alert("Enter!");
+        this.props.sendData(this.props.data);
+        this.props.changeMode("choose-menu");
     }
     clickDeleteOrderButton(){
         alert("deleted!");
@@ -351,7 +352,7 @@ class DetailOrder extends Component {
                     <View style={styles.main_container}>
 
                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Text style={styles.order_number}>주문 번호 : {this.state.order.order_num}</Text>
+                            <Text style={styles.order_number}>주문 코드 : {this.state.data}</Text>
                             <Text style={styles.order_number}>{moment(this.state.order.date,'YYYY-MM-DD-HH-mm', true).format('YYYY-MM-DD HH:mm')}</Text>
                         </View>
 

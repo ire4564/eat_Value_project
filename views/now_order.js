@@ -308,7 +308,7 @@ class NowOrder extends Component {
                     <TouchableOpacity
                         style={styles.order_history_container}
                         onPress={function(){
-                            this.props.sendData(this.state.db_order[id].order_num+"");
+                            this.props.sendData(id);
                             this.props.changeMode("detail-order");
                         }.bind(this)}
                         >
@@ -341,7 +341,7 @@ class NowOrder extends Component {
                     <TouchableOpacity
                         style={styles.order_history_container}
                         onPress={function(){
-                            this.props.sendData(this.state.db_order[id].order_num+"");
+                            this.props.sendData(id);
                             this.props.changeMode("detail-order");
                         }.bind(this)}
                         >
