@@ -73,6 +73,19 @@ class ChooseMenu extends Component {
             total_price : 0,
         }
     }
+
+    _delete() {
+        var order_number = this.state.data;
+        return fetch(`${databaseURL}/db_order/${order_number}.json`, { // TODO : set table json name
+          method: 'DELETE',
+        }).then(res => {
+          if(res.status != 200) {
+            throw new Error(res.statusText); // throw exception
+          }
+          return res.json();
+        });
+      }
+
     _get() {
         fetch(`${databaseURL}/db_store.json`).then(res => {
         if(res.status != 200) {
@@ -102,6 +115,19 @@ class ChooseMenu extends Component {
         return fetch(`${databaseURL}/db_order/${order_number}/order_detail.json`, { // TODO : set table json name
           method: 'POST',
           body: JSON.stringify(jsondata)
+        }).then(res => {
+          if(res.status != 200) {
+            throw new Error(res.statusText); // throw exception
+          }
+          return res.json();
+        });
+    }
+
+    _post_current_order(next_current) {
+        var order_number = this.state.data;
+        return fetch(`${databaseURL}/db_order/${order_number}/current_order.json`, { // TODO : set table json name
+          method: 'PUT',
+          body: JSON.stringify(next_current)
         }).then(res => {
           if(res.status != 200) {
             throw new Error(res.statusText); // throw exception
@@ -297,24 +323,25 @@ class ChooseMenu extends Component {
         }
         //case 2. 마지막 인원으로 들어왔을 때
         else if(this.state.db_order[this.state.data].limit_order-1==this.state.db_order[this.state.data].current_order){
-            let tmp_order = this.state.db_order[this.state.data].order_detail
             for(let i = 0; i < list.length; i++) {
                 this._post(list[i]);
             }
             
             Alert.alert(
                 '주문 마감',
-                '주문에 성공하였습니다!',
+                '이제, 모든 인원이 모집 되었습니다!',
                 [{
                     text: "네",
                 }]);
+                this._delete();
                 this.props.changeMode("home");
         }
         else{
-            let tmp_order = this.state.db_order[this.state.data].order_detail
+            let current = this.state.db_order[this.state.data].current_order + 1
             for(let i = 0; i < list.length; i++) {
                 this._post(list[i]);
             }
+            this._post_current_order(current);
             this.props.changeMode("complete-order");
         }
     }
