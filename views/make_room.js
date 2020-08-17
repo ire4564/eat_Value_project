@@ -54,7 +54,7 @@ class MakeRoom extends Component {
             room_info: [
                 {
                     limit_order: 5, //최대 인원
-                    current_order: 4, //현재 인원
+                    current_order: 1, //현재 인원
                     exist_prize: 25000 //현재 모인 돈
                 }
             ],
@@ -82,6 +82,24 @@ class MakeRoom extends Component {
             BtnIndex: 0
         }
     }
+
+  _get() {
+    fetch(`${databaseURL}/db_store/0.json`).then(res => {
+      if(res.status != 200) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
+    }).then(db_store => this.setState({db_store: db_store}));
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (nextState.db_store != this.state.db_store);
+  }
+
+  componentDidMount() {
+    this._get();
+  }
+  
     /**
      * @author MINIBEEF
      * @name _post
