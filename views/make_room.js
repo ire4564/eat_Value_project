@@ -42,10 +42,9 @@ class MakeRoom extends Component {
                 {
                     store_name: "신당동 떡볶이 충남대점",
                     date: "2020-07-18-00-00",
-                    order_detail: [{ menu: '떡볶이(중간맛)', amount: 0, price: 4000, user_id: "testID" },
-                    { menu: '떡볶이(중간맛)', amount: 0, price: 4000, user_id: "other1" },
-                    { menu: '떡볶이(중간맛)', amount: 0, price: 4000, user_id: "other2" },
-                    { menu: '모둠 튀김', amount: 0, price: 3000, user_id: "testID" },
+                    order_detail: [{ menu: '참치마요덮밥', amount: 0, price: 4000, user_id: "testID" },
+                    { menu: '튀김오뎅', amount: 0, price: 4000, user_id: "testID" },
+                    { menu: '떡볶이(중간맛)', amount: 0, price: 4000, user_id: "testID" },
                     ],
                 },
                 //리스트가 더 있어도 상관없음, 테스트를 위해 하나만 함 (메뉴는 여러 개)
@@ -72,6 +71,9 @@ class MakeRoom extends Component {
                 name: this.props.name,
                 rating: this.props.rating
             },
+
+            db_store_menu: {},
+            
             test_location: {
                 "latitude" : 37.78825,
                 "longitude" : -122.4324
@@ -90,11 +92,27 @@ class MakeRoom extends Component {
       }
       return res.json();
     }).then(db_store => this.setState({db_store: db_store}));
+
+    fetch(`${databaseURL}/db_store_menu/0.json`).then(res => {
+        if(res.status != 200) {
+          throw new Error(res.statusText);
+        }
+        return res.json();
+      }).then(db_store_menu => this.setState({db_store_menu: db_store_menu}));
+
   }
 
 
   componentDidMount() {
     this._get();
+    var tmp_order = this.state.db_order;
+    var tmp_menu = this.state.db_store_menu;
+    for(let i = 0; i < tmp_menu.length; i++) {
+        tmp_menu[i].user_id = this.state.db_user;
+    }
+    tmp_order.order_detail = tmp_menu;
+
+    this.setState({db_order:tmp_order});
   }
   
     /**
@@ -191,6 +209,7 @@ class MakeRoom extends Component {
     }
     //주문하기 밑에 주문 정보 탭
     order_info() {
+
     var list_info = [] //return 정보를 담을 곳
     var order_details = this.state.db_order[0].order_detail;
     for (let i = 0; i < order_details.length; i++) {
