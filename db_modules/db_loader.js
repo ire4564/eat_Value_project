@@ -26,6 +26,21 @@ export default class DB_Loader extends React.Component {
     };
   }
 
+  _delete(id) {
+    return fetch(`${databaseURL}/db_user/id.json`, { // TODO : set table json name
+      method: 'DELETE',
+    }).then(res => {
+      if(res.status != 200) {
+        throw new Error(res.statusText); // throw exception
+      }
+      return res.json();
+    }).then(data => {
+      let nextState = this.state.db_user; // TODO : set table json name
+      delete nextState[id];
+      this.setState({db_user : nextState});
+    });
+  }
+  
   /**
    * @method "load data and then store to the state"
    */

@@ -225,6 +225,7 @@ class MakeRoom extends Component {
                 resultPrize += order_details[this.state.BtnIndex].price/2;
             } else {
                 resultPrize -= order_details[this.state.BtnIndex].price/2;
+                if (resultPrize < 0)    resultPrize = 0;
             }
             //onchange 사용해서 총 수량에 따른 잔액 실시간으로 변경하기!!!!
             list_info.push(
