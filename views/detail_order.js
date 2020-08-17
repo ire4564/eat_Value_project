@@ -335,10 +335,20 @@ class DetailOrder extends Component {
         this.props.changeMode("choose-menu");
     }
     clickDeleteOrderButton(){
-        alert("deleted!");
+        var list = [];
+        //order.order_detail 일부 삭제
+        for(let i=0; i<this.state.order.order_detail.length; i++){
+            var temp = this.state.order.order_detail[i];
+            if(temp.user_id===this.state.user.name){
+                list.push(temp);
+            }
+        }
+        return alert(temp);
     }
     clickCloseOrderButton(){
-        alert("closed order!");
+        //아예 limit_order를 current_order로 변경
+        var result = {limit_order: this.state.order.current_order};
+        return alert(result);
     }
 
     render(){
