@@ -21,6 +21,8 @@
  *  - hotMenuList : hot_menu를 통해 해당 목록의 버튼들을 리스트로 출력
  *  - hotOrderList : db_order와 db_store를 통해 해당 목록의 버튼들을 리스트로 출력
  *                   또한 주문 목록 정리
+ *  - searchMenu(): 선택한 버튼에 대한 메뉴를 검색 기능을 통해 검색하고 해당 페이지로 이동
+ *  - selectOrder(): 선택한 주문의 상세 페이지로 이동
  *  
  ************************************************/
 
@@ -194,6 +196,34 @@ class Home extends Component {
         }
         return list;
     }
+
+    //searchMenu(): 선택한 버튼에 대한 메뉴를 검색 기능을 통해 검색한다.
+    searchMenu(list){
+        Object.keys(this.state.db_order).map(id => {
+            if(this.state.db_store[this.state.db_order[id].store_num].name.indexOf(this.state.search)!== -1){
+                list.push(
+                    <TouchableList
+                    key={id+"_order"}
+                    order={this.state.db_order[id]}
+                    store={this.state.db_store[this.state.db_order[id].store_num]}/>
+                );
+            }else if(this.state.db_store[this.state.db_order[id].store_num].category.indexOf(this.state.search)!== -1){
+                list.push(
+                    <TouchableList
+                    key={id+"_order"}
+                    order={this.state.db_order[id]}
+                    store={this.state.db_store[this.state.db_order[id].store_num]}/>
+                );
+            }
+        });
+        return list;
+    }
+
+    //selectOrder(): 선택한 주문의 상세 페이지로 이동
+    selectOrder() {
+        this.props.changeMode("detail-order");
+    }
+
     //searchList(String): String 인자가 있는 경우 해당 String을 토대로 필터링된 주문에 대해 
     //모집 마감을 위해 더 적은 인원이 필요한 주문 목록을 순서대로 버튼으로 만들어 화면에 출력
     searchList(){
@@ -210,7 +240,7 @@ class Home extends Component {
                     store={this.state.db_store[this.state.db_order[id].store_num]}
                     event={function(){
                         this.props.sendData(id);
-                        this.props.changeMode("detail-order");
+                        {this.selectOrder()}; 
                     }.bind(this)}
                     sendData={this.props.sendData.bind(this)}
                     changeMode={this.props.changeMode}/>
@@ -218,23 +248,8 @@ class Home extends Component {
             });
 
         }else{
-            Object.keys(this.state.db_order).map(id => {
-                if(this.state.db_store[this.state.db_order[id].store_num].name.indexOf(this.state.search)!== -1){
-                    list.push(
-                        <TouchableList
-                        key={id+"_order"}
-                        order={this.state.db_order[id]}
-                        store={this.state.db_store[this.state.db_order[id].store_num]}/>
-                    );
-                }else if(this.state.db_store[this.state.db_order[id].store_num].category.indexOf(this.state.search)!== -1){
-                    list.push(
-                        <TouchableList
-                        key={id+"_order"}
-                        order={this.state.db_order[id]}
-                        store={this.state.db_store[this.state.db_order[id].store_num]}/>
-                    );
-                }
-            });
+            //선택한 버튼에 대한 메뉴를 검생한 기능을 통해 검색
+            {this.searchMenu(list)}
         }
         return list;
     }
@@ -279,6 +294,7 @@ class Home extends Component {
                         <Text style={{color:'#fff', fontSize:hp('1.9%')}}> 방 만들기</Text>
                     </TouchableOpacity>
 
+                    {/*검색 바*/}
                     <TextInput
                     style={styles.search}
                     placeholder="원하시는 음식을 검색해보세요"
