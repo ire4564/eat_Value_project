@@ -175,7 +175,7 @@ class DetailOrder extends Component {
         }
         return {order: nextState.db_order[nextProps.data],
                 store: nextState.db_store[nextState.db_order[nextProps.data].store_num],};
-    }
+    } 
     //데이터 연산 관련 함수들
     computeTotalPrice(){
         if(this.state.order.store_num != -1){
@@ -318,11 +318,11 @@ class DetailOrder extends Component {
                 }]);
         }
     }
-    clickJoinButton(){
+    clickJoinButton(){ // 메뉴 선택 화면 이동
         this.props.sendData(this.props.data);
         this.props.changeMode("choose-menu");
     }
-    clickDeleteOrderButton(){
+    clickDeleteOrderButton(){ // 해당 주문에 대한 참여를 취소
         var list = [];
         //order.order_detail 일부 삭제
         Object.keys(this.state.order.order_detail).map(i => {
@@ -333,10 +333,15 @@ class DetailOrder extends Component {
         });
         return alert(temp);
     }
-    clickCloseOrderButton(){
+    clickCloseOrderButton(){ // 마감 조건 달성한 경우 주문 수동 마감
         //아예 limit_order를 current_order로 변경
         var result = {limit_order: this.state.order.current_order};
         return alert(result);
+    }
+    registerReivew(){ // 가게 리뷰를 등록하는 기능
+        // 사용자의 리뷰 내용 및 점수 입력 가져오기
+        // 이후 데이터베이스에 내용 반영
+
     }
 
     render(){
