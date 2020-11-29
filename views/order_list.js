@@ -22,6 +22,8 @@ import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Alert } fr
 import TwoColorBlock from '../components/twoColorBlock';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import posed from 'react-native-pose';
+import { AntDesign } from '@expo/vector-icons';
+
 const databaseURL = "https://cnu-eat-value.firebaseio.com/";
 const MAX_MENU_NUM = 2;
 const Page = posed.View({
@@ -180,6 +182,18 @@ class OrderList extends Component {
                                 bottom={this.orderHistory_bottom(id, top_data[1], top_data[2])}
                                 shadow={false}/>
                     </TouchableOpacity>
+
+                    {/*리뷰 버튼*/}
+                    <TouchableOpacity
+                    style={styles.cancelOrder_style2}
+                    onPress={function(){
+                            this.props.changeMode("write_review");
+                        }.bind(this)}>
+                        <AntDesign name="star" size={hp('2%')} color="black" />
+                        <Text style={{color:'black', fontSize:hp('1.9%')}}> 리뷰 쓰기 </Text>
+                    </TouchableOpacity>
+
+                    {/*취소 버튼*/}
                     <TouchableOpacity
                     style={styles.cancelOrder_style}
                     onPress={function(){
@@ -194,8 +208,9 @@ class OrderList extends Component {
                             this.props.changeMode("home");
                         }.bind(this)}>
                         <MaterialCommunityIcons name="silverware-fork-knife" size={hp('2%')} color="#fff" />
-                        <Text style={{color:'#fff', fontSize:hp('1.9%')}}> 주문 취소</Text>
+                        <Text style={{color:'#fff', fontSize:hp('1.9%')}}> 주문 취소 </Text>
                     </TouchableOpacity>
+                    
                 </View>
             );
         });
@@ -320,9 +335,24 @@ const styles = StyleSheet.create({
     cancelOrder_style: {
         position: 'absolute',
         marginTop: hp('23%'),
-        width: wp('90%'),
-        alignSelf: 'flex-end',
+        width: wp('44'),
         backgroundColor: '#40e0d0',
+        borderRadius: 10,
+        paddingHorizontal: wp('5%'),
+        paddingVertical: hp('1%'),
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'center',
+    },
+
+    cancelOrder_style2: {
+        position: 'absolute',
+        marginTop: hp('23%'),
+        width: wp('44'),
+        alignSelf: 'flex-end',
+        backgroundColor: 'white',
+        borderColor: "black",
+        borderWidth: wp('0.3%'),
         borderRadius: 10,
         paddingHorizontal: wp('5%'),
         paddingVertical: hp('1%'),

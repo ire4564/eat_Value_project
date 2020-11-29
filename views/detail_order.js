@@ -340,8 +340,8 @@ class DetailOrder extends Component {
     }
     registerReivew(){ // 가게 리뷰를 등록하는 기능
         // 사용자의 리뷰 내용 및 점수 입력 가져오기
-        // 이후 데이터베이스에 내용 반영
-
+        // 이후 데이터베이스에 내용 반영, (수정: 김도희) 우선 로컬에 등록되는 것으로 동작함
+        
     }
 
     render(){

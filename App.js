@@ -29,6 +29,7 @@ import CompleteOrder from './views/complete_order';
 import ChooseMenu from './views/choose_menu';
 import PaymentModel from './views/payment_model'
 import TalkRoom from './views/talk_room';
+import WriteReview from './views/write_review'
 
 class App extends Component {
 
@@ -49,6 +50,14 @@ class App extends Component {
   }
   changePage(){
     switch(this.state.seleted_mode){
+      case 'write-review':
+        return <WriteReview
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
+        />;
       case 'talk-room':
         return <TalkRoom
         style={styles.page_component}
