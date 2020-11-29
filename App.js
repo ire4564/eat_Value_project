@@ -23,7 +23,6 @@ import Talk from './views/talk';
 import User from './views/user';
 import Navigation from './components/navigation';
 import MakeRoom from './views/make_room';
-import CheckOrder from './views/check_order';
 import Notice from './views/notice';
 import DetailOrder from './views/detail_order';
 import CompleteOrder from './views/complete_order';

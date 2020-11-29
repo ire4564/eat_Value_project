@@ -17,6 +17,7 @@
  ************************************************/
 
 import React, { Component } from 'react';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import TwoColorBlock from '../components/twoColorBlock';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -164,6 +165,12 @@ class OrderList extends Component {
                                 bottom={this.orderHistory_bottom(id, top_data[1], top_data[2])}
                                 shadow={false}/>
                     </TouchableOpacity>
+                    <TouchableOpacity
+                    style={styles.cancelOrder_style}
+                    onPress={function(){alert('[debug] cancel onPressed')}.bind(this)}>
+                        <MaterialCommunityIcons name="silverware-fork-knife" size={hp('2%')} color="#fff" />
+                        <Text style={{color:'#fff', fontSize:hp('1.9%')}}> 주문 취소</Text>
+                    </TouchableOpacity>
                 </View>
             );
         });
@@ -196,7 +203,7 @@ const styles = StyleSheet.create({
     //주문 컴포넌트 style
     order_history_container: {
         height: hp('21%'),
-        marginBottom: hp('1.5%'),
+        marginBottom: hp('10%'),
     },
 
     //주문 컴포넌트 상위 블록 style
@@ -243,7 +250,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
 
-    
 
     //가게명 text style
     store_name: {
@@ -284,6 +290,20 @@ const styles = StyleSheet.create({
         fontSize: hp('1.5%'),
         fontWeight: 'bold',
         color: '#40E0D0',
+    },
+
+    cancelOrder_style: {
+        position: 'absolute',
+        marginTop: hp('23%'),
+        width: wp('90%'),
+        alignSelf: 'flex-end',
+        backgroundColor: '#40e0d0',
+        borderRadius: 10,
+        paddingHorizontal: wp('5%'),
+        paddingVertical: hp('1%'),
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'center',
     },
   });
 
