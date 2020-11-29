@@ -52,6 +52,9 @@ class OrderList extends Component {
             order_list: [],
         }   
     }
+    _update() {
+        this.forceUpdate();
+    }
 
     _get() {
         fetch(`${databaseURL}/order_list.json`).then(res => {
@@ -186,8 +189,9 @@ class OrderList extends Component {
                             [{
                                 text: "확인",
                             }]);
-                        
+                            
                             this._delete(id);
+                            this.props.changeMode("home");
                         }.bind(this)}>
                         <MaterialCommunityIcons name="silverware-fork-knife" size={hp('2%')} color="#fff" />
                         <Text style={{color:'#fff', fontSize:hp('1.9%')}}> 주문 취소</Text>
