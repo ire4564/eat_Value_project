@@ -126,6 +126,26 @@ class Talk extends Component {
         return list;
     }
 
+    //sendMessage(): 메세지를 연결된 상대방에게 전송한다.
+    sendMessage(){
+        
+    }
+
+    //inviteFriend(): 친구를 주문으로 초대한다.
+    inviteFriend(){
+
+    }   
+
+    //acceptInvite(): 친구가 채팅을 통해 보낸 초대를 수락한다.
+    acceptInvite(){
+
+    }
+
+    //rejectInvite(): 친구가 보낸 초대를 거절한다.
+    rejectInvite(){
+
+    }
+
     render(){
         return(
             <Page style={this.props.style} pose={this.state.event}>

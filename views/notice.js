@@ -68,6 +68,17 @@ class Notice extends Component {
         }
         return list;
     }
+
+    //sendPush(): 푸시 알림을 보내는 메소드
+    sendPush() {
+
+    }
+
+    //receivePush(): 푸시 알림을 받는 메소드
+    receivePush(){
+        
+    }
+
     render(){
         return(
             <Page style={[this.props.style, styles.container]} pose={this.state.event}>

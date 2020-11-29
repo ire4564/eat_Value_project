@@ -194,7 +194,9 @@ class Home extends Component {
         }
         return list;
     }
-    willFinishList(){
+    //searchList(String): String 인자가 있는 경우 해당 String을 토대로 필터링된 주문에 대해 
+    //모집 마감을 위해 더 적은 인원이 필요한 주문 목록을 순서대로 버튼으로 만들어 화면에 출력
+    searchList(){
         if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
             return null;
         }
@@ -282,7 +284,7 @@ class Home extends Component {
                     placeholder="원하시는 음식을 검색해보세요"
                     onChangeText={(text)=>this.setState({search: text})}
                     value={this.state.search}/>
-                    {this.willFinishList()}
+                    {this.searchList()}
                 </ScrollView>
                 <LocationBar db_user={this.state.db_user}/>
             </Page>

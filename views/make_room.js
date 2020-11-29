@@ -166,27 +166,13 @@ class MakeRoom extends Component {
         this._post(jsondata);
     }
 
-    //주문 완료시 DB 처리를 위한 function
-    completeOrder = () => {
-        //주문하기로 화면 전환 예정
-
-        /* **** DB 저장 정보 ****
-         * 
-         * room info: 
-           limit_order(모집하고 싶은 사람 수), current_order(현재 모집 인원은 0명을 넘어감), exist_prize(방 만드는 주문자 금액만 더해서 넘기기)
-         * total prize: 총 모집을 원하는 금액
-         * db_user: 사용자 정보
-         * db_order: 주문한 음식에 대한 정보 (메뉴, 가격, 양 등의 정보),
-         * alone: 혼자 먹을래요, 같이 먹을래요에 관한 선택 여부
-         * 
-         */
-        //총 주문 금액 state 설정
-        this.setState ({
+    //createRoom(): 방 만들기에 대한 입력한 정보를 DB로 보내고 주문 완료 후, 주문 완료 화면으로 전환
+    createRoom = () => {
+         this.setState ({
             totalPrize: this.renew_prize()
         })
         this._add_order_to_database();
-        
-        {{this.props.changeMode("complete-order")}} //화면 전환
+        {{this.props.changeMode("complete-order")}} 
     }
 
     //숫자 입력 값에 표기하기
@@ -352,7 +338,7 @@ class MakeRoom extends Component {
                <CompleteBtn 
                     text = {this.addComma(this.renew_prize()) +' 원  주문 완료하기'} 
                     iconName="rightcircleo"
-                    clickFunc = {this.completeOrder}
+                    clickFunc = {this.createRoom}
                 ></CompleteBtn>
                 
             </View>
