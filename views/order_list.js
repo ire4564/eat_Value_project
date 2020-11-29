@@ -12,7 +12,7 @@
  * function :
  *  - orderHistory_top: 주문 컴포넌트의 상단 부분에 추가할 컴포넌트 반환
  *  - orderHistory_bottom: 주문 컴포넌트의 하단 부분에 추가할 컴포넌트 반환
- *  - orderHistoryList: 주문 컴포넌트의 리스트를 반환
+ *  - showMyOrder: 주문 컴포넌트의 리스트를 반환
  *  
  ************************************************/
 
@@ -48,24 +48,7 @@ class OrderList extends Component {
             event: 'closed',
             db_user: this.props.db_user,
             //아래는 추후 db연동을 위해 수정해야함!!!!
-            order_list: [
-                {store_name: "신당동 떡볶이 충남대점",
-                store_image: '../images/test_image.jpg', //적용안됨. image 처리는 후에 수정
-                date: "2020-07-18-00-00",
-                order_detail: [{menu: '떡볶이(중간맛)', amount: 2, price: 4000, user_id: "testID"},
-                                {menu: '모둠 튀김', amount: 1, price: 3000, user_id: "testID"},
-                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other1"},
-                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2"},],
-                },
-                {store_name: "신당동 떡볶이 충남대점",
-                store_image: '../images/test_image.jpg', //적용안됨. image 처리는 후에 수정
-                date: "2020-07-18-00-00",
-                order_detail: [{menu: '떡볶이(매운맛)', amount: 1, price: 4000, user_id: "testID"},
-                                {menu: '모둠 튀김', amount: 2, price: 3000, user_id: "testID"},
-                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "testID"},
-                                {menu: '떡볶이(중간맛)', amount: 1, price: 4000, user_id: "other2"},],
-                },
-            ],
+            order_list: [],
         }   
     }
 
@@ -154,7 +137,7 @@ class OrderList extends Component {
             </View>;
     }
 
-    orderHistoryList(){
+    showMyOrder(){
         var list = [];
         var i = 0;
         Object.keys(this.state.order_list).map(id => {
@@ -191,7 +174,7 @@ class OrderList extends Component {
         return(
             <Page style={this.props.style} pose={this.state.event}>
                 <ScrollView style={styles.main_scroll}>
-                    {this.orderHistoryList()} 
+                    {this.showMyOrder()} 
                 </ScrollView>
             </Page>
         );
