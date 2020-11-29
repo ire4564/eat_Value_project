@@ -110,11 +110,15 @@ class Talk extends Component {
     chattingList(){
         var list = [];
         for(let i=0; i<this.state.talk.length; i++){
-            var talk = this.state.talk[i];
-            var user = this.state.test_users[talk.user];
+            let talk = this.state.talk[i];
+            let user = this.state.test_users[talk.user];
             //var now = moment().format('YYYY-MM-DD HH:mm:ss');
-            var time = moment(talk.detail[talk.detail.length-1].date, 'YYYY-MM-DD HH:mm:ss', true);
-            list.push(<TouchableOpacity style={styles.talk_container} key={i+"_talk"}>
+            let time = moment(talk.detail[talk.detail.length-1].date, 'YYYY-MM-DD HH:mm:ss', true);
+            list.push(<TouchableOpacity style={styles.talk_container} key={i+"_talk"} 
+            onPress={function(){
+                this.props.changeMode('talk-room');
+                this.props.sendData(user.name+'');
+              }.bind(this)}>
                     <Image source={require(UNNAMED)} style={styles.profile_img}/>
                     <View style={styles.talk_text_container}>
                         <Text style={[{fontWeight: 'bold'}, styles.talk_text]} numberOfLines={1}>{user.name}</Text>

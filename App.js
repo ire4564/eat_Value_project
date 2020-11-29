@@ -28,6 +28,7 @@ import DetailOrder from './views/detail_order';
 import CompleteOrder from './views/complete_order';
 import ChooseMenu from './views/choose_menu';
 import PaymentModel from './views/payment_model'
+import TalkRoom from './views/talk_room';
 
 class App extends Component {
 
@@ -48,8 +49,8 @@ class App extends Component {
   }
   changePage(){
     switch(this.state.seleted_mode){
-      case 'payment-model':
-        return <PaymentModel
+      case 'talk-room':
+        return <TalkRoom
         style={styles.page_component}
         db_user={this.state.db_user}
         changeMode={this.changeMode.bind(this)}
@@ -168,6 +169,7 @@ class App extends Component {
       style={styles.container}>
         <Navigation
         mode={this.state.seleted_mode}
+        detail={this.state.change_mode_data}
         changeMode={this.changeMode.bind(this)}
         sendData={this.sendData.bind(this)}
         />

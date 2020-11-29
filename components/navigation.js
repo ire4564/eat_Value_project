@@ -31,6 +31,11 @@ class Navigation extends Component {
                   style={styles.text}>
                     가치<Text style={{fontSize: hp('2%'), fontWeight: 'normal'}}>value</Text>먹자
                   </Text>;
+        case 'talk-room':
+          return <Text
+                  style={styles.text}>
+                    {this.props.detail}
+                  </Text>;
         case 'order-list':
           return <Text
                   style={styles.text}>
