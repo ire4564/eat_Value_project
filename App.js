@@ -27,6 +27,7 @@ import Notice from './views/notice';
 import DetailOrder from './views/detail_order';
 import CompleteOrder from './views/complete_order';
 import ChooseMenu from './views/choose_menu';
+import TalkRoom from './views/talk_room';
 
 class App extends Component {
 
@@ -47,6 +48,14 @@ class App extends Component {
   }
   changePage(){
     switch(this.state.seleted_mode){
+      case 'talk-room':
+        return <TalkRoom
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
+        />;
       case 'complete-order':
         return <CompleteOrder
         style={styles.page_component}
@@ -159,6 +168,7 @@ class App extends Component {
       style={styles.container}>
         <Navigation
         mode={this.state.seleted_mode}
+        detail={this.state.change_mode_data}
         changeMode={this.changeMode.bind(this)}
         sendData={this.sendData.bind(this)}
         />
