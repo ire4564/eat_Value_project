@@ -10,10 +10,11 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import moment from 'moment';
 import posed from 'react-native-pose';
+import { FontAwesome } from '@expo/vector-icons';
 
 const COLOR_SET = ['#00CED1','#8BAAF0', '#7AD3FA', '#40e0d0'];
 
@@ -43,61 +44,140 @@ class TalkRoom extends Component {
         this.state = {
             event: 'closed',
             data: this.props.data,
-            user : this.props.db_user,
+            user: this.props.db_user,
+            input: '',
+            db_talk: [
+                [{date: '2020-11-30 00:12:12', text: 'text message 1'},
+                {date: '2020-11-30 00:15:14', text: 'text message 2'},
+                {date: '2020-11-30 00:20:20', text: 'text message 3'},
+                {date: '2020-11-30 01:01:12', text: 'text message 4'},],
+                [{date: '2020-11-30 00:11:12', text: 'text message 5'},
+                {date: '2020-11-30 00:13:12', text: 'text message 6'},
+                {date: '2020-11-30 00:49:12', text: 'text message 7'},
+                {date: '2020-11-30 00:50:12', text: 'text message 8'},
+            ]
+            ],
         }
     }
 
     componentDidMount() {
     this.setState({event: 'open'});
     }
+
+    //db_talk으로부터 데이터 읽어오기
+    roadTalk(){
+        //전체 대화 내용을 저장할 곳
+        let talkLog = [];
+        let me = 0;
+        let you = 0;
+
+        //먼저 온 순서대로 리스트에 출력
+        while (me<=this.state.db_talk[0].length && you<=this.state.db_talk[1].length){
+            
+            let my_talk_date = moment(this.state.db_talk[0][me].date,'YYYY-MM-DD HH:mm:ss')
+            let your_talk_date = moment(this.state.db_talk[1][you].date,'YYYY-MM-DD HH:mm:ss')
+
+            if(0<moment.duration(my_talk_date.diff(your_talk_date)).asMinutes()){    //상대방 메시지가 더 먼저 왔던 것인 경우
+                talkLog.push(this.yourTalkbox(this.state.db_talk[1][you]))
+                you += 1
+                if(you == this.state.db_talk[1].length){    // 한 쪽 메시지가 모두 소진된 경우 남은 쪽 메시지 모두 출력
+                    while(me<this.state.db_talk[0].length){
+                        talkLog.push(this.myTalkbox(this.state.db_talk[0][me]))
+                        me += 1
+                    }
+                    break;
+                }
+            }else{                              //나의 메시지가 더 먼저 왔던 것인 경우
+                talkLog.push(this.myTalkbox(this.state.db_talk[0][me]))
+                me += 1
+                if(me == this.state.db_talk[0].length){    // 한 쪽 메시지가 모두 소진된 경우 남은 쪽 메시지 모두 출력
+                    while(you<this.state.db_talk[1].length){
+                        talkLog.push(this.yourTalkbox(this.state.db_talk[1][you]))
+                        you += 1
+                    }
+                    break;
+                }
+
+            }
+        }
+        return talkLog;
+    }
     
     // 상대방 채팅 출력
-    yourTalkbox(string){
-        let date = moment()
-      .utcOffset('+09:00')
-      .format('a hh:mm');
+    yourTalkbox(data){
+        let time = moment(data.date, 'YYYY-MM-DD HH:mm:ss', true).format('a hh:mm');
         return <View style={[{flexDirection: 'row', marginBottom: hp('1%'),}]}>
             <View style={[styles.talkbox, styles.shadow]}>
                 <View style={[styles.your_talkbox_pointer]}/>
                     <View style={[styles.your_talkbox]}>
-                        <Text>{string}</Text>
+                        <Text>{data.text}</Text>
                     </View>
                 </View> 
-                <Text style={[styles.date_text_left]}>{date}</Text>
+                <Text style={[styles.date_text_left]}>{time}</Text>
             </View>;
     }
     
     //나의 채팅 출력
-    myTalkbox(string){
-        let date = moment()
-      .utcOffset('+09:00')
-      .format('a hh:mm');
+    myTalkbox(data){
+        let time = moment(data.date, 'YYYY-MM-DD HH:mm:ss', true).format('a hh:mm');
         return <View style={[{flexDirection: 'row', alignSelf: 'flex-end', marginBottom: hp('1%'),}]}>
-        <Text style={[styles.date_text_right]}>{date}</Text>
+        <Text style={[styles.date_text_right]}>{time}</Text>
         <View style={[styles.talkbox, styles.shadow]}>
             <View style={[styles.my_talkbox_pointer]}/>
                 <View style={[styles.my_talkbox]}>
-                    <Text>{string}</Text>
+                    <Text>{data.text}</Text>
                 </View>
             </View>
         </View>;
     }
 
+    //sendMessage(): 메세지를 연결된 상대방에게 전송한다.
+    sendMessage(){
+        //실제 전송하는 부분 구현 필요. 일단은 state에 바로 반영함.
+        let date = moment().format('YYYY-MM-DD HH:mm:ss');
+        
+        let temp = this.state.db_talk
+        temp[0].push({date: date, text: this.state.input})
+        this.setState({db_talk: temp})
+
+        this.myTalkbox(date, this.state.input);
+        this.setState({input: ''})
+    }
+
+    //inviteFriend(): 친구를 주문으로 초대한다.
+    inviteFriend(){
+
+    }   
+
+    //acceptInvite(): 친구가 채팅을 통해 보낸 초대를 수락한다.
+    acceptInvite(){
+
+    }
+
+    //rejectInvite(): 친구가 보낸 초대를 거절한다.
+    rejectInvite(){
+
+    }
     render(){
         return(
             <Page style={[this.props.style, styles.component]} pose={this.state.event}>
-                <ScrollView style={styles.main_scroll}>
-                    {this.yourTalkbox('looooooooooooooooong message')}
-                    {this.myTalkbox('loooooooooooong message')}
-                    {this.yourTalkbox('short')}
-                    {this.myTalkbox('short')}
-                    
-                    
-
-                    
+                <ScrollView
+                style={styles.main_scroll}
+                invertStickyHeaders={true}>
+                    {this.roadTalk()}
                 </ScrollView>
-                <KeyboardAvoidingView behavior="padding" style={styles.makeOrder}>
-                    <TextInput style={styles.textInput}/>
+                <KeyboardAvoidingView behavior="padding" style={styles.staticPanel}>
+                    <TextInput
+                    style={styles.textInput}
+                    onChangeText={(text)=>this.setState({input: text})}
+                    value={this.state.input}/>
+                    <TouchableOpacity
+                    style={styles.sendButton}
+                    onPress={function(){
+                        this.sendMessage()
+                    }.bind(this)}>
+                    <FontAwesome name="paper-plane" size={wp('5%')} color='#fff' />
+                    </TouchableOpacity>
                 </KeyboardAvoidingView>
             </Page>
         );
@@ -211,23 +291,36 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
 
-    makeOrder: {
+    staticPanel: {
         //position: 'absolute',
         width: wp('100%'),
         height: 'auto',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignSelf: 'center',
-        
-        
+        flexDirection: 'row',
     },
 
     //텍스트 입력 창 style
     textInput: {
-        backgroundColor: '#40e0d0',
+        borderColor: '#40e0d0',
+        width: wp('82%'),
+        borderWidth: 2,
         borderRadius: 10,
-        paddingHorizontal: wp('5%'),
+        paddingHorizontal: wp('2%'),
         paddingVertical: hp('1%'),
+        marginBottom: 5,
         flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'center',
+    },
+    //전송 버튼 style
+    sendButton: {
+        borderRadius: 10,
+        marginLeft: wp('1%'),
+        marginBottom: 5,
+        backgroundColor: COLOR_SET[3],
+        width: 'auto',
+        paddingHorizontal: wp('3%'),
         alignContent: 'center',
         justifyContent: 'center',
     },
