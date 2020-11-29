@@ -12,6 +12,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, TextInput, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import moment from 'moment';
 import posed from 'react-native-pose';
 
 const COLOR_SET = ['#00CED1','#8BAAF0', '#7AD3FA', '#40e0d0'];
@@ -50,11 +51,81 @@ class TalkRoom extends Component {
     this.setState({event: 'open'});
     }
     
+    // 상대방 채팅 출력
+    yourTalkbox(string){
+        let date = moment()
+      .utcOffset('+09:00')
+      .format('a hh:mm');
+        return <View style={[{flexDirection: 'row'}]}>
+            <View style={[styles.talkbox, styles.shadow]}>
+                <View style={[styles.your_talkbox_pointer]}/>
+                    <View style={[styles.your_talkbox]}>
+                        <Text>{string}</Text>
+                    </View>
+                </View> 
+                <Text style={[styles.date_text_left]}>{date}</Text>
+            </View>;
+    }
+    
+    //나의 채팅 출력
+    myTalkbox(string){
+        let date = moment()
+      .utcOffset('+09:00')
+      .format('a hh:mm');
+        return <View style={[{flexDirection: 'row', alignSelf: 'flex-end'}]}>
+        <Text style={[styles.date_text_right]}>{date}</Text>
+        <View style={[styles.talkbox, styles.shadow]}>
+            <View style={[styles.my_talkbox_pointer]}/>
+                <View style={[styles.my_talkbox]}>
+                    <Text>{string}</Text>
+                </View>
+            </View>
+        </View>;
+    }
+
     render(){
         return(
             <Page style={[this.props.style, ]} pose={this.state.event}>
                 <ScrollView style={styles.main_scroll}>
-                    <Text>sdfsdf</Text>
+                    {this.yourTalkbox('looooooooooooooooong message')}
+                    {this.myTalkbox('loooooooooooong message')}
+                    {this.yourTalkbox('short')}
+                    {this.myTalkbox('short')}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    {this.yourTalkbox()}
+                    {this.myTalkbox()}
+                    
+
+                    
                 </ScrollView>
             </Page>
         );
@@ -71,6 +142,94 @@ const styles = StyleSheet.create({
         paddingHorizontal: wp('5%'),
         paddingVertical: hp('3%'),
         backgroundColor: '#fff',
+    },
+
+    //말풍선 style
+    talkbox: {
+    },
+
+    //상대방 말풍선 style
+    your_talkbox: {
+        left: wp('2%'),
+        position: 'relative',
+        //width: wp('50%'),
+        //height: hp('10%'),
+        maxWidth: wp('55%'),
+        padding: wp('2%'),
+        borderRadius: wp('1%'),
+        backgroundColor: COLOR_SET[1],
+        alignSelf: 'flex-start',
+    },
+    your_talkbox_pointer: {
+        top: hp('3%'),
+        position: 'relative',
+        width: 0,
+        height: 0,
+        borderColor: COLOR_SET[1],
+        alignSelf: 'flex-start',
+        backgroundColor: 'transparent',
+        borderStyle: 'solid',
+        borderLeftWidth: wp('1.5%'),
+        borderRightWidth: wp('1.5%'),
+        borderBottomWidth: wp('3%'),
+        borderLeftColor: 'transparent',
+        borderRightColor: 'transparent',
+        transform: [
+            {rotate: '-90deg'}
+        ],
+    },
+    date_text_left: {
+        fontSize: 12,
+        textAlign: 'left',
+        color: '#555555',
+        left: wp('3%'),
+        alignSelf: 'flex-end',
+    },
+    date_text_right: {
+        fontSize: 12,
+        textAlign: 'right',
+        color: '#555555',
+        right: wp('3%'),
+        alignSelf: 'flex-end',
+    },
+
+    //나의 말풍선 style
+    my_talkbox: {
+        right: wp('2%'),
+        position: 'relative',
+        //width: wp('50%'),
+        //height: hp('10%'),
+        maxWidth: wp('55%'),
+        padding: wp('2%'),
+        borderRadius: wp('1%'),
+        borderRadius: 12,
+        backgroundColor: COLOR_SET[2],
+        alignSelf: 'flex-end',
+    },
+    my_talkbox_pointer: {
+        top: hp('3%'),
+        position: 'relative',
+        width: 0,
+        height: 0,
+        borderColor: COLOR_SET[2],
+        alignSelf: 'flex-end',
+        backgroundColor: 'transparent',
+        borderStyle: 'solid',
+        borderLeftWidth: wp('1.5%'),
+        borderRightWidth: wp('1.5%'),
+        borderBottomWidth: wp('3%'),
+        borderLeftColor: 'transparent',
+        borderRightColor: 'transparent',
+        transform: [
+            {rotate: '90deg'}
+        ],
+    },
+
+    shadow: {
+        shadowColor: "#000000",
+        shadowOpacity: 0.2,
+        shadowOffset: { width: 2, height: 6 },
+        elevation: 2,
     },
   });
 
