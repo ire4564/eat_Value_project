@@ -27,6 +27,7 @@ import Notice from './views/notice';
 import DetailOrder from './views/detail_order';
 import CompleteOrder from './views/complete_order';
 import ChooseMenu from './views/choose_menu';
+import PaymentModel from './views/payment_model'
 import TalkRoom from './views/talk_room';
 
 class App extends Component {

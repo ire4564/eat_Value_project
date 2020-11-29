@@ -339,29 +339,33 @@ class ChooseMenu extends Component {
             for(let i = 0; i < list.length; i++) {
                 this._post(list[i]);
             }
-            //마지막 참가자인 경우
+            //마지막 참가자인 경우 & 주문 완료한 경우 한꺼번에 묶어서 수정
             if (current == this.state.db_order[this.state.data].limit_order){
+                /*
                 Alert.alert(
                     '주문 마감',
-                    '이제, 모든 인원이 모집 되었습니다. 주문 내역 탭에서 주문을 확인해보세요.',
-                    [{
-                        text: "네",
-                    }]);
-                this._move_to_order_history();
-                this._delete();
-                this.props.changeMode("home");
-            }
-            else{
-                this._post_current_order(current);
-                this._move_to_order_history();
-                Alert.alert(
-                    '주문 완료',
-                    '주문이 접수되었습니다.',
+                    '결제 페이지로 이동합니다.',
                     [{
                         text: "확인",
                     }]);
-
-                this.props.changeMode("complete-order");
+                */
+                this._move_to_order_history();
+                //this._delete(); 지워지는 것 방지함 
+                this.props.changeMode("payment-model");
+            }
+            else{
+                //주문 가능 성공 시 payment_model 화면으로 전환하기
+                this._post_current_order(current);
+                this._move_to_order_history();
+                /*
+                Alert.alert(
+                    '주문 완료',
+                    '결제 페이지로 이동합니다.',
+                    [{
+                        text: "확인",
+                    }]);
+                */
+                this.props.changeMode("payment-model");
             }
         }
     }
