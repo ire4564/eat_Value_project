@@ -242,7 +242,7 @@ class ChooseMenu extends Component {
             </View>
         </View>);
     }
-    printStoreBottom(){
+    printBriefStoreInfo(){ // 데이터베이스를 조회하여 가게정보 출력
         return (
         <View style={styles.container}>
             <View style={styles.row_container}>
@@ -263,7 +263,7 @@ class ChooseMenu extends Component {
             </View>
         </View>);
     }
-    printMenu(){
+    printMenu(){ // 선택한 가게에 대한 메뉴 선택 화면 출력
         if(this.state.db_store.length==0||this.state.db_order.length==0 || this.state.db_store_menu.length==0){
             return null;
         }
@@ -301,7 +301,7 @@ class ChooseMenu extends Component {
             </View>
         );
     }
-    pressButton(){
+    joinButton(){
         if(this.state.total_price==0){
             Alert.alert(
                 '주문 실패',
@@ -320,16 +320,11 @@ class ChooseMenu extends Component {
                         price: this.state.store_menu[i].price,
                         user_id: this.state.user.name});
         }
-        //혹시 이미 업데이트한 사람이 있을 수 있으니 재확인
-        fetch(`${databaseURL}/db_order.json`).then(res => {
-            if(res.status != 200) {
-                throw new Error(res.statusText);
-            }
-            return res.json();
-        }).then(db_order => this.setState({db_order: db_order}));
         
+        var isFinished = this.isOrderFinished();
+
         //case 1. 이미 정원 상태일 때
-        if(this.state.db_order[this.state.data].limit_order==this.state.db_order[this.state.data].current_order){
+        if(isFinished){
             Alert.alert(
                 '주문 실패',
                 '이미 인원이 가득찬 주문입니다. 다른 방에 참여해주세요!',
@@ -338,38 +333,49 @@ class ChooseMenu extends Component {
                 }]);
                 this.props.changeMode("home");
         }
-        //case 2. 마지막 인원으로 들어왔을 때
-        else if(this.state.db_order[this.state.data].limit_order-1==this.state.db_order[this.state.data].current_order){
-            for(let i = 0; i < list.length; i++) {
-                this._post(list[i]);
-            }
-            
-            Alert.alert(
-                '주문 마감',
-                '이제, 모든 인원이 모집 되었습니다. 주문 내역 탭에서 주문을 확인해보세요.',
-                [{
-                    text: "네",
-                }]);
-                this._move_to_order_history();
-                this._delete();
-                this.props.changeMode("home");
-        }
+
         else{
             let current = this.state.db_order[this.state.data].current_order + 1
             for(let i = 0; i < list.length; i++) {
                 this._post(list[i]);
             }
-            this._post_current_order(current);
-            this._move_to_order_history();
-            Alert.alert(
-                '주문 완료',
-                '주문이 접수되었습니다.',
-                [{
-                    text: "확인",
-                }]);
+            //마지막 참가자인 경우
+            if (current == this.state.db_order[this.state.data].limit_order){
+                Alert.alert(
+                    '주문 마감',
+                    '이제, 모든 인원이 모집 되었습니다. 주문 내역 탭에서 주문을 확인해보세요.',
+                    [{
+                        text: "네",
+                    }]);
+                this._move_to_order_history();
+                this._delete();
+                this.props.changeMode("home");
+            }
+            else{
+                this._post_current_order(current);
+                this._move_to_order_history();
+                Alert.alert(
+                    '주문 완료',
+                    '주문이 접수되었습니다.',
+                    [{
+                        text: "확인",
+                    }]);
 
-            this.props.changeMode("complete-order");
+                this.props.changeMode("complete-order");
+            }
         }
+    }
+    isOrderFinished(){
+        //DB로부터 해당 주문에 대한 정보 다시 받아오기
+        fetch(`${databaseURL}/db_order.json`).then(res => {
+            if(res.status != 200) {
+                throw new Error(res.statusText);
+            }
+            return res.json();
+        }).then(db_order => this.setState({db_order: db_order}));
+
+        //모집
+        return this.state.db_order[this.state.data].limit_order<=this.state.db_order[this.state.data].current_order;
     }
 
     render(){
@@ -378,7 +384,7 @@ class ChooseMenu extends Component {
                 <View style={{top: hp('-3%'),}}>
                     <TwoColorBlock
                     top={this.printStoreTop()}
-                    bottom={this.printStoreBottom()}
+                    bottom={this.printBriefStoreInfo()}
                     height ={wp("60%")}
                     topHeight={1}
                     bottomHeight={1}
@@ -396,7 +402,7 @@ class ChooseMenu extends Component {
 
                 <TouchableOpacity
                     style={styles.order_button}
-                    onPress={this.pressButton.bind(this)}>
+                    onPress={this.joinButton.bind(this)}>
                         <Text style={{color:'#fff', fontSize: hp('2.5%'), fontWeight: 'bold'}}>
                              총 {this.state.total_price}원 주문
                             <Text style={{fontWeight:'normal'}}> 진행하기</Text></Text>
