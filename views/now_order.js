@@ -12,7 +12,8 @@
  *  - orderHistory_top: 주문 컴포넌트의 상단 부분에 추가할 컴포넌트 반환
  *  - orderHistory_bottom: 주문 컴포넌트의 하단 부분에 추가할 컴포넌트 반환
  *  - orderHistoryList: 주문 컴포넌트의 리스트를 반환
- *  
+ *  - searchList : 설정한 조건에 맞도록 정렬을 하여 리스트를 보여주는 역할을 한다. 리스트 정보는 DB에서 불러와 처리한다.
+ *  - selectSearch : 검색을 위해 조건을 체크할 경우 검색 조건을 저장하는 동작을 처리한다.
  ************************************************/
 
 import React, { Component } from 'react';
@@ -72,7 +73,7 @@ class NowOrder extends Component {
         super(props);
         this.orderHistory_top = this.orderHistory_top.bind(this);
         this.IsSearchMode = this.IsSearchMode.bind(this);
-        this.onSortBtnPress = this.onSortBtnPress.bind(this);
+        this.selectSearch = this.selectSearch.bind(this);
         this.state = {
             btn_flag: [false, false, false, false, false, false],
             event: 'closed',
@@ -81,7 +82,6 @@ class NowOrder extends Component {
             search_mode : 0,
             notice: 0,
             db_user: this.props.db_user,
-            //아래는 추후 db연동을 위해 수정해야함!!!!
             db_order: [],
             db_store: []
         }   
@@ -252,7 +252,7 @@ class NowOrder extends Component {
     /**
      * @method "search-bar result loading"
      */   
-    searchResult() {
+    searchList() {
         /**
          * btn_flag
          * 0 가격 순 정렬
@@ -360,11 +360,12 @@ class NowOrder extends Component {
         }
         return list;
     }
+
     /**
      * @method "when sort btn pressed"
      * @param "state btn_flag id"
      */
-    onSortBtnPress(id) {
+    selectSearch(id) {
         var btn_on_off = this.state.btn_flag;
         if(id == 3 && btn_on_off[id] == false && this.state.notice == 0) {
             Alert.alert(
@@ -439,13 +440,13 @@ class NowOrder extends Component {
                 if(this.state.btn_flag[i] == false) { // 안눌림
                     btn_list_1.push(
                         <TouchableOpacity key={i + "_sort_btn"} style={styles.sort_btn_unpressed} 
-                            onPress={function() { this.onSortBtnPress(i) }.bind(this)}>
+                            onPress={function() { this.selectSearch(i) }.bind(this)}>
                             <Text style={unpressed}>{btn_txt[i]}</Text>
                         </TouchableOpacity>
                         );
                 } else if(this.state.btn_flag[i] == true) { // 눌림
                     btn_list_1.push(
-                        <TouchableOpacity key={i + "_sort_btn"} style={styles.sort_btn_pressed} onPress={function() { this.onSortBtnPress(i) }.bind(this)}>
+                        <TouchableOpacity key={i + "_sort_btn"} style={styles.sort_btn_pressed} onPress={function() { this.selectSearch(i) }.bind(this)}>
                             <Text style={pressed}>{btn_txt[i]}</Text>
                         </TouchableOpacity>
                         );
@@ -456,13 +457,13 @@ class NowOrder extends Component {
             for(let i = 3; i < 6; i++) {
                 if(this.state.btn_flag[i] == false) { // 안눌림
                     btn_list_2.push(
-                        <TouchableOpacity key={i + "_sort_btn"} style={styles.sort_btn_unpressed} onPress={function() { this.onSortBtnPress(i) }.bind(this)}>
+                        <TouchableOpacity key={i + "_sort_btn"} style={styles.sort_btn_unpressed} onPress={function() { this.selectSearch(i) }.bind(this)}>
                             <Text style={unpressed}>{btn_txt[i]}</Text>
                         </TouchableOpacity>
                         );
                 } else if(this.state.btn_flag[i] == true) { // 눌림
                     btn_list_2.push(
-                        <TouchableOpacity key={i + "_sort_btn"} style={styles.sort_btn_pressed} onPress={function() { this.onSortBtnPress(i) }.bind(this)}>
+                        <TouchableOpacity key={i + "_sort_btn"} style={styles.sort_btn_pressed} onPress={function() { this.selectSearch(i) }.bind(this)}>
                             <Text style={pressed}>{btn_txt[i]}</Text>
                         </TouchableOpacity>
                         );
@@ -520,7 +521,7 @@ class NowOrder extends Component {
                     </View>
                     <ScrollView style={styles.main_scroll}>
                         
-                        {this.searchResult()} 
+                        {this.searchList()} 
     
                     </ScrollView>
 
