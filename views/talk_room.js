@@ -163,14 +163,19 @@ class TalkRoom extends Component {
             <Page style={[this.props.style, styles.component]} pose={this.state.event}>
                 <ScrollView
                 style={styles.main_scroll}
-                invertStickyHeaders={true}>
+                ref={ref => {this.scrollView = ref}}
+                onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}
+                >
                     {this.roadTalk()}
                 </ScrollView>
                 <KeyboardAvoidingView behavior="padding" style={styles.staticPanel}>
                     <TextInput
+                    ref={ref => {this.textInput = ref}}
                     style={styles.textInput}
                     onChangeText={(text)=>this.setState({input: text})}
-                    value={this.state.input}/>
+                    value={this.state.input}
+                    //multiline = {true}
+                    onSubmitEditing={() => this.sendMessage()}/>
                     <TouchableOpacity
                     style={styles.sendButton}
                     onPress={function(){
