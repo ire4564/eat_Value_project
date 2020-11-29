@@ -10,7 +10,7 @@
  ************************************************/
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import moment from 'moment';
 import posed from 'react-native-pose';
@@ -56,7 +56,7 @@ class TalkRoom extends Component {
         let date = moment()
       .utcOffset('+09:00')
       .format('a hh:mm');
-        return <View style={[{flexDirection: 'row'}]}>
+        return <View style={[{flexDirection: 'row', marginBottom: hp('1%'),}]}>
             <View style={[styles.talkbox, styles.shadow]}>
                 <View style={[styles.your_talkbox_pointer]}/>
                     <View style={[styles.your_talkbox]}>
@@ -72,7 +72,7 @@ class TalkRoom extends Component {
         let date = moment()
       .utcOffset('+09:00')
       .format('a hh:mm');
-        return <View style={[{flexDirection: 'row', alignSelf: 'flex-end'}]}>
+        return <View style={[{flexDirection: 'row', alignSelf: 'flex-end', marginBottom: hp('1%'),}]}>
         <Text style={[styles.date_text_right]}>{date}</Text>
         <View style={[styles.talkbox, styles.shadow]}>
             <View style={[styles.my_talkbox_pointer]}/>
@@ -85,62 +85,39 @@ class TalkRoom extends Component {
 
     render(){
         return(
-            <Page style={[this.props.style, ]} pose={this.state.event}>
+            <Page style={[this.props.style, styles.component]} pose={this.state.event}>
                 <ScrollView style={styles.main_scroll}>
                     {this.yourTalkbox('looooooooooooooooong message')}
                     {this.myTalkbox('loooooooooooong message')}
                     {this.yourTalkbox('short')}
                     {this.myTalkbox('short')}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
-                    {this.yourTalkbox()}
-                    {this.myTalkbox()}
+                    
                     
 
                     
                 </ScrollView>
+                <KeyboardAvoidingView behavior="padding" style={styles.makeOrder}>
+                    <TextInput style={styles.textInput}/>
+                </KeyboardAvoidingView>
             </Page>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    component: {
+        width: wp('100%'),
+        height: hp('81%'),
+    },
+
     //메인 스크롤 style
     main_scroll: {
-        position: 'absolute',
+        //position: 'absolute',
         width: wp('100%'),
-        height: hp('85%'),
+        //height: hp('70%'),
         top: hp('-3%'),
         paddingHorizontal: wp('5%'),
-        paddingVertical: hp('3%'),
+        //paddingVertical: hp('1%'),
         backgroundColor: '#fff',
     },
 
@@ -156,7 +133,7 @@ const styles = StyleSheet.create({
         //height: hp('10%'),
         maxWidth: wp('55%'),
         padding: wp('2%'),
-        borderRadius: wp('1%'),
+        borderRadius: 12,
         backgroundColor: COLOR_SET[1],
         alignSelf: 'flex-start',
     },
@@ -165,7 +142,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         width: 0,
         height: 0,
-        borderColor: COLOR_SET[1],
+        
         alignSelf: 'flex-start',
         backgroundColor: 'transparent',
         borderStyle: 'solid',
@@ -174,6 +151,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: wp('3%'),
         borderLeftColor: 'transparent',
         borderRightColor: 'transparent',
+        borderBottomColor: COLOR_SET[1],
         transform: [
             {rotate: '-90deg'}
         ],
@@ -185,13 +163,6 @@ const styles = StyleSheet.create({
         left: wp('3%'),
         alignSelf: 'flex-end',
     },
-    date_text_right: {
-        fontSize: 12,
-        textAlign: 'right',
-        color: '#555555',
-        right: wp('3%'),
-        alignSelf: 'flex-end',
-    },
 
     //나의 말풍선 style
     my_talkbox: {
@@ -201,7 +172,6 @@ const styles = StyleSheet.create({
         //height: hp('10%'),
         maxWidth: wp('55%'),
         padding: wp('2%'),
-        borderRadius: wp('1%'),
         borderRadius: 12,
         backgroundColor: COLOR_SET[2],
         alignSelf: 'flex-end',
@@ -211,7 +181,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         width: 0,
         height: 0,
-        borderColor: COLOR_SET[2],
+        borderBottomColor: COLOR_SET[2],
         alignSelf: 'flex-end',
         backgroundColor: 'transparent',
         borderStyle: 'solid',
@@ -224,12 +194,42 @@ const styles = StyleSheet.create({
             {rotate: '90deg'}
         ],
     },
+    date_text_right: {
+        fontSize: 12,
+        textAlign: 'right',
+        color: '#555555',
+        right: wp('3%'),
+        alignSelf: 'flex-end',
+    },
 
+
+    //그림자 관련 style
     shadow: {
         shadowColor: "#000000",
         shadowOpacity: 0.2,
         shadowOffset: { width: 2, height: 6 },
         elevation: 2,
+    },
+
+    makeOrder: {
+        //position: 'absolute',
+        width: wp('100%'),
+        height: 'auto',
+        justifyContent: 'flex-end',
+        alignSelf: 'center',
+        
+        
+    },
+
+    //텍스트 입력 창 style
+    textInput: {
+        backgroundColor: '#40e0d0',
+        borderRadius: 10,
+        paddingHorizontal: wp('5%'),
+        paddingVertical: hp('1%'),
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'center',
     },
   });
 
