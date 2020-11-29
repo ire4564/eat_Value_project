@@ -86,6 +86,16 @@ class Navigation extends Component {
                   style={styles.text}>
                     메뉴 선택
                   </Text>;
+        case 'write-review':
+          return <Text
+                  style={styles.text}>
+                    리뷰쓰기
+                  </Text>;
+        case 'payment-model':
+          return <Text
+                  style={styles.text}>
+                    결제하기
+                  </Text>;
       }
       return <Text
       style={styles.text}>
