@@ -187,7 +187,7 @@ class OrderList extends Component {
                     <TouchableOpacity
                     style={styles.cancelOrder_style2}
                     onPress={function(){
-                            this.props.changeMode("write_review");
+                            this.props.changeMode("write-review");
                         }.bind(this)}>
                         <AntDesign name="star" size={hp('2%')} color="black" />
                         <Text style={{color:'black', fontSize:hp('1.9%')}}> 리뷰 쓰기 </Text>
@@ -203,7 +203,6 @@ class OrderList extends Component {
                             [{
                                 text: "확인",
                             }]);
-                            
                             this._delete(id);
                             this.props.changeMode("home");
                         }.bind(this)}>
