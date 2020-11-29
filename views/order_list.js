@@ -18,7 +18,7 @@
 
 import React, { Component } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
 import TwoColorBlock from '../components/twoColorBlock';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import posed from 'react-native-pose';
@@ -61,6 +61,18 @@ class OrderList extends Component {
           return res.json();
         }).then(order_list => this.setState({order_list: order_list}));
     }
+
+    _delete(id) {
+        var order_number = id;
+        return fetch(`${databaseURL}/order_list/${order_number}.json`, { // TODO : set table json name
+          method: 'DELETE',
+        }).then(res => {
+          if(res.status != 200) {
+            throw new Error(res.statusText); // throw exception
+          }
+          return res.json();
+        });
+      }
 
     shouldComponentUpdate(nextProps, nextState) {
         return (nextState.order_list != this.state.order_list);
@@ -167,7 +179,16 @@ class OrderList extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                     style={styles.cancelOrder_style}
-                    onPress={function(){alert('[debug] cancel onPressed')}.bind(this)}>
+                    onPress={function(){
+                        Alert.alert(
+                            '주문 취소 완료!',
+                            '선택하신 주문을 취소했습니다. 선결제 된 금액은 등록된 계좌로 반환됩니다.',
+                            [{
+                                text: "확인",
+                            }]);
+                        
+                            this._delete(id);
+                        }.bind(this)}>
                         <MaterialCommunityIcons name="silverware-fork-knife" size={hp('2%')} color="#fff" />
                         <Text style={{color:'#fff', fontSize:hp('1.9%')}}> 주문 취소</Text>
                     </TouchableOpacity>
