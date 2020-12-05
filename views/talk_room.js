@@ -17,6 +17,7 @@ import posed from 'react-native-pose';
 import { FontAwesome } from '@expo/vector-icons';
 
 const COLOR_SET = ['#00CED1','#8BAAF0', '#7AD3FA', '#40e0d0'];
+const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
 
 const Page = posed.View({
     open: {
@@ -36,8 +37,6 @@ const Page = posed.View({
     },
 });
 
-
-
 class TalkRoom extends Component {
     constructor(props){
         super(props);
@@ -47,15 +46,18 @@ class TalkRoom extends Component {
             user: this.props.db_user,
             input: '',
             db_talk: [
-                [{date: '2020-11-30 00:12:12', text: 'text message 1'},
-                {date: '2020-11-30 00:15:14', text: 'text message 2'},
-                {date: '2020-11-30 00:20:20', text: 'text message 3'},
-                {date: '2020-11-30 01:01:12', text: 'text message 4'},],
-                [{date: '2020-11-30 00:11:12', text: 'text message 5'},
-                {date: '2020-11-30 00:13:12', text: 'text message 6'},
-                {date: '2020-11-30 00:49:12', text: 'text message 7'},
-                {date: '2020-11-30 00:50:12', text: 'text message 8'},
-            ]
+                [
+                    {date: '2020-11-30 00:12:12', text: 'text message 1'},
+                    {date: '2020-11-30 00:15:14', text: 'text message 2'},
+                    {date: '2020-12-01 00:20:20', text: 'text message 3'},
+                    {date: '2020-12-01 01:01:12', text: 'text message 4'},
+                ],
+                [
+                    {date: '2020-11-30 00:11:12', text: 'text message 5'},
+                    {date: '2020-11-30 00:13:12', text: 'text message 6'},
+                    {date: '2020-12-01 00:49:12', text: 'text message 7'},
+                    {date: '2020-12-02 00:50:12', text: 'text message 8'},
+                ],
             ],
         }
     }
@@ -70,62 +72,88 @@ class TalkRoom extends Component {
         let talkLog = [];
         let me = 0;
         let you = 0;
+        let DATE = moment('1999-12-30', 'YYYY-MM-DD');
+
+        let my_talk_date;
+        let your_talk_date;
 
         //먼저 온 순서대로 리스트에 출력
-        while (me<=this.state.db_talk[0].length && you<=this.state.db_talk[1].length){
-            
-            let my_talk_date = moment(this.state.db_talk[0][me].date,'YYYY-MM-DD HH:mm:ss')
-            let your_talk_date = moment(this.state.db_talk[1][you].date,'YYYY-MM-DD HH:mm:ss')
+        while (me<this.state.db_talk[0].length && you<this.state.db_talk[1].length){
+            my_talk_date = moment(this.state.db_talk[0][me].date,'YYYY-MM-DD HH:mm:ss')
+            your_talk_date = moment(this.state.db_talk[1][you].date,'YYYY-MM-DD HH:mm:ss')
+
 
             if(0<moment.duration(my_talk_date.diff(your_talk_date)).asMinutes()){    //상대방 메시지가 더 먼저 왔던 것인 경우
-                talkLog.push(this.yourTalkbox(this.state.db_talk[1][you]))
+                talkLog.push(this.yourTalkbox(this.state.db_talk[1][you], DATE))
+                DATE=your_talk_date
                 you += 1
-                if(you == this.state.db_talk[1].length){    // 한 쪽 메시지가 모두 소진된 경우 남은 쪽 메시지 모두 출력
-                    while(me<this.state.db_talk[0].length){
-                        talkLog.push(this.myTalkbox(this.state.db_talk[0][me]))
-                        me += 1
-                    }
-                    break;
-                }
             }else{                              //나의 메시지가 더 먼저 왔던 것인 경우
-                talkLog.push(this.myTalkbox(this.state.db_talk[0][me]))
+                talkLog.push(this.myTalkbox(this.state.db_talk[0][me], DATE))
+                DATE=my_talk_date
                 me += 1
-                if(me == this.state.db_talk[0].length){    // 한 쪽 메시지가 모두 소진된 경우 남은 쪽 메시지 모두 출력
-                    while(you<this.state.db_talk[1].length){
-                        talkLog.push(this.yourTalkbox(this.state.db_talk[1][you]))
-                        you += 1
-                    }
-                    break;
-                }
 
             }
         }
+        if(this.state.db_talk[0].length>me){
+            while(me<this.state.db_talk[0].length){
+                my_talk_date = moment(this.state.db_talk[0][me].date,'YYYY-MM-DD HH:mm:ss')
+                talkLog.push(this.myTalkbox(this.state.db_talk[0][me], DATE))
+                DATE=my_talk_date
+                me += 1
+            }
+        }else if(this.state.db_talk[1].length>you){
+            while(you<this.state.db_talk[1].length){
+                your_talk_date = moment(this.state.db_talk[1][you].date,'YYYY-MM-DD HH:mm:ss')
+                talkLog.push(this.yourTalkbox(this.state.db_talk[1][you], DATE))
+                DATE=your_talk_date
+                you += 1
+            }
+        }
+        //Alert.alert("", ""+moment(DATE).format('YYYY-MM-DD'));
         return talkLog;
     }
     
     // 상대방 채팅 출력
-    yourTalkbox(data){
-        let time = moment(data.date, 'YYYY-MM-DD HH:mm:ss', true).format('a hh:mm');
-        return <View style={[{flexDirection: 'row', marginBottom: hp('1%'),}]}>
+    yourTalkbox(data, DATE){
+        let time = moment(data.date, 'YYYY-MM-DD HH:mm:ss', true);
+        return <View>
+            {this.printDateLine(time, DATE)}
+            <View style={[{flexDirection: 'row', marginBottom: hp('1%'),}]}>
             <View style={[styles.talkbox, styles.shadow]}>
                 <View style={[styles.your_talkbox_pointer]}/>
                     <View style={[styles.your_talkbox]}>
                         <Text>{data.text}</Text>
                     </View>
                 </View> 
-                <Text style={[styles.date_text_left]}>{time}</Text>
-            </View>;
+                <Text style={[styles.date_text_left]}>{time.format('a hh:mm')}</Text>
+            </View>
+        </View>;
+    }
+
+    //날짜 출력 메소드
+    printDateLine(time, DATE){
+        //Alert.alert(moment(time).format('YYYY년 MM월 DD일 ')+"", "");
+        if(0>parseInt(moment.duration(DATE.diff(moment(time))).asDays())){     
+            let week = moment(time).day();
+            DATE = time;
+            time = moment(time).format('YYYY년 MM월 DD일 ');
+            return <Text style={styles.dateLine}>────────  {time}{WEEK[week]}요일  ────────</Text>;   
+        }
+        return ;
     }
     
     //나의 채팅 출력
-    myTalkbox(data){
-        let time = moment(data.date, 'YYYY-MM-DD HH:mm:ss', true).format('a hh:mm');
-        return <View style={[{flexDirection: 'row', alignSelf: 'flex-end', marginBottom: hp('1%'),}]}>
-        <Text style={[styles.date_text_right]}>{time}</Text>
-        <View style={[styles.talkbox, styles.shadow]}>
-            <View style={[styles.my_talkbox_pointer]}/>
-                <View style={[styles.my_talkbox]}>
-                    <Text>{data.text}</Text>
+    myTalkbox(data, DATE){
+        let time = moment(data.date, 'YYYY-MM-DD HH:mm:ss', true);
+        return <View>
+            {this.printDateLine(time, DATE)}
+            <View style={[{flexDirection: 'row', alignSelf: 'flex-end', marginBottom: hp('1%'),}]}>
+            <Text style={[styles.date_text_right]}>{time.format('a hh:mm')}</Text>
+            <View style={[styles.talkbox, styles.shadow]}>
+                <View style={[styles.my_talkbox_pointer]}/>
+                    <View style={[styles.my_talkbox]}>
+                        <Text>{data.text}</Text>
+                    </View>
                 </View>
             </View>
         </View>;
@@ -135,12 +163,10 @@ class TalkRoom extends Component {
     sendMessage(){
         //실제 전송하는 부분 구현 필요. 일단은 state에 바로 반영함.
         let date = moment().format('YYYY-MM-DD HH:mm:ss');
-        
         let temp = this.state.db_talk
+
         temp[0].push({date: date, text: this.state.input})
         this.setState({db_talk: temp})
-
-        this.myTalkbox(date, this.state.input);
         this.setState({input: ''})
     }
 
@@ -328,6 +354,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: wp('3%'),
         alignContent: 'center',
         justifyContent: 'center',
+    },
+
+    dateLine: {
+        color: '#555555',
+        fontSize: 13,
+        fontWeight: 'bold',
+        alignSelf: 'center',
+        margin: 6,
     },
   });
 
