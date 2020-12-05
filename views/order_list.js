@@ -24,7 +24,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import posed from 'react-native-pose';
 import { AntDesign } from '@expo/vector-icons';
 
-const databaseURL = "https://cnu-eat-value.firebaseio.com/";
+const databaseURL = "http://34.64.120.109:3000";
 const MAX_MENU_NUM = 2;
 const Page = posed.View({
     open: {
@@ -59,7 +59,7 @@ class OrderList extends Component {
     }
 
     _get() {
-        fetch(`${databaseURL}/order_list.json`).then(res => {
+        fetch(`${databaseURL}/order_list`).then(res => {
           if(res.status != 200) {
             throw new Error(res.statusText);
           }
@@ -69,8 +69,10 @@ class OrderList extends Component {
 
     _delete(id) {
         var order_number = id;
-        return fetch(`${databaseURL}/order_list/${order_number}.json`, { // TODO : set table json name
+        alert(`${databaseURL}/order_list/${order_number}`);
+        return fetch(`${databaseURL}/order_list/${order_number}`, { // TODO : set table json name
           method: 'DELETE',
+          credentials: 'include',
         }).then(res => {
           if(res.status != 200) {
             throw new Error(res.statusText); // throw exception

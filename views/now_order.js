@@ -24,7 +24,7 @@ import { MaterialCommunityIcons, AntDesign, Entypo } from '@expo/vector-icons';
 import LocationBar from '../components/locationBar';
 import posed from 'react-native-pose';
 
-const databaseURL = "https://cnu-eat-value.firebaseio.com/"; // firebase URL
+const databaseURL = "http://34.64.120.109:3000"; // firebase URL
 const MAX_MENU_NUM = 2;
 const Page = posed.View({
     open: {
@@ -91,13 +91,13 @@ class NowOrder extends Component {
      * @method "load data and then store to the state"
      */
     _get() {
-        fetch(`${databaseURL}/db_store.json`).then(res => {
+        fetch(`${databaseURL}/db_store`).then(res => {
             if(res.status != 200) {
                 throw new Error(res.statusText);
             }
             return res.json();
             }).then(db_store => this.setState({db_store: db_store}));
-        fetch(`${databaseURL}/db_order.json`).then(res => {
+        fetch(`${databaseURL}/db_order`).then(res => {
             if(res.status != 200) {
                 throw new Error(res.statusText);
             }

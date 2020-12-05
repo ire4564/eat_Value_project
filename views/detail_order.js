@@ -41,7 +41,7 @@ const ICON_COLOR = '#40E0D0';
 
 const TEST_IMG = '../images/test_store.png';
 const COLOR_SET = ['#00CED1','#8BAAF0', '#7AD3FA', '#40e0d0'];
-const databaseURL = "https://cnu-eat-value.firebaseio.com/";
+const databaseURL = "http://34.64.120.109:3000";
 const Page = posed.View({
     open: {
         y: 0,
@@ -132,14 +132,14 @@ class DetailOrder extends Component {
      * @method "load data and then store to the state"
      */
     _get() {
-        fetch(`${databaseURL}/db_store.json`).then(res => {
+        fetch(`${databaseURL}/db_store`).then(res => {
         if(res.status != 200) {
             throw new Error(res.statusText);
         }
         return res.json();
         }).then(db_store => this.setState({db_store: db_store}));
 
-        fetch(`${databaseURL}/db_order.json`).then(res => {
+        fetch(`${databaseURL}/db_order`).then(res => {
             if(res.status != 200) {
                 throw new Error(res.statusText);
             }

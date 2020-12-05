@@ -30,7 +30,7 @@ import InfoBox from '../components/infoBox';
 const ICON_COLOR = '#40E0D0';
 var first = true;
 var count = 0; //해당되는 리스트 길이 세기
-const databaseURL = "https://cnu-eat-value.firebaseio.com/";
+const databaseURL = "http://34.64.120.109:3000";
 var resultPrize = 0;
 
 class MakeRoom extends Component {
@@ -87,14 +87,14 @@ class MakeRoom extends Component {
     }
 
   _get() {
-    fetch(`${databaseURL}/db_store/0.json`).then(res => {
+    fetch(`${databaseURL}/db_store/0`).then(res => {
       if(res.status != 200) {
         throw new Error(res.statusText);
       }
       return res.json();
     }).then(db_store => this.setState({db_store: db_store}));
 
-    fetch(`${databaseURL}/db_store_menu/0.json`).then(res => {
+    fetch(`${databaseURL}/db_store_menu/0`).then(res => {
         if(res.status != 200) {
           throw new Error(res.statusText);
         }
@@ -122,15 +122,30 @@ class MakeRoom extends Component {
      * @method "_post insert to data with rest API"
      */
     _post(jsondata) {
-        return fetch(`${databaseURL}/db_order.json`, { // TODO : set table json name
-          method: 'POST',
-          body: JSON.stringify(jsondata)
+        return fetch(`${databaseURL}/db_order/${this._get_date()}`, { // TODO : set table json name
+            method: 'POST',
+            headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jsondata),
+            credentials: 'include',
         }).then(res => {
           if(res.status != 200) {
             throw new Error(res.statusText); // throw exception
           }
           return res.json();
         });
+    }
+
+    _get_date() {
+        const date = new Date();
+        var YYYY = date.getFullYear();
+        var MM = date.getMonth() + 1;
+        var DD = date.getDate();
+        var HH = date.getHours();
+        var MIN = date.getMinutes();
+        return `${YYYY}${MM}${DD}${HH}${MIN}`
     }
 
     /**
