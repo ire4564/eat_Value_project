@@ -33,6 +33,7 @@ class WriteReview extends Component {
         for(var i=0; i<5; i++){
             stars.push(
                 <AntDesign name="star" size={hp('4%')} style={styles.icons} color="orange" key={"key"+i}/>
+                //클릭시 별의 색이 변경되면서, 별의 갯수만큼 db_star 값 변경해주기 (처리 요망)
             ); 
         }
         return stars;

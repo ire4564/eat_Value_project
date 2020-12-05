@@ -344,6 +344,11 @@ class DetailOrder extends Component {
         
     }
 
+    moveReview() {
+        //리뷰가 써있는 페이지로 이동하기
+        this.props.changeMode("show-review");
+    }
+
     render(){
         return(
             <Page style={this.props.style} pose={this.state.event}>
@@ -359,6 +364,11 @@ class DetailOrder extends Component {
                             <Text style={styles.order_number}>{moment(this.state.order.date,'YYYY-MM-DD-HH-mm', true).format('YYYY-MM-DD HH:mm')}</Text>
                         </View>
 
+                        <TouchableOpacity style={styles.review_box} onPress={this.moveReview.bind(this)}>
+                                <Text style={styles.button_text2}>가게 리뷰 </Text>
+                                <AntDesign name="star" size={hp('2%')} style={styles.icons} color="orange"/>
+                        </TouchableOpacity>
+                        
                         <View>
                             <Text style={styles.store_name}>{this.state.store.name}
                             <Text style={styles.store_info}>  {this.state.store.location}점</Text>
@@ -483,12 +493,35 @@ const styles = StyleSheet.create({
         borderRadius: wp('2%'),
       },
 
+      //같이/혼자 먹어요 버튼 style
+      review_box: {
+        borderWidth: wp("0.3%"),
+        color: "black",
+        marginTop: hp('0.8%'),
+        alignSelf: 'flex-end',
+        flexDirection: 'row',
+        backgroundColor: "white",
+        paddingHorizontal: wp('3%'),
+        paddingVertical: wp('2%'),
+        borderRadius: wp('2%'),
+      },
+
       //버튼 text style
       button_text: {
         fontSize: wp('4%'),
         fontWeight: 'bold',
         textAlign: 'center',
         color: "#fff"
+      },
+
+      //버튼 text style 2 (review btn)
+      button_text2: {
+        fontSize: wp('4%'),
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: "black",
+        marginRight: wp("0.5%"),
+        marginLeft: wp("0.5%")
       },
 
       //가게 정보 text style

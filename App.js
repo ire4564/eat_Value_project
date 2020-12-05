@@ -30,6 +30,7 @@ import ChooseMenu from './views/choose_menu';
 import PaymentModel from './views/payment_model'
 import TalkRoom from './views/talk_room';
 import WriteReview from './views/write_review'
+import ShowReview from './views/show_review'
 
 class App extends Component {
 
@@ -52,6 +53,14 @@ class App extends Component {
     switch(this.state.seleted_mode){
       case 'write-review':
         return <WriteReview
+        style={styles.page_component}
+        db_user={this.state.db_user}
+        changeMode={this.changeMode.bind(this)}
+        data={this.state.change_mode_data}
+        sendData={this.sendData.bind(this)}
+        />;
+      case 'show-review':
+        return <ShowReview
         style={styles.page_component}
         db_user={this.state.db_user}
         changeMode={this.changeMode.bind(this)}

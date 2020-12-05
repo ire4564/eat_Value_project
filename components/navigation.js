@@ -96,6 +96,11 @@ class Navigation extends Component {
                   style={styles.text}>
                     결제하기
                   </Text>;
+        case 'show-review':
+          return <Text
+                  style={styles.text}>
+                    가게 리뷰
+                  </Text>;
       }
       return <Text
       style={styles.text}>
