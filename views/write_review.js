@@ -18,7 +18,13 @@ class WriteReview extends Component {
     constructor(props){
         super(props);
         this.state = {
-            reviewText : ""
+            //DB에 넘어갈 state 내용: 좌측에서부터 차례대로
+            //리뷰 내용, 주문 가게, 주문 목록, 주문자, 별점 순
+            reviewText : "",
+            db_store: "신가네 떡볶이",
+            db_order: "떡볶이(보통맛)",
+            db_user: "한유경",
+            db_star: 5 
         }   
     }
 
