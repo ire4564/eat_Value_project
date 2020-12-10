@@ -111,7 +111,7 @@ class DetailOrder extends Component {
                     { menu: 'test4', amount: 1, price: 4000, user_id: "other2" },
                     { menu: 'test', amount: 1, price: 3000, user_id: "testID" },
                     ],
-                alone : 1
+                alone : 1,
             },
             store: {
                 category: 'undefined',
@@ -176,7 +176,6 @@ class DetailOrder extends Component {
         this.setState({event: 'open'});
         this.computeMember();
         this.computeTotalPrice();
-
         
     }
     static getDerivedStateFromProps(nextProps, nextState) {
@@ -318,7 +317,7 @@ class DetailOrder extends Component {
 
     //버튼 이벤트 관련 함수들
     clickEatWithInfo(){
-        if(this.state.order.alone == 0){
+        if(this.state.order.alone == 1){
             Alert.alert(
                 '"혼자 먹어요"란?',
                 '비슷한 위치로 함께 묶음 주문을 하되, 자신이 원하는 위치에서 따로 먹을 수 있어요.',
@@ -377,7 +376,7 @@ class DetailOrder extends Component {
 
                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                             <Text style={styles.order_number}>주문 코드 : {this.state.data.split(' ')[1]}</Text>
-                            <Text style={styles.order_number}>{moment(this.state.order.date,'YYYY-MM-DD-HH-mm', true).format('YYYY-MM-DD HH:mm')}</Text>
+                            <Text style={styles.order_number}>{moment(this.state.order.date,'YYYY-MM-DD-HH-mm').format('YYYY-MM-DD HH:mm')}</Text>
                         </View>
 
                         <TouchableOpacity style={styles.review_box} onPress={this.moveReview.bind(this)}>
