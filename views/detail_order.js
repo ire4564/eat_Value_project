@@ -182,6 +182,21 @@ class DetailOrder extends Component {
          (nextState.total_price != this.state.total_price);
     }
 
+    _move_to_order_history() {
+        var order_number = this.state.data.split(" ")[1];
+        var senddata = this.state.db_order[order_number];
+
+        return fetch(`${databaseURL}/order_list.json`, { // TODO : set table json name
+            method: 'POST',
+            body: JSON.stringify(senddata)
+          }).then(res => {
+            if(res.status != 200) {
+              throw new Error(res.statusText); // throw exception
+            }
+            return res.json();
+          });
+    }
+
     _delete(id) {
         var order_number = id;
         //alert(`${databaseURL}/order_list/${order_number}`);
@@ -373,7 +388,6 @@ class DetailOrder extends Component {
         this.props.changeMode("choose-menu");
     }
     clickDeleteOrderButton(){ // 해당 주문에 대한 참여를 취소
-        this._delete(this.state.data.split(" ")[1]);
         let temp_order = this.state.order;
         var list = [];
         //order.order_detail 일부 삭제
@@ -384,6 +398,7 @@ class DetailOrder extends Component {
             }
         });
         if(list.length==0){
+            this._delete(this.state.data.split(" ")[1]);
             alert("주문 모집이 취소되었습니다.");
             this.props.changeMode('home');
             return ;
