@@ -112,7 +112,7 @@ class MakeRoom extends Component {
         tmp_menu[i].user_id = this.state.db_user;
     }
     tmp_order.order_detail = tmp_menu;
-
+    resultPrize = 0;
     this.setState({db_order:tmp_order});
   }
   

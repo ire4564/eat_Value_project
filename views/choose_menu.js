@@ -108,8 +108,7 @@ class ChooseMenu extends Component {
                 throw new Error(res.statusText);
             }
             return res.json();
-        }).then(db_store_menu => this.setState({db_store_menu: db_store_menu}));
-        
+        }).then(db_store_menu => this.setState({db_store_menu: db_store_menu}));        
     }
 
     _move_to_order_history() {
@@ -318,7 +317,7 @@ class ChooseMenu extends Component {
             list.push({amount: this.state.amount[i],
                         menu: this.state.store_menu[i].name,
                         price: this.state.store_menu[i].price,
-                        user_id: this.state.user.name});
+                        user_id: this.state.user.id});
         }
         
         var isFinished = this.isOrderFinished();

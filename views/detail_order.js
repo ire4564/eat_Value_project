@@ -155,6 +155,22 @@ class DetailOrder extends Component {
           }).then(order_list => this.setState({order_list: order_list}));
     }
 
+    _post(new_order) {
+        return fetch(`${databaseURL}/db_order/${this.state.data.split(" ")[1]}`, { // TODO : set table json name
+            method: 'POST',
+            headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(new_order),
+            credentials: 'include',
+        }).then(res => {
+          if(res.status != 200) {
+            throw new Error(res.statusText); // throw exception
+          }
+          return res.json();
+        });
+    }
     /**
      * @method "IsChange?"
     */
@@ -162,8 +178,23 @@ class DetailOrder extends Component {
         return (nextState.db_store != this.state.db_store) || 
         (nextState.db_order != this.state.db_order) ||
         (nextState.order_list != this.state.order_list) ||
-         (nextState.order != this.state.order);
+         (nextState.order != this.state.order) ||
+         (nextState.total_price != this.state.total_price);
     }
+
+    _delete(id) {
+        var order_number = id;
+        //alert(`${databaseURL}/order_list/${order_number}`);
+        return fetch(`${databaseURL}/db_order/${order_number}`, { // TODO : set table json name
+          method: 'DELETE',
+          credentials: 'include',
+        }).then(res => {
+          if(res.status != 200) {
+            throw new Error(res.statusText); // throw exception
+          }
+          return res.json();
+        });
+      }
 
     //alone 정보를 받아오기 위해서 
     sendData(_data){
@@ -177,6 +208,13 @@ class DetailOrder extends Component {
         this.computeMember();
         this.computeTotalPrice();
         
+    }
+
+    componentDidUpdate(){
+        //this._get();
+        //this.setState({event: 'open'});
+        this.computeMember();
+        this.computeTotalPrice();
     }
     static getDerivedStateFromProps(nextProps, nextState) {
         if(nextState.db_store.length == 0 || nextState.db_order.length == 0 || nextState.order_list == 0){
@@ -193,11 +231,7 @@ class DetailOrder extends Component {
     } 
     //데이터 연산 관련 함수들
     computeTotalPrice(){
-        if(this.state.order.store_num != -1){
-            return null;
-        }
-        alert("test");
-        var total = 0;
+        let total = 0;
         /*
         for(let i=0; i<this.state.order.order_detail.length; i++){
             let temp_order = this.state.order.order_detail[i];
@@ -213,11 +247,6 @@ class DetailOrder extends Component {
         return total;
     }
     computeMember(){
-        //상세 주문 내역을 보고 싶으면 이 부분 수정하기*/
-        if(this.state.order.store_num != -1){
-            return null;
-        }
-        //여기까지 주석처리
         var list = [];
         Object.keys(this.state.order.order_detail).map(id => {
             let temp_id = this.state.order.order_detail[id].user_id;
@@ -286,6 +315,7 @@ class DetailOrder extends Component {
         if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
             return null;
         }
+        
         if(this.state.member.includes(this.state.user.id)){
             if(this.state.total_price<this.state.store.min_order){
                 return (<TouchableOpacity style={[styles.close_button, {backgroundColor: '#999'}]} disabled={true}>
@@ -308,6 +338,7 @@ class DetailOrder extends Component {
         if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
             return null;
         }
+        //alert(JSON.stringify(this.state.member))
         if(this.state.member.includes(this.state.user.id)){
             return (<TouchableOpacity style={styles.delete_button} onPress={this.clickDeleteOrderButton.bind(this)}>
                         <Text style={styles.button_text}>참여 취소하기</Text>
@@ -338,15 +369,26 @@ class DetailOrder extends Component {
         this.props.changeMode("choose-menu");
     }
     clickDeleteOrderButton(){ // 해당 주문에 대한 참여를 취소
+        this._delete(this.state.data.split(" ")[1]);
+        let temp_order = this.state.order;
         var list = [];
         //order.order_detail 일부 삭제
         Object.keys(this.state.order.order_detail).map(i => {
             var temp = this.state.order.order_detail[i];
-            if(temp.user_id===this.state.user.name){
+            if(temp.user_id!==this.state.user.id){
                 list.push(temp);
             }
         });
-        return alert(temp);
+        if(list.length==0){
+            alert("주문 모집이 취소되었습니다.");
+            this.props.changeMode('home');
+            return ;
+        }
+        alert("주문 참여가 정상 취소되었습니다.");
+        temp_order.order_detail = list;
+        temp_order.current_order -= 1;
+        this._post(temp_order);
+        this.props.changeMode('home');
     }
     clickCloseOrderButton(){ // 마감 조건 달성한 경우 주문 수동 마감
         //아예 limit_order를 current_order로 변경
@@ -679,6 +721,7 @@ const styles = StyleSheet.create({
     //상세 주문 내역 메뉴 컴포넌트 style
     detail_order_menu: {
         width: '90%',
+        //height: hp('10%'),
         alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
