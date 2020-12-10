@@ -16,7 +16,7 @@
 
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View , TouchableOpacity, AppRegistry} from 'react-native';
+import { StyleSheet, Text, View , TouchableOpacity, AppRegistry, ScrollView} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Divider } from 'react-native-elements';
 import LocationBar from '../components/locationBar';
@@ -318,9 +318,8 @@ class MakeRoom extends Component {
         return(
             <View style={[this.props.style, styles.container]}>
 
-                {/*위치 표시 바*/}
-                <LocationBar db_user={this.state.db_user} />
-                
+                <ScrollView>
+                    <View style={styles.main}>
                 <Text style={styles.headline}>
                     <AntDesign
                         name="checksquare"
@@ -355,7 +354,11 @@ class MakeRoom extends Component {
                     iconName="rightcircleo"
                     clickFunc = {this.createRoom}
                 ></CompleteBtn>
-                
+                </View>
+                </ScrollView>
+
+                {/*위치 표시 바*/}
+                <LocationBar db_user={this.state.db_user} />
             </View>
         );
     }
@@ -373,6 +376,10 @@ const styles = StyleSheet.create({
         marginRight: wp('-1%'),
         marginTop: hp('2%'),
         color: "#fff"
+    },
+    main: {
+        width: wp("100%"),
+        alignItems: 'center',
     },
     gotoOrder_font: {
         fontSize: 15,
