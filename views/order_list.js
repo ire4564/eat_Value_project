@@ -175,6 +175,10 @@ class OrderList extends Component {
                     </View>
                     <TouchableOpacity
                         style={styles.order_history_container}
+                        onPress={function(){
+                            this.props.sendData(2+" "+id);
+                            this.props.changeMode("detail-order");
+                        }.bind(this)}
                         >
                             <TwoColorBlock
                                 topHeight={2}

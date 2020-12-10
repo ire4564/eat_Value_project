@@ -93,6 +93,7 @@ class DetailOrder extends Component {
             ],
             db_store: [],
             db_order: [],
+            order_list: [],
             total_price: 0,
             member: [],
             user : this.props.db_user,
@@ -146,13 +147,22 @@ class DetailOrder extends Component {
             return res.json();
         }).then(db_order => this.setState({db_order: db_order}));
 
+        fetch(`${databaseURL}/order_list`).then(res => {
+            if(res.status != 200) {
+              throw new Error(res.statusText);
+            }
+            return res.json();
+          }).then(order_list => this.setState({order_list: order_list}));
     }
 
     /**
      * @method "IsChange?"
     */
     shouldComponentUpdate(nextProps, nextState) {
-        return (nextState.db_store != this.state.db_store) || (nextState.db_order != this.state.db_order) || (nextState.order != this.state.order);
+        return (nextState.db_store != this.state.db_store) || 
+        (nextState.db_order != this.state.db_order) ||
+        (nextState.order_list != this.state.order_list) ||
+         (nextState.order != this.state.order);
     }
 
     //alone 정보를 받아오기 위해서 
@@ -170,11 +180,17 @@ class DetailOrder extends Component {
         
     }
     static getDerivedStateFromProps(nextProps, nextState) {
-        if(nextState.db_store.length == 0 || nextState.db_order.length == 0 ){
+        if(nextState.db_store.length == 0 || nextState.db_order.length == 0 || nextState.order_list == 0){
             return null;
         }
-        return {order: nextState.db_order[nextProps.data],
-                store: nextState.db_store[nextState.db_order[nextProps.data].store_num],};
+        let temp = nextProps.data.split(' ');
+        if(temp[0] == '1'){
+            return {order: nextState.db_order[temp[1]],
+                store: nextState.db_store[nextState.db_order[temp[1]].store_num],};
+        }else{
+            return {order: nextState.order_list[temp[1]],
+                store: nextState.db_store[nextState.order_list[temp[1]].store_num],};
+        }
     } 
     //데이터 연산 관련 함수들
     computeTotalPrice(){
@@ -215,7 +231,7 @@ class DetailOrder extends Component {
         })
     }
     computeGauge(){
-        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+        if(this.state.db_store.length == 0){
             return "0%";
         }
         var i = this.state.total_price/this.state.store.min_order;
@@ -228,7 +244,7 @@ class DetailOrder extends Component {
 
     //컴포넌트 출력 관련 함수들
     printOrderDetail(){
-        if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
+        if(this.state.db_store.length == 0 || this.state.order == null){
             return null;
         }
         var list = [];
@@ -319,7 +335,7 @@ class DetailOrder extends Component {
         }
     }
     clickJoinButton(){ // 메뉴 선택 화면 이동
-        this.props.sendData(this.props.data);
+        this.props.sendData(this.props.data.split(" ")[1]);
         this.props.changeMode("choose-menu");
     }
     clickDeleteOrderButton(){ // 해당 주문에 대한 참여를 취소
@@ -360,7 +376,7 @@ class DetailOrder extends Component {
                     <View style={styles.main_container}>
 
                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Text style={styles.order_number}>주문 코드 : {this.state.data}</Text>
+                            <Text style={styles.order_number}>주문 코드 : {this.state.data.split(' ')[1]}</Text>
                             <Text style={styles.order_number}>{moment(this.state.order.date,'YYYY-MM-DD-HH-mm', true).format('YYYY-MM-DD HH:mm')}</Text>
                         </View>
 

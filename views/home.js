@@ -250,7 +250,7 @@ class Home extends Component {
                         order={this.state.db_order[id]}
                         store={this.state.db_store[this.state.db_order[id].store_num]}
                         event={function(){
-                            this.props.sendData(id);
+                            this.props.sendData(1+" "+id);
                             {this.selectOrder()}; 
                         }.bind(this)}
                         sendData={this.props.sendData.bind(this)}
