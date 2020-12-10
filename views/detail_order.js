@@ -315,7 +315,7 @@ class DetailOrder extends Component {
         if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
             return null;
         }
-        
+
         if(this.state.member.includes(this.state.user.id)){
             if(this.state.total_price<this.state.store.min_order){
                 return (<TouchableOpacity style={[styles.close_button, {backgroundColor: '#999'}]} disabled={true}>
@@ -330,10 +330,14 @@ class DetailOrder extends Component {
                                     ※ 최대 인원이 모이면 자동 마감됩니다.</Text>
                     </TouchableOpacity>);
         }
+        if(this.state.data.split(" ")[0]==2){
+            return ;
+        }
         return (<TouchableOpacity style={styles.join_button} onPress={this.clickJoinButton.bind(this)}>
                     <Text style={styles.button_text}>참여하기 (<Text>{this.state.order.current_order}</Text>/<Text>{this.state.order.limit_order}</Text>)</Text>
                 </TouchableOpacity>);
     }
+
     printDeleteButton(){
         if(this.state.db_store.length == 0 || this.state.db_order.length == 0){
             return null;
