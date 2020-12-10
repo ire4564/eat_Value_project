@@ -201,20 +201,29 @@ class Home extends Component {
     searchMenu(list){
         Object.keys(this.state.db_order).map(id => {
             if(this.state.db_store[this.state.db_order[id].store_num].name.indexOf(this.state.search)!== -1){
-                list.push(
-                    <TouchableList
-                    key={id+"_order"}
-                    order={this.state.db_order[id]}
-                    store={this.state.db_store[this.state.db_order[id].store_num]}/>
-                );
+                let per = this.state.db_order[id].current_order/this.state.db_order[id].limit_order;
+                if(per > (2/5)){
+                    list.push(
+                        <TouchableList
+                        key={id+"_order"}
+                        order={this.state.db_order[id]}
+                        store={this.state.db_store[this.state.db_order[id].store_num]}/>
+                    );
+                }
             }else if(this.state.db_store[this.state.db_order[id].store_num].category.indexOf(this.state.search)!== -1){
-                list.push(
-                    <TouchableList
-                    key={id+"_order"}
-                    order={this.state.db_order[id]}
-                    store={this.state.db_store[this.state.db_order[id].store_num]}/>
-                );
+                let per = this.state.db_order[id].current_order/this.state.db_order[id].limit_order;
+                if(per > (2/5)){
+                    list.push(
+                        <TouchableList
+                        key={id+"_order"}
+                        order={this.state.db_order[id]}
+                        store={this.state.db_store[this.state.db_order[id].store_num]}/>
+                    );
+                }
             }
+        });
+        list.sort(function(a, b){
+            return (b.props.order.current_order/b.props.order.limit_order) - (a.props.order.current_order/a.props.order.limit_order);
         });
         return list;
     }
@@ -233,24 +242,30 @@ class Home extends Component {
         var list = [];
         if(this.state.search===''){
             Object.keys(this.state.db_order).map(id => {
-                list.push(
-                    <TouchableList
-                    key={id+"_order"}
-                    order={this.state.db_order[id]}
-                    store={this.state.db_store[this.state.db_order[id].store_num]}
-                    event={function(){
-                        this.props.sendData(id);
-                        {this.selectOrder()}; 
-                    }.bind(this)}
-                    sendData={this.props.sendData.bind(this)}
-                    changeMode={this.props.changeMode}/>
-                );
+                let per = this.state.db_order[id].current_order/this.state.db_order[id].limit_order;
+                if(per > (2/5)){
+                    list.push(
+                        <TouchableList
+                        key={id+"_order"}
+                        order={this.state.db_order[id]}
+                        store={this.state.db_store[this.state.db_order[id].store_num]}
+                        event={function(){
+                            this.props.sendData(id);
+                            {this.selectOrder()}; 
+                        }.bind(this)}
+                        sendData={this.props.sendData.bind(this)}
+                        changeMode={this.props.changeMode}/>
+                    );
+                }
             });
 
         }else{
             //선택한 버튼에 대한 메뉴를 검생한 기능을 통해 검색
             {this.searchMenu(list)}
         }
+        list.sort(function(a, b){
+            return (b.props.order.current_order/b.props.order.limit_order) - (a.props.order.current_order/a.props.order.limit_order);
+        });
         return list;
     }
 
