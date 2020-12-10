@@ -162,62 +162,72 @@ class OrderList extends Component {
         var i = 0;
         Object.keys(this.state.order_list).map(id => {
             var top_data = this.orderHistory_top(id);
-            list.push(
-                <View
-                key={id + "_history"}>
+            let my_order = false;
+            for(var k=0; k<[this.state.order_list[id].order_detail].length; k++){
+                //alert(this.state.order_list[id].order_detail[k].user_id)
+                if(this.state.order_list[id].order_detail[k].user_id === this.state.db_user.id){
+                    my_order = true;
+                    break;
+                }
+            }
+            if(my_order){
+                list.push(
                     <View
-                    style={{position: 'absolute', height: hp('21%'), width: '100%', zIndex: -1}}>
-                        <TwoColorBlock
-                            topHeight={2}
-                            bottomHeight={1}
-                            type={0}
-                            shadow={true}/>
-                    </View>
-                    <TouchableOpacity
-                        style={styles.order_history_container}
-                        onPress={function(){
-                            this.props.sendData(2+" "+id);
-                            this.props.changeMode("detail-order");
-                        }.bind(this)}
-                        >
+                    key={id + "_history"}>
+                        <View
+                        style={{position: 'absolute', height: hp('21%'), width: '100%', zIndex: -1}}>
                             <TwoColorBlock
                                 topHeight={2}
                                 bottomHeight={1}
                                 type={0}
-                                top={top_data[0]}
-                                bottom={this.orderHistory_bottom(id, top_data[1], top_data[2])}
-                                shadow={false}/>
-                    </TouchableOpacity>
-
-                    {/*리뷰 버튼*/}
-                    <TouchableOpacity
-                    style={styles.cancelOrder_style2}
-                    onPress={function(){
-                            this.props.changeMode("write-review");
-                        }.bind(this)}>
-                        <AntDesign name="star" size={hp('2%')} color="black" />
-                        <Text style={{color:'black', fontSize:hp('1.9%')}}> 리뷰 쓰기 </Text>
-                    </TouchableOpacity>
-
-                    {/*취소 버튼*/}
-                    <TouchableOpacity
-                    style={styles.cancelOrder_style}
-                    onPress={function(){
-                        Alert.alert(
-                            '주문 취소 완료!',
-                            '선택하신 주문을 취소했습니다. 선결제 된 금액은 등록된 계좌로 반환됩니다.',
-                            [{
-                                text: "확인",
-                            }]);
-                            this._delete(id);
-                            this.props.changeMode("home");
-                        }.bind(this)}>
-                        <MaterialCommunityIcons name="silverware-fork-knife" size={hp('2%')} color="#fff" />
-                        <Text style={{color:'#fff', fontSize:hp('1.9%')}}> 주문 취소 </Text>
-                    </TouchableOpacity>
-                    
-                </View>
-            );
+                                shadow={true}/>
+                        </View>
+                        <TouchableOpacity
+                            style={styles.order_history_container}
+                            onPress={function(){
+                                this.props.sendData(2+" "+id);
+                                this.props.changeMode("detail-order");
+                            }.bind(this)}
+                            >
+                                <TwoColorBlock
+                                    topHeight={2}
+                                    bottomHeight={1}
+                                    type={0}
+                                    top={top_data[0]}
+                                    bottom={this.orderHistory_bottom(id, top_data[1], top_data[2])}
+                                    shadow={false}/>
+                        </TouchableOpacity>
+    
+                        {/*리뷰 버튼*/}
+                        <TouchableOpacity
+                        style={styles.cancelOrder_style2}
+                        onPress={function(){
+                                this.props.changeMode("write-review");
+                            }.bind(this)}>
+                            <AntDesign name="star" size={hp('2%')} color="black" />
+                            <Text style={{color:'black', fontSize:hp('1.9%')}}> 리뷰 쓰기 </Text>
+                        </TouchableOpacity>
+    
+                        {/*취소 버튼*/}
+                        <TouchableOpacity
+                        style={styles.cancelOrder_style}
+                        onPress={function(){
+                            Alert.alert(
+                                '주문 취소 완료!',
+                                '선택하신 주문을 취소했습니다. 선결제 된 금액은 등록된 계좌로 반환됩니다.',
+                                [{
+                                    text: "확인",
+                                }]);
+                                this._delete(id);
+                                this.props.changeMode("home");
+                            }.bind(this)}>
+                            <MaterialCommunityIcons name="silverware-fork-knife" size={hp('2%')} color="#fff" />
+                            <Text style={{color:'#fff', fontSize:hp('1.9%')}}> 주문 취소 </Text>
+                        </TouchableOpacity>
+                        
+                    </View>
+                );   
+            }
         });
         return list;
     }
