@@ -47,7 +47,6 @@ class App extends Component {
           location: "대전 유성구 궁동 99",
         },
     }
-    
   }
   changePage(){
     switch(this.state.seleted_mode){
