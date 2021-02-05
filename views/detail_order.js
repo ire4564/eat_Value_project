@@ -41,7 +41,7 @@ const ICON_COLOR = '#40E0D0';
 
 const TEST_IMG = '../images/test_store.png';
 const COLOR_SET = ['#00CED1','#8BAAF0', '#7AD3FA', '#40e0d0'];
-const databaseURL = "http://34.64.120.109:3000";
+const databaseURL = "http://gcloud.parkmin-dev.kr:3000";
 const Page = posed.View({
     open: {
         y: 0,

@@ -24,7 +24,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import posed from 'react-native-pose';
 import { AntDesign } from '@expo/vector-icons';
 
-const databaseURL = "http://34.64.120.109:3000";
+const databaseURL = "http://gcloud.parkmin-dev.kr:3000";
 const MAX_MENU_NUM = 2;
 const Page = posed.View({
     open: {

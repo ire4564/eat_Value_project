@@ -24,7 +24,7 @@ import { MaterialCommunityIcons, AntDesign, Entypo } from '@expo/vector-icons';
 import LocationBar from '../components/locationBar';
 import posed from 'react-native-pose';
 
-const databaseURL = "http://34.64.120.109:3000"; // firebase URL
+const databaseURL = "http://gcloud.parkmin-dev.kr:3000"; // firebase URL
 const MAX_MENU_NUM = 2;
 const Page = posed.View({
     open: {

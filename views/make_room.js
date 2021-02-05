@@ -30,7 +30,7 @@ import InfoBox from '../components/infoBox';
 const ICON_COLOR = '#40E0D0';
 var first = true;
 var count = 0; //해당되는 리스트 길이 세기
-const databaseURL = "http://34.64.120.109:3000";
+const databaseURL = "http://gcloud.parkmin-dev.kr:3000";
 var resultPrize = 0;
 
 class MakeRoom extends Component {
