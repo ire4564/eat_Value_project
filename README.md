@@ -1,4 +1,4 @@
-![가치먹자 Value](C:\Users\user\Downloads\가치먹자 Value.png) 
+![가치먹자 Value](https://user-images.githubusercontent.com/44183221/131092478-94586d3f-2460-4e6f-a359-1debd63cecf4.png)
 
 ![preview badge](https://img.shields.io/github/languages/code-size/ire4564/Application_for_classes)  ![preview badge](https://img.shields.io/github/repo-size/ire4564/Application_for_classes) 
 
@@ -79,8 +79,7 @@ Fire Base를 이용해 DB를 설계하고, 명세된 것을 바탕으로 화면�
 
 
 ## Overview
-
-
+![image](https://user-images.githubusercontent.com/44183221/131092513-26cb1087-712a-4ae7-9b0d-8493e57d500e.png)
 
 
 
